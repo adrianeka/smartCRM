@@ -6,12 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notification extends Model
 {
-
- protected $table = 'notifications';
-protected $fillable = [
+    protected $fillable = [
         'user_id',
         'title',
         'message',
-        'is_read'
+        'type',
+        'source_module',
+        'priority',
+        'is_read',
+        'read_at',
+        'action_url'
     ];
 }
