@@ -28,6 +28,8 @@ class Dashboard extends BaseDashboard
             \App\Filament\Widgets\TodayTasksWidget::class,
             \App\Filament\Widgets\QuickLinksWidget::class,
             \App\Filament\Widgets\UpcomingDeadlinesWidget::class,
+            \App\Filament\Widgets\SalesPipelineWidget::class,
+            \App\Filament\Widgets\RecentActivitiesWidget::class,
         ];
     }
 }
