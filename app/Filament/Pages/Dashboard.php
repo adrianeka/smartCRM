@@ -32,6 +32,20 @@ class Dashboard extends BaseDashboard
             \App\Filament\Widgets\RecentActivitiesWidget::class,
             \App\Filament\Widgets\TopDealsWidget::class,
             \App\Filament\Widgets\TasksOverviewWidget::class,
+            
+            // Marketing
+            \App\Filament\Widgets\MarketingStatsWidget::class,
+            \App\Filament\Widgets\CampaignPerformanceChart::class,
+            \App\Filament\Widgets\RecentCampaignsWidget::class,
+            
+            // Support
+            \App\Filament\Widgets\SupportStatsWidget::class,
+            \App\Filament\Widgets\TicketsByPriorityChart::class,
+            \App\Filament\Widgets\UrgentTicketsWidget::class,
+            
+            // Manager
+            \App\Filament\Widgets\CompanyPerformanceWidget::class,
+            \App\Filament\Widgets\RevenueForecastChart::class,
         ];
     }
 }
