@@ -25,6 +25,9 @@ class Dashboard extends BaseDashboard
         return [
             \App\Filament\Widgets\WelcomeWidget::class,
             \App\Filament\Widgets\SalesSummaryWidget::class,
+            \App\Filament\Widgets\TodayTasksWidget::class,
+            \App\Filament\Widgets\QuickLinksWidget::class,
+            \App\Filament\Widgets\UpcomingDeadlinesWidget::class,
         ];
     }
 }
