@@ -1,6 +1,6 @@
 <x-filament-widgets::widget class="h-full" style="align-self: stretch; height: 100%;">
     <x-filament::section heading="Quick Links" style="height: 100%;">
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 16px;">
             @php
                 $links = [
                     ['title' => 'Contacts', 'icon' => 'heroicon-s-user-group', 'color' => 'white', 'bg' => '#0ea5e9'],

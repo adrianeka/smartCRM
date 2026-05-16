@@ -8,7 +8,7 @@ use Filament\Tables\Columns\TextColumn;
 
 class TopDealsWidget extends BaseWidget
 {
-    protected int | string | array $columnSpan = 2;
+    protected int | string | array $columnSpan = 3;
     protected static ?int $sort = 6;
     protected static ?string $heading = 'Top Deals by Value';
 

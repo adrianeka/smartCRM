@@ -16,7 +16,7 @@ class Dashboard extends BaseDashboard
         return [
             'default' => 1,
             'md' => 2,
-            'xl' => 3,
+            'xl' => 6,
         ];
     }
 
@@ -24,28 +24,19 @@ class Dashboard extends BaseDashboard
     {
         return [
             \App\Filament\Widgets\WelcomeWidget::class,
-            \App\Filament\Widgets\SalesSummaryWidget::class,
-            \App\Filament\Widgets\TodayTasksWidget::class,
-            \App\Filament\Widgets\QuickLinksWidget::class,
-            \App\Filament\Widgets\UpcomingDeadlinesWidget::class,
+            \App\Filament\Widgets\CompanyPerformanceWidget::class,
+            
+            // 50/50 Split - Charts
+            \App\Filament\Widgets\RevenueForecastChart::class,
             \App\Filament\Widgets\SalesPipelineWidget::class,
-            \App\Filament\Widgets\RecentActivitiesWidget::class,
+            
+            // 50/50 Split - Tall Tables (Perfect Height Match)
             \App\Filament\Widgets\TopDealsWidget::class,
-            \App\Filament\Widgets\TasksOverviewWidget::class,
-            
-            // Marketing
-            \App\Filament\Widgets\MarketingStatsWidget::class,
-            \App\Filament\Widgets\CampaignPerformanceChart::class,
-            \App\Filament\Widgets\RecentCampaignsWidget::class,
-            
-            // Support
-            \App\Filament\Widgets\SupportStatsWidget::class,
-            \App\Filament\Widgets\TicketsByPriorityChart::class,
             \App\Filament\Widgets\UrgentTicketsWidget::class,
             
-            // Manager
-            \App\Filament\Widgets\CompanyPerformanceWidget::class,
-            \App\Filament\Widgets\RevenueForecastChart::class,
+            // 75/25 Split - Short Widgets
+            \App\Filament\Widgets\RecentActivitiesWidget::class,
+            \App\Filament\Widgets\QuickLinksWidget::class,
         ];
     }
 }

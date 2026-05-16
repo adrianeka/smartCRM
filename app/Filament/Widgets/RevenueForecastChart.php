@@ -8,7 +8,7 @@ class RevenueForecastChart extends ChartWidget
 {
     protected ?string $heading = 'Revenue & Forecast (2026)';
     protected static ?int $sort = 11;
-    protected int | string | array $columnSpan = 2;
+    protected int | string | array $columnSpan = 3;
 
     protected ?array $options = [
         'plugins' => [
