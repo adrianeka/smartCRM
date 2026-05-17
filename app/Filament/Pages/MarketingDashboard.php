@@ -12,6 +12,12 @@ class MarketingDashboard extends BaseDashboard
     protected static string | \UnitEnum | null $navigationGroup = 'Dashboards';
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-megaphone';
 
+    public static function canAccess(): bool
+    {
+        $user = auth()->user();
+        return $user ? ($user->hasRole('marketing') || $user->isAdmin()) : false;
+    }
+
     public function getSubheading(): ?string
     {
         return 'Gambaran umum alur penjualan dan hubungan pelanggan Anda';

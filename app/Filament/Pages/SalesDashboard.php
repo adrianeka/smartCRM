@@ -12,6 +12,12 @@ class SalesDashboard extends BaseDashboard
     protected static string | \UnitEnum | null $navigationGroup = 'Dashboards';
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-presentation-chart-line';
 
+    public static function canAccess(): bool
+    {
+        $user = auth()->user();
+        return $user ? ($user->hasRole('sales') || $user->isAdmin()) : false;
+    }
+
     public function getSubheading(): ?string
     {
         return 'Gambaran umum alur penjualan dan hubungan pelanggan Anda';
