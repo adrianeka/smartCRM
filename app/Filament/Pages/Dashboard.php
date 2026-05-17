@@ -11,27 +11,6 @@ class Dashboard extends BaseDashboard
         return 'Gambaran umum alur penjualan dan hubungan pelanggan Anda';
     }
 
-    public static function canAccess(): bool
-    {
-        return true; // Allow everyone to hit the default /admin route
-    }
-
-    public static function shouldRegisterNavigation(): bool
-    {
-        return auth()->user()?->isAdmin() ?? false;
-    }
-
-    public function mount()
-    {
-        $user = auth()->user();
-        if ($user && !$user->isAdmin()) {
-            if ($user->hasRole('sales')) return redirect()->to(SalesDashboard::getUrl());
-            if ($user->hasRole('marketing')) return redirect()->to(MarketingDashboard::getUrl());
-            if ($user->hasRole('support')) return redirect()->to(SupportDashboard::getUrl());
-            if ($user->hasRole('manager')) return redirect()->to(ManagerDashboard::getUrl());
-        }
-    }
-
     public function getColumns(): int | array
     {
         return [
@@ -43,19 +22,59 @@ class Dashboard extends BaseDashboard
 
     public function getWidgets(): array
     {
+        $user = auth()->user();
+
+        if ($user?->hasRole('sales')) {
+            return [
+                \App\Filament\Widgets\SalesSummaryWidget::class,
+                \App\Filament\Widgets\SalesPipelineWidget::class,
+                \App\Filament\Widgets\TopDealsWidget::class,
+                \App\Filament\Widgets\UpcomingDeadlinesWidget::class,
+                \App\Filament\Widgets\TodayTasksWidget::class,
+                \App\Filament\Widgets\RecentActivitiesWidget::class,
+                \App\Filament\Widgets\QuickLinksWidget::class,
+            ];
+        }
+
+        if ($user?->hasRole('marketing')) {
+            return [
+                \App\Filament\Widgets\MarketingStatsWidget::class,
+                \App\Filament\Widgets\CampaignPerformanceChart::class,
+                \App\Filament\Widgets\RecentCampaignsWidget::class,
+                \App\Filament\Widgets\RecentActivitiesWidget::class,
+                \App\Filament\Widgets\QuickLinksWidget::class,
+            ];
+        }
+
+        if ($user?->hasRole('support')) {
+            return [
+                \App\Filament\Widgets\SupportStatsWidget::class,
+                \App\Filament\Widgets\TicketsByPriorityChart::class,
+                \App\Filament\Widgets\UrgentTicketsWidget::class,
+                \App\Filament\Widgets\RecentActivitiesWidget::class,
+                \App\Filament\Widgets\QuickLinksWidget::class,
+            ];
+        }
+
+        if ($user?->hasRole('manager')) {
+            return [
+                \App\Filament\Widgets\CompanyPerformanceWidget::class,
+                \App\Filament\Widgets\RevenueForecastChart::class,
+                \App\Filament\Widgets\CampaignPerformanceChart::class,
+                \App\Filament\Widgets\TopDealsWidget::class,
+                \App\Filament\Widgets\TicketsByPriorityChart::class,
+                \App\Filament\Widgets\RecentActivitiesWidget::class,
+                \App\Filament\Widgets\QuickLinksWidget::class,
+            ];
+        }
+        
         return [
             \App\Filament\Widgets\WelcomeWidget::class,
             \App\Filament\Widgets\CompanyPerformanceWidget::class,
-            
-            // Charts Row
             \App\Filament\Widgets\RevenueForecastChart::class,
             \App\Filament\Widgets\SalesPipelineWidget::class,
-            
-            // Widgets Row
             \App\Filament\Widgets\RecentActivitiesWidget::class,
             \App\Filament\Widgets\QuickLinksWidget::class,
-
-            // Full Width Tables
             \App\Filament\Widgets\TopDealsWidget::class,
             \App\Filament\Widgets\UrgentTicketsWidget::class,
         ];
