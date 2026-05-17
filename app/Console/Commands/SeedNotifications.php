@@ -24,7 +24,6 @@ class SeedNotifications extends Command
         }
 
         foreach ($users as $user) {
-            // Role-specific dummy notifications
             if ($user->role === 'sales') {
                 \Filament\Notifications\Notification::make()
                     ->title('New Deal Closed!')
