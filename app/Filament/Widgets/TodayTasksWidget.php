@@ -8,7 +8,7 @@ use Filament\Tables\Columns\TextColumn;
 
 class TodayTasksWidget extends BaseWidget
 {
-    protected int | string | array $columnSpan = 2;
+    protected int | string | array $columnSpan = 'full';
     protected static ?int $sort = 3;
     protected static ?string $heading = "Today's Tasks";
 

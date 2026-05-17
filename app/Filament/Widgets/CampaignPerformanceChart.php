@@ -8,7 +8,7 @@ class CampaignPerformanceChart extends ChartWidget
 {
     protected ?string $heading = 'Campaign Performance (Clicks vs Conversions)';
     protected static ?int $sort = 5;
-    protected int | string | array $columnSpan = 2;
+    protected int | string | array $columnSpan = 3;
     
     // Customize options to make it look premium
     protected ?array $options = [

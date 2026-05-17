@@ -9,7 +9,7 @@ use Filament\Tables\Columns\TextColumn;
 class UrgentTicketsWidget extends BaseWidget
 {
     protected static ?int $sort = 9;
-    protected int | string | array $columnSpan = 3;
+    protected int | string | array $columnSpan = 'full';
     protected static ?string $heading = "Urgent Tickets (Near SLA)";
 
     public function table(Table $table): Table

@@ -4,8 +4,14 @@ namespace App\Filament\Pages;
 
 use Filament\Pages\Dashboard as BaseDashboard;
 
-class Dashboard extends BaseDashboard
+class SupportDashboard extends BaseDashboard
 {
+    protected static ?string $title = 'Support Dashboard';
+    protected static string $routePath = 'support-dashboard';
+    protected static ?int $navigationSort = 4;
+    protected static string | \UnitEnum | null $navigationGroup = 'Dashboards';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-chat-bubble-left-ellipsis';
+
     public function getSubheading(): ?string
     {
         return 'Gambaran umum alur penjualan dan hubungan pelanggan Anda';
@@ -24,18 +30,9 @@ class Dashboard extends BaseDashboard
     {
         return [
             \App\Filament\Widgets\WelcomeWidget::class,
-            \App\Filament\Widgets\CompanyPerformanceWidget::class,
-            
-            // Charts Row
-            \App\Filament\Widgets\RevenueForecastChart::class,
-            \App\Filament\Widgets\SalesPipelineWidget::class,
-            
-            // Widgets Row
-            \App\Filament\Widgets\RecentActivitiesWidget::class,
+            \App\Filament\Widgets\SupportStatsWidget::class,
+            \App\Filament\Widgets\TicketsByPriorityChart::class,
             \App\Filament\Widgets\QuickLinksWidget::class,
-
-            // Full Width Tables
-            \App\Filament\Widgets\TopDealsWidget::class,
             \App\Filament\Widgets\UrgentTicketsWidget::class,
         ];
     }

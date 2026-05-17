@@ -17,17 +17,17 @@
             </div>
             <div style="flex: 1;">
                 <h2 style="font-size: 1.5rem; font-weight: 700; margin: 0 0 6px 0; line-height: 1.2;">
-                    Welcome back, {{ auth()->user()?->name ?? 'Admin' }}!
+                    Welcome back, {{ auth()->user()?->name ?? $this->getRoleName() }}!
                 </h2>
                 <p style="font-size: 0.875rem; color: rgba(255,255,255,0.8); margin: 0 0 24px 0;">
-                    You have full access to all system modules and settings.
+                    Here is your dashboard overview for today.
                 </p>
                 <div style="background-color: rgba(255,255,255,0.1); border-radius: 12px; padding: 20px;">
                     <p style="font-size: 0.875rem; font-weight: 600; margin: 0 0 12px 0;">Quick Start Tips:</p>
                     <ul style="margin: 0; padding-left: 24px; font-size: 0.875rem; color: rgba(255,255,255,0.8); line-height: 1.8;">
-                        <li>Review system health in the admin panel</li>
-                        <li>Manage user permissions and roles</li>
-                        <li>Monitor overall team performance</li>
+                        <li>Check your upcoming tasks and deadlines</li>
+                        <li>Review recent activities and updates</li>
+                        <li>Track your performance metrics</li>
                     </ul>
                 </div>
             </div>

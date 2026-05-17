@@ -10,7 +10,7 @@ use Filament\Tables\Columns\IconColumn;
 class RecentCampaignsWidget extends BaseWidget
 {
     protected static ?int $sort = 6;
-    protected int | string | array $columnSpan = 1;
+    protected int | string | array $columnSpan = 'full';
     protected static ?string $heading = "Recent Campaigns";
 
     public function table(Table $table): Table
@@ -21,6 +21,8 @@ class RecentCampaignsWidget extends BaseWidget
                 ['id' => 2, 'name' => 'Webinar Follow-up', 'status' => 'Scheduled', 'leads' => 0],
                 ['id' => 3, 'name' => 'Q1 Newsletter', 'status' => 'Completed', 'leads' => 1205],
                 ['id' => 4, 'name' => 'Product X Launch', 'status' => 'Draft', 'leads' => 0],
+                ['id' => 5, 'name' => 'B2B Client Outreach', 'status' => 'Running', 'leads' => 45],
+                ['id' => 6, 'name' => 'Holiday Special', 'status' => 'Scheduled', 'leads' => 0],
             ])
             ->columns([
                 TextColumn::make('name')

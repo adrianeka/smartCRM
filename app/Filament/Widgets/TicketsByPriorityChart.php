@@ -8,7 +8,8 @@ class TicketsByPriorityChart extends ChartWidget
 {
     protected ?string $heading = 'Tickets by Priority';
     protected static ?int $sort = 8;
-    protected int | string | array $columnSpan = 1;
+    protected int | string | array $columnSpan = 3;
+    protected ?string $maxHeight = '375px';
 
     protected ?array $options = [
         'plugins' => [
