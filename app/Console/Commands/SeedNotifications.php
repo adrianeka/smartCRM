@@ -6,42 +6,61 @@ use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
-#[Signature('app:seed-notifications')]
-#[Description('Command description')]
+#[Signature('app:seed-notifications {role? : The role to send notifications to (e.g. sales, support)}')]
+#[Description('Seed dummy notifications for specific roles or all users')]
 class SeedNotifications extends Command
 {
     public function handle()
     {
-        $user = \App\Models\User::first();
-        if (!$user) {
-            $this->error('No users found.');
+        $role = $this->argument('role');
+
+        $users = $role 
+            ? \App\Models\User::where('role', $role)->get() 
+            : \App\Models\User::all();
+
+        if ($users->isEmpty()) {
+            $this->error("No users found for role: {$role}");
             return;
         }
 
-        \Filament\Notifications\Notification::make()
-            ->title('Saved successfully')
-            ->body('Keep going! You\'re doing great')
-            ->success()
-            ->sendToDatabase($user);
+        foreach ($users as $user) {
+            // Role-specific dummy notifications
+            if ($user->role === 'sales') {
+                \Filament\Notifications\Notification::make()
+                    ->title('New Deal Closed!')
+                    ->body('PT Jaya Abadi just signed the contract worth $15,000.')
+                    ->success()
+                    ->sendToDatabase($user);
+            } 
+            elseif ($user->role === 'support') {
+                \Filament\Notifications\Notification::make()
+                    ->title('Urgent Ticket SLA')
+                    ->body('Ticket T-1042 has only 15 mins left before SLA breach!')
+                    ->danger()
+                    ->sendToDatabase($user);
+            }
+            elseif ($user->role === 'marketing') {
+                \Filament\Notifications\Notification::make()
+                    ->title('Campaign Finished')
+                    ->body('The Q3 Email Blast campaign has finished sending.')
+                    ->info()
+                    ->sendToDatabase($user);
+            }
+            elseif ($user->role === 'manager' || $user->role === 'admin') {
+                \Filament\Notifications\Notification::make()
+                    ->title('Weekly Report Ready')
+                    ->body('Your weekly company performance report is ready to download.')
+                    ->info()
+                    ->sendToDatabase($user);
+            }
+            
+            \Filament\Notifications\Notification::make()
+                ->title('System Update')
+                ->body('SmartCRM79 will undergo maintenance tonight at 12:00 AM.')
+                ->warning()
+                ->sendToDatabase($user);
+        }
 
-        \Filament\Notifications\Notification::make()
-            ->title('You\'re not allowed to edit')
-            ->body('You weren\'t supposed to do that, naughty...')
-            ->warning()
-            ->sendToDatabase($user);
-
-        \Filament\Notifications\Notification::make()
-            ->title('Something went wrong')
-            ->body('Uh oh! Let\'s try that again')
-            ->danger()
-            ->sendToDatabase($user);
-
-        \Filament\Notifications\Notification::make()
-            ->title('Here\'s some information')
-            ->body('Filament is here to help you :)')
-            ->info()
-            ->sendToDatabase($user);
-
-        $this->info('Notifications seeded!');
+        $this->info("Successfully sent notifications to " . $users->count() . " user(s).");
     }
 }
