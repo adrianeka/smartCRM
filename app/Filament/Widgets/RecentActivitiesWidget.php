@@ -7,7 +7,7 @@ use Filament\Widgets\Widget;
 class RecentActivitiesWidget extends Widget
 {
     protected string $view = 'filament.widgets.recent-activities-widget';
-    protected int | string | array $columnSpan = 3;
+    protected int | string | array $columnSpan = 'full';
     protected static ?int $sort = 5;
 
     protected function getViewData(): array

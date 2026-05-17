@@ -7,9 +7,13 @@ use Filament\Widgets\ChartWidget;
 class CampaignPerformanceChart extends ChartWidget
 {
     protected ?string $heading = 'Campaign Performance (Clicks vs Conversions)';
-    protected static ?int $sort = 5;
-    protected int | string | array $columnSpan = 3;
+    protected static ?int $sort = 6;
     
+    public function getColumnSpan(): int | string | array
+    {
+        return auth()->user()?->hasRole('marketing') ? 4 : 3;
+    }
+
     // Customize options to make it look premium
     protected ?array $options = [
         'plugins' => [

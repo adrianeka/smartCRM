@@ -26,45 +26,46 @@ class Dashboard extends BaseDashboard
 
         if ($user?->hasRole('sales')) {
             return [
+                \App\Filament\Widgets\WelcomeWidget::class,
                 \App\Filament\Widgets\SalesSummaryWidget::class,
                 \App\Filament\Widgets\SalesPipelineWidget::class,
+                \App\Filament\Widgets\QuickLinksWidget::class,
                 \App\Filament\Widgets\TopDealsWidget::class,
                 \App\Filament\Widgets\UpcomingDeadlinesWidget::class,
                 \App\Filament\Widgets\TodayTasksWidget::class,
-                \App\Filament\Widgets\RecentActivitiesWidget::class,
-                \App\Filament\Widgets\QuickLinksWidget::class,
             ];
         }
 
         if ($user?->hasRole('marketing')) {
             return [
+                \App\Filament\Widgets\WelcomeWidget::class,
                 \App\Filament\Widgets\MarketingStatsWidget::class,
                 \App\Filament\Widgets\CampaignPerformanceChart::class,
-                \App\Filament\Widgets\RecentCampaignsWidget::class,
-                \App\Filament\Widgets\RecentActivitiesWidget::class,
                 \App\Filament\Widgets\QuickLinksWidget::class,
+                \App\Filament\Widgets\RecentCampaignsWidget::class,
             ];
         }
 
         if ($user?->hasRole('support')) {
             return [
+                \App\Filament\Widgets\WelcomeWidget::class,
                 \App\Filament\Widgets\SupportStatsWidget::class,
                 \App\Filament\Widgets\TicketsByPriorityChart::class,
-                \App\Filament\Widgets\UrgentTicketsWidget::class,
-                \App\Filament\Widgets\RecentActivitiesWidget::class,
                 \App\Filament\Widgets\QuickLinksWidget::class,
+                \App\Filament\Widgets\UrgentTicketsWidget::class,
             ];
         }
 
         if ($user?->hasRole('manager')) {
             return [
+                \App\Filament\Widgets\WelcomeWidget::class,
                 \App\Filament\Widgets\CompanyPerformanceWidget::class,
                 \App\Filament\Widgets\RevenueForecastChart::class,
                 \App\Filament\Widgets\CampaignPerformanceChart::class,
-                \App\Filament\Widgets\TopDealsWidget::class,
                 \App\Filament\Widgets\TicketsByPriorityChart::class,
-                \App\Filament\Widgets\RecentActivitiesWidget::class,
                 \App\Filament\Widgets\QuickLinksWidget::class,
+                \App\Filament\Widgets\TopDealsWidget::class,
+                \App\Filament\Widgets\RecentActivitiesWidget::class,
             ];
         }
         
@@ -73,10 +74,11 @@ class Dashboard extends BaseDashboard
             \App\Filament\Widgets\CompanyPerformanceWidget::class,
             \App\Filament\Widgets\RevenueForecastChart::class,
             \App\Filament\Widgets\SalesPipelineWidget::class,
-            \App\Filament\Widgets\RecentActivitiesWidget::class,
+            \App\Filament\Widgets\TicketsByPriorityChart::class,
             \App\Filament\Widgets\QuickLinksWidget::class,
             \App\Filament\Widgets\TopDealsWidget::class,
             \App\Filament\Widgets\UrgentTicketsWidget::class,
+            \App\Filament\Widgets\RecentActivitiesWidget::class,
         ];
     }
 }

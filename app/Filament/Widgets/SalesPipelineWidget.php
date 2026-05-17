@@ -7,8 +7,12 @@ use Filament\Widgets\Widget;
 class SalesPipelineWidget extends Widget
 {
     protected string $view = 'filament.widgets.sales-pipeline-widget';
-    protected int | string | array $columnSpan = 3;
     protected static ?int $sort = 5;
+
+    public function getColumnSpan(): int | string | array
+    {
+        return auth()->user()?->hasRole('sales') ? 4 : 3;
+    }
 
     protected function getViewData(): array
     {

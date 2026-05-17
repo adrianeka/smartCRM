@@ -7,6 +7,6 @@ use Filament\Widgets\Widget;
 class QuickLinksWidget extends Widget
 {
     protected string $view = 'filament.widgets.quick-links-widget';
-    protected int | string | array $columnSpan = 3;
+    protected int | string | array $columnSpan = 2;
     protected static ?int $sort = 3;
 }
