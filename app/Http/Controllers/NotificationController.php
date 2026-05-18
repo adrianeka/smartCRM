@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Api\V1\BaseApiController;
 
-class NotificationController extends Controller
+class NotificationController extends BaseApiController
 {
     public function index()
     {
-        return response()->json([
-            'success' => true,
-            'data' => Notification::latest('created_at')->get()
-        ]);
+    return $this->successResponse(
+        Notification::latest('created_at')->get(),
+        'Notifications fetched successfully'
+    );
     }
 
     public function store(Request $request)
