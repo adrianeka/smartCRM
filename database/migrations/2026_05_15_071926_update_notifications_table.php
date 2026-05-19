@@ -9,7 +9,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('notifications', function (Blueprint $table) {
-
             $table->string('type')->nullable();
             $table->string('source_module')->nullable();
             $table->string('priority')->default('normal');

@@ -10,11 +10,9 @@ return new class extends Migration
     {
         Schema::create('custom_fields', function (Blueprint $table) {
             $table->id();
-           
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
-            
-            $table->string('field_key');   
-            $table->string('field_value'); 
+            $table->string('field_key');
+            $table->string('field_value');
             $table->timestamps();
         });
     }
