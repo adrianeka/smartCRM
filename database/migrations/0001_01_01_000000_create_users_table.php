@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->string('provider_name')->nullable();
             $table->string('provider_id')->nullable();
-            $table->enum('role', ['super_admin', 'sales', 'marketing', 'support', 'manager'])->default('sales');
+            $table->string('avatar_url')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
