@@ -12,7 +12,7 @@ class ApiLoggerMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-         dd('middleware jalan');
+        
         $response = $next($request);
 
         try {
