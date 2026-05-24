@@ -22,6 +22,7 @@ class Dashboard extends BaseDashboard
 
     public function getWidgets(): array
     {
+        /** @var \App\Models\User|null $user */
         $user = auth()->user();
 
         if ($user?->hasRole('sales')) {
