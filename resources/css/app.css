@@ -1,3 +1,108 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    [x-cloak] {
+        display: none !important;
+    }
+}
+
+@layer components {
+    /* ============================================
+       Smart-Edu Design System - Custom Components
+       ============================================ */
+
+    /* --- Primary Button (Filled) --- */
+    .btn-primary {
+        @apply inline-flex items-center justify-center w-full px-6 py-3 text-sm font-semibold text-white
+               bg-primary-500 border border-transparent rounded-lg
+               hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+               active:bg-primary-700
+               transition-all duration-200 ease-in-out
+               disabled:opacity-50 disabled:cursor-not-allowed;
+    }
+
+    /* --- Secondary / Outline Button --- */
+    .btn-secondary {
+        @apply inline-flex items-center justify-center w-full px-6 py-3 text-sm font-semibold
+               text-primary-500 bg-white border border-neutral-200 rounded-lg
+               hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+               active:bg-neutral-100
+               transition-all duration-200 ease-in-out;
+    }
+
+    /* --- Google OAuth Button --- */
+    .btn-google {
+        @apply inline-flex items-center justify-center w-full px-6 py-3 text-sm font-medium
+               text-neutral-700 bg-white border border-neutral-200 rounded-lg
+               hover:bg-neutral-50 hover:border-neutral-300 hover:shadow-sm
+               focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+               active:bg-neutral-100
+               transition-all duration-200 ease-in-out;
+    }
+
+    /* --- Form Input --- */
+    .form-input-smartedu {
+        @apply block w-full px-4 py-3 text-sm text-neutral-800 placeholder-neutral-400
+               bg-white border border-neutral-200 rounded-lg
+               focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500
+               transition-all duration-200 ease-in-out;
+    }
+
+    /* --- Form Label --- */
+    .form-label {
+        @apply block mb-1.5 text-sm font-medium text-neutral-700;
+    }
+
+    /* --- Auth Card Container --- */
+    .auth-card {
+        @apply w-full max-w-md mx-auto bg-white rounded-2xl shadow-card p-8;
+    }
+
+    /* --- Divider with text --- */
+    .divider-text {
+        @apply flex items-center gap-4 my-6;
+    }
+    .divider-text::before,
+    .divider-text::after {
+        content: '';
+        @apply flex-1 h-px bg-neutral-200;
+    }
+
+    /* --- OTP Input --- */
+    .otp-input {
+        @apply w-12 h-14 sm:w-14 sm:h-16 text-center text-xl font-semibold
+               border border-neutral-200 rounded-xl bg-white text-neutral-800
+               focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500
+               transition-all duration-200 ease-in-out;
+    }
+
+    /* --- Password Criteria Container --- */
+    .password-criteria {
+        @apply mt-4 p-4 bg-neutral-50 rounded-xl border border-neutral-100;
+    }
+    .password-criteria-item {
+        @apply flex items-center text-sm text-neutral-500 transition-colors duration-200;
+    }
+    .password-criteria-item.met {
+        @apply text-success-500;
+    }
+
+    /* --- Auth Page Navbar --- */
+    .auth-navbar {
+        @apply fixed top-0 left-0 right-0 z-50 bg-white border-b border-neutral-100;
+    }
+    .auth-navbar-inner {
+        @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16;
+    }
+    .auth-navbar-brand {
+        @apply text-xl font-bold text-neutral-900 tracking-tight;
+    }
+    .auth-navbar-link {
+        @apply text-sm font-medium text-neutral-600 hover:text-primary-500 transition-colors duration-200;
+    }
+    .auth-navbar-link-active {
+        @apply text-sm font-medium text-primary-500 transition-colors duration-200;
+    }
+}

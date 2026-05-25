@@ -1,6 +1,15 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('We have sent a verification code to your email. Please enter the code below to proceed.') }}
+    <!-- Header with Icon -->
+    <div class="text-center mb-8">
+        <div class="mx-auto w-16 h-16 bg-primary-50 rounded-2xl flex items-center justify-center mb-5">
+            <svg class="w-8 h-8 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+        </div>
+        <h1 class="text-2xl font-bold text-neutral-900">Verifikasi Dua Faktor</h1>
+        <p class="mt-2 text-sm text-neutral-500 leading-relaxed">
+            Masukkan 6 digit kode yang telah kami kirimkan ke email Anda untuk memverifikasi akun Anda.
+        </p>
     </div>
 
     <!-- Session Status -->
@@ -9,10 +18,8 @@
     <form method="POST" action="{{ route('mfa.challenge.verify') }}">
         @csrf
 
-        <!-- Code -->
+        <!-- OTP Code -->
         <div>
-            <x-input-label for="code" :value="__('Verification Code')" />
-
             <div x-data="{
                     code: ['', '', '', '', '', ''],
                     handleInput(e, index) {
@@ -36,32 +43,40 @@
                             setTimeout(() => this.$refs['input' + focusIndex].focus(), 10);
                         }
                     }
-                }" class="flex gap-2 sm:gap-3 mt-3">
-                
-                <input x-ref="input0" type="text" inputmode="numeric" maxlength="1" class="w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl font-semibold rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm transition-all" x-model="code[0]" @input="handleInput($event, 0)" @keydown="handleKeydown($event, 0)" @paste.prevent="handlePaste($event)" autofocus>
-                <input x-ref="input1" type="text" inputmode="numeric" maxlength="1" class="w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl font-semibold rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm transition-all" x-model="code[1]" @input="handleInput($event, 1)" @keydown="handleKeydown($event, 1)" @paste.prevent="handlePaste($event)">
-                <input x-ref="input2" type="text" inputmode="numeric" maxlength="1" class="w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl font-semibold rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm transition-all" x-model="code[2]" @input="handleInput($event, 2)" @keydown="handleKeydown($event, 2)" @paste.prevent="handlePaste($event)">
-                <input x-ref="input3" type="text" inputmode="numeric" maxlength="1" class="w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl font-semibold rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm transition-all" x-model="code[3]" @input="handleInput($event, 3)" @keydown="handleKeydown($event, 3)" @paste.prevent="handlePaste($event)">
-                <input x-ref="input4" type="text" inputmode="numeric" maxlength="1" class="w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl font-semibold rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm transition-all" x-model="code[4]" @input="handleInput($event, 4)" @keydown="handleKeydown($event, 4)" @paste.prevent="handlePaste($event)">
-                <input x-ref="input5" type="text" inputmode="numeric" maxlength="1" class="w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl font-semibold rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm transition-all" x-model="code[5]" @input="handleInput($event, 5)" @keydown="handleKeydown($event, 5)" @paste.prevent="handlePaste($event)">
-                
+                }" class="flex justify-center gap-3 mt-2">
+
+                <template x-for="(digit, index) in code" :key="index">
+                    <input :x-ref="'input' + index" type="text" inputmode="numeric" maxlength="1"
+                        class="otp-input"
+                        x-model="code[index]"
+                        @input="handleInput($event, index)"
+                        @keydown="handleKeydown($event, index)"
+                        @paste.prevent="handlePaste($event)"
+                        x-bind:autofocus="index === 0">
+                </template>
+
                 <input id="code" type="hidden" name="code" :value="code.join('')" required />
             </div>
 
-            <x-input-error :messages="$errors->get('code')" class="mt-2" />
+            <x-input-error :messages="$errors->get('code')" class="mt-3 text-center" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
+        <!-- Submit Button -->
+        <div class="mt-6">
             <x-primary-button>
-                {{ __('Verify') }}
+                Verifikasi
             </x-primary-button>
         </div>
     </form>
 
-    <form method="POST" action="{{ route('mfa.challenge.send') }}" class="mt-4 text-center">
-        @csrf
-        <button type="submit" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-            {{ __('Resend Code') }}
-        </button>
-    </form>
+    <!-- Resend Code -->
+    <div class="mt-6 text-center">
+        <p class="text-sm text-neutral-500">Tidak menerima kode?</p>
+        <form method="POST" action="{{ route('mfa.challenge.send') }}" class="mt-1">
+            @csrf
+            <button type="submit" class="text-sm font-semibold text-primary-500 hover:text-primary-600 transition-colors">
+                Kirim Ulang Kode
+            </button>
+        </form>
+    </div>
 </x-guest-layout>
