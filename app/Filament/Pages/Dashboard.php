@@ -69,7 +69,7 @@ class Dashboard extends BaseDashboard
                 \App\Filament\Widgets\RecentActivitiesWidget::class,
             ];
         }
-        
+
         return [
             \App\Filament\Widgets\WelcomeWidget::class,
             \App\Filament\Widgets\CompanyPerformanceWidget::class,
