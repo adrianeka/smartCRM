@@ -78,6 +78,8 @@ class Dashboard extends BaseDashboard
             \App\Filament\Widgets\TicketsByPriorityChart::class,
             \App\Filament\Widgets\QuickLinksWidget::class,
             \App\Filament\Widgets\TopDealsWidget::class,
+            \App\Filament\Widgets\TodayTasksWidget::class,
+            \App\Filament\Widgets\UpcomingDeadlinesWidget::class,
             \App\Filament\Widgets\UrgentTicketsWidget::class,
             \App\Filament\Widgets\RecentActivitiesWidget::class,
         ];
