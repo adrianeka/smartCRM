@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('api_logs', function (Blueprint $table) {
             $table->id();
+            $table->string('method');
+            $table->string('endpoint');
 
-            $table->string('customer_code')->unique();
-            $table->string('full_name');
-            $table->string('email')->unique();
-            $table->string('phone');
-            $table->string('company_name')->nullable();
-            $table->string('status')->default('Lead');
+            $table->integer('status_code');
 
+            $table->text('ip_address')->nullable();
+
+            $table->longText('request_body')->nullable();
+            $table->longText('response_body')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('api_logs');
     }
 };

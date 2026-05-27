@@ -11,16 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('mfa_codes', function (Blueprint $table) {
             $table->id();
-
-            $table->string('customer_code')->unique();
-            $table->string('full_name');
-            $table->string('email')->unique();
-            $table->string('phone');
-            $table->string('company_name')->nullable();
-            $table->string('status')->default('Lead');
-
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('code', 6);
+            $table->timestamp('expires_at');
+            $table->boolean('used')->default(false);
             $table->timestamps();
         });
     }
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('mfa_codes');
     }
 };
