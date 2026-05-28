@@ -11,9 +11,11 @@ class Customer extends Model
 
     // Daftarkan kolom-kolom yang boleh diisi secara manual
     protected $fillable = [
-        'name', 
-        'email', 
-        'phone',
-       
-    ];
+    'customer_code',
+    'full_name', 
+    'email', 
+    'phone',
+    'company_name',
+    'status',
+];
 }

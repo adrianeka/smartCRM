@@ -23,20 +23,22 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         // Validasi data yang masuk
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:customers',
-            'phone' => 'nullable|string',
-            // Tambahkan validasi lain sesuai kolom di database lu
-        ]);
+       $request->validate([
+        'customer_code' => 'required|string|unique:customers|max:255',
+        'full_name'     => 'required|string|max:255',
+        'email'         => 'required|email|unique:customers|max:255',
+        'phone'         => 'nullable|string|max:255',
+        'company_name'  => 'nullable|string|max:255',
+        'status'        => 'nullable|string|max:255',
+    ]);
 
-        $customer = Customer::create($request->all());
+    $customer = Customer::create($request->all());
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Pelanggan baru berhasil ditambahkan!',
-            'data' => $customer
-        ]);
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Pelanggan baru berhasil ditambahkan!',
+        'data' => $customer
+    ]);
     }
 
     // 3. READ: Menampilkan detail satu pelanggan spesifik
