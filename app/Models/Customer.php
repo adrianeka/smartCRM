@@ -18,4 +18,12 @@ class Customer extends Model
     'company_name',
     'status',
 ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable() // Otomatis mencatat semua kolom yang ada di $fillable
+            ->logOnlyDirty() // Hanya mencatat kolom yang nilainya benar-benar berubah (biar hemat storage)
+            ->dontSubmitEmptyLogs(); // Jangan simpan log kalau tidak ada perubahan data
+    }
 }
