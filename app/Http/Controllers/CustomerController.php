@@ -1,0 +1,77 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Customer; // Mengambil data dari Model Customer
+
+class CustomerController extends Controller
+{
+    // 1. READ: Menampilkan semua data pelanggan
+    public function index()
+    {
+        $customers = Customer::all();
+        
+        // Kita return pakai JSON dulu biar gampang dites
+        return response()->json([
+            'status' => 'success',
+            'data' => $customers
+        ]);
+    }
+
+    // 2. CREATE: Menyimpan data pelanggan baru ke database
+    public function store(Request $request)
+    {
+        // Validasi data yang masuk
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:customers',
+            'phone' => 'nullable|string',
+            // Tambahkan validasi lain sesuai kolom di database lu
+        ]);
+
+        $customer = Customer::create($request->all());
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Pelanggan baru berhasil ditambahkan!',
+            'data' => $customer
+        ]);
+    }
+
+    // 3. READ: Menampilkan detail satu pelanggan spesifik
+    public function show($id)
+    {
+        $customer = Customer::findOrFail($id);
+        
+        return response()->json([
+            'status' => 'success',
+            'data' => $customer
+        ]);
+    }
+
+    // 4. UPDATE: Mengubah data pelanggan yang sudah ada
+    public function update(Request $request, $id)
+    {
+        $customer = Customer::findOrFail($id);
+        $customer->update($request->all());
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data pelanggan berhasil diperbarui!',
+            'data' => $customer
+        ]);
+    }
+
+    // 5. DELETE: Menghapus data pelanggan
+    public function destroy($id)
+    {
+        $customer = Customer::findOrFail($id);
+        $customer->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data pelanggan berhasil dihapus!'
+        ]);
+    }
+}
