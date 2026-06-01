@@ -22,6 +22,7 @@ class Dashboard extends BaseDashboard
 
     public function getWidgets(): array
     {
+        /** @var \App\Models\User|null $user */
         $user = auth()->user();
 
         if ($user?->hasRole('sales')) {
@@ -68,7 +69,7 @@ class Dashboard extends BaseDashboard
                 \App\Filament\Widgets\RecentActivitiesWidget::class,
             ];
         }
-        
+
         return [
             \App\Filament\Widgets\WelcomeWidget::class,
             \App\Filament\Widgets\CompanyPerformanceWidget::class,
