@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'mfa.verified' => \App\Http\Middleware\EnsureMfaIsVerified::class,
+            'api.logger' => \App\Http\Middleware\ApiLoggerMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
