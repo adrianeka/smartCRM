@@ -22,6 +22,7 @@ class Dashboard extends BaseDashboard
 
     public function getWidgets(): array
     {
+        /** @var \App\Models\User|null $user */
         $user = auth()->user();
 
         if ($user?->hasRole(['sales', 'Sales'])) {
@@ -59,6 +60,7 @@ class Dashboard extends BaseDashboard
         if ($user?->hasRole(['manager', 'Manager/Analyst'])) {
             return [
                 \App\Filament\Widgets\WelcomeWidget::class,
+                \App\Filament\Widgets\WebhookStats::class,
                 \App\Filament\Widgets\CompanyPerformanceWidget::class,
                 \App\Filament\Widgets\RevenueForecastChart::class,
                 \App\Filament\Widgets\CampaignPerformanceChart::class,
@@ -68,9 +70,10 @@ class Dashboard extends BaseDashboard
                 \App\Filament\Widgets\RecentActivitiesWidget::class,
             ];
         }
-        
+
         return [
             \App\Filament\Widgets\WelcomeWidget::class,
+            \App\Filament\Widgets\WebhookStats::class,
             \App\Filament\Widgets\CompanyPerformanceWidget::class,
             \App\Filament\Widgets\RevenueForecastChart::class,
             \App\Filament\Widgets\SalesPipelineWidget::class,
