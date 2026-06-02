@@ -23,30 +23,42 @@
             <div x-data="{
                     code: ['', '', '', '', '', ''],
                     handleInput(e, index) {
-                        const val = e.target.value;
-                        if (val && index < 5) {
-                            this.$refs['input' + (index + 1)].focus();
+                        const val = e.target.value.replace(/[^0-9]/g, '');
+                        this.code[index] = val.slice(-1); 
+                        e.target.value = this.code[index];
+                        
+                        if (this.code[index] && index < 5) {
+                            setTimeout(() => {
+                                const inputs = document.querySelectorAll('.otp-input');
+                                if (inputs[index + 1]) inputs[index + 1].focus();
+                            }, 10);
                         }
                     },
                     handleKeydown(e, index) {
-                        if (e.key === 'Backspace' && !this.code[index] && index > 0) {
-                            this.$refs['input' + (index - 1)].focus();
+                        if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                            setTimeout(() => {
+                                const inputs = document.querySelectorAll('.otp-input');
+                                if (inputs[index - 1]) inputs[index - 1].focus();
+                            }, 10);
                         }
                     },
                     handlePaste(e) {
-                        const paste = (e.clipboardData || window.clipboardData).getData('text').replace(/\s/g, '').slice(0, 6);
+                        const paste = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '').slice(0, 6);
                         if (paste) {
                             for(let i = 0; i < paste.length; i++) {
                                 this.code[i] = paste[i];
                             }
                             const focusIndex = paste.length < 6 ? paste.length : 5;
-                            setTimeout(() => this.$refs['input' + focusIndex].focus(), 10);
+                            setTimeout(() => {
+                                const inputs = document.querySelectorAll('.otp-input');
+                                if (inputs[focusIndex]) inputs[focusIndex].focus();
+                            }, 10);
                         }
                     }
                 }" class="flex justify-center gap-3 mt-2">
 
                 <template x-for="(digit, index) in code" :key="index">
-                    <input :x-ref="'input' + index" type="text" inputmode="numeric" maxlength="1"
+                    <input type="text" inputmode="numeric" maxlength="1"
                         class="otp-input"
                         x-model="code[index]"
                         @input="handleInput($event, index)"

@@ -24,7 +24,7 @@ class Dashboard extends BaseDashboard
     {
         $user = auth()->user();
 
-        if ($user?->hasRole('sales')) {
+        if ($user?->hasRole(['sales', 'Sales'])) {
             return [
                 \App\Filament\Widgets\WelcomeWidget::class,
                 \App\Filament\Widgets\SalesSummaryWidget::class,
@@ -36,7 +36,7 @@ class Dashboard extends BaseDashboard
             ];
         }
 
-        if ($user?->hasRole('marketing')) {
+        if ($user?->hasRole(['marketing', 'Marketing'])) {
             return [
                 \App\Filament\Widgets\WelcomeWidget::class,
                 \App\Filament\Widgets\MarketingStatsWidget::class,
@@ -46,7 +46,7 @@ class Dashboard extends BaseDashboard
             ];
         }
 
-        if ($user?->hasRole('support')) {
+        if ($user?->hasRole(['support', 'Support'])) {
             return [
                 \App\Filament\Widgets\WelcomeWidget::class,
                 \App\Filament\Widgets\SupportStatsWidget::class,
@@ -56,7 +56,7 @@ class Dashboard extends BaseDashboard
             ];
         }
 
-        if ($user?->hasRole('manager')) {
+        if ($user?->hasRole(['manager', 'Manager/Analyst'])) {
             return [
                 \App\Filament\Widgets\WelcomeWidget::class,
                 \App\Filament\Widgets\CompanyPerformanceWidget::class,

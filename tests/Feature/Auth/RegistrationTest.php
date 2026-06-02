@@ -7,6 +7,8 @@ test('registration screen can be rendered', function () {
 });
 
 test('new users can register', function () {
+    \Spatie\Permission\Models\Role::create(['name' => 'Guest', 'guard_name' => 'web']);
+
     $response = $this->post('/register', [
         'name' => 'Test User',
         'email' => 'test@example.com',
@@ -15,5 +17,5 @@ test('new users can register', function () {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    $response->assertRedirect(route('mfa.challenge', absolute: false));
 });

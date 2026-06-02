@@ -49,9 +49,10 @@ class SocialiteController extends Controller
                 'password' => null,
                 'provider_name' => $provider,
                 'provider_id' => $socialUser->getId(),
-                'role' => 'sales',
                 'email_verified_at' => now(),
             ]);
+
+            $user->assignRole('Guest');
         }
 
         Auth::login($user);

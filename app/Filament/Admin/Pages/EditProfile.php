@@ -25,4 +25,12 @@ class EditProfile extends BaseEditProfile
                 $this->getPasswordConfirmationFormComponent(),
             ]);
     }
+
+    protected function getCancelFormAction(): \Filament\Actions\Action
+    {
+        return parent::getCancelFormAction()
+            ->label('Kembali')
+            ->icon('heroicon-m-arrow-left')
+            ->color('gray');
+    }
 }

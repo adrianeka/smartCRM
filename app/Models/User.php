@@ -52,6 +52,20 @@ class User extends Authenticatable implements HasAvatar, FilamentUser
         return $this->roles()->exists();
     }
 
+    public function getRoleAttribute(): string
+    {
+        $role = $this->roles->first()?->name;
+
+        return match ($role) {
+            'super_admin' => 'super_admin',
+            'Sales' => 'sales',
+            'Marketing' => 'marketing',
+            'Support' => 'support',
+            'Manager/Analyst' => 'manager',
+            default => strtolower($role ?? 'sales'),
+        };
+    }
+
     /**
      * Get the attributes that should be cast.
      *
