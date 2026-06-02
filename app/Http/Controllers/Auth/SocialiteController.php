@@ -52,7 +52,7 @@ class SocialiteController extends Controller
                 'email_verified_at' => now(),
             ]);
 
-            $user->assignRole('Guest');
+
         }
 
         Auth::login($user);
