@@ -11,7 +11,7 @@ class CampaignPerformanceChart extends ChartWidget
     
     public function getColumnSpan(): int | string | array
     {
-        return auth()->user()?->hasRole('marketing') ? 4 : 3;
+        return auth()->user()?->hasRole('Marketing') ? 4 : 3;
     }
 
     // Customize options to make it look premium

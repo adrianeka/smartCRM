@@ -11,7 +11,7 @@ class SalesPipelineWidget extends Widget
 
     public function getColumnSpan(): int | string | array
     {
-        return auth()->user()?->hasRole('sales') ? 4 : 3;
+        return auth()->user()?->hasRole('Sales') ? 4 : 3;
     }
 
     protected function getViewData(): array
