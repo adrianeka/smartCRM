@@ -9,10 +9,6 @@ class CampaignPerformanceChart extends ChartWidget
     protected ?string $heading = 'Campaign Performance (Clicks vs Conversions)';
     protected static ?int $sort = 6;
     
-    public static function canView(): bool
-    {
-        return !auth()->user()?->hasRole('Guest');
-    }
     
     public function getColumnSpan(): int | string | array
     {

@@ -9,10 +9,6 @@ class SalesPipelineWidget extends Widget
     protected string $view = 'filament.widgets.sales-pipeline-widget';
     protected static ?int $sort = 5;
 
-    public static function canView(): bool
-    {
-        return !auth()->user()?->hasRole('Guest');
-    }
 
     public function getColumnSpan(): int | string | array
     {

@@ -22,7 +22,7 @@ class RoleSeeder extends Seeder
         $marketing = Role::firstOrCreate(['name' => 'Marketing', 'guard_name' => 'web']);
         $support = Role::firstOrCreate(['name' => 'Support', 'guard_name' => 'web']);
         $manager = Role::firstOrCreate(['name' => 'Manager/Analyst', 'guard_name' => 'web']);
-        $guest = Role::firstOrCreate(['name' => 'Guest', 'guard_name' => 'web']);
+
 
         // Assign basic permissions to each role
         // Sales: can view and create users

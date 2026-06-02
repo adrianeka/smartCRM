@@ -20,15 +20,6 @@ class Register extends BaseRegister
         return parent::getPasswordConfirmationFormComponent()
             ->helperText(view('filament.components.password-criteria'));
     }
-    protected function handleRegistration(array $data): Model
-    {
-        $user = $this->getUserModel()::create($data);
-        
-        // Assign Guest role to newly registered users
-        $user->assignRole('Guest');
-        
-        return $user;
-    }
 
     public function register(): ?RegistrationResponse
     {
