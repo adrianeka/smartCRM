@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'mfa.verified' => \App\Http\Middleware\EnsureMfaIsVerified::class,
         ]);
+        $middleware->redirectTo('/admin/login');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

@@ -14,7 +14,7 @@ class MfaOtpController extends Controller
     public function showChallenge(Request $request)
     {
         if ($request->session()->get('mfa_verified') === true) {
-            return redirect()->intended(route('dashboard', absolute: false));
+            return redirect()->intended(route('filament.admin.pages.dashboard'));
         }
 
         return view('auth.mfa-challenge');
@@ -43,7 +43,7 @@ class MfaOtpController extends Controller
         $request->session()->put('mfa_verified', true);
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('filament.admin.pages.dashboard'));
     }
 
     public function sendOtp(Request $request)

@@ -16,7 +16,7 @@ class EnsureMfaIsVerified
     public function handle(Request $request, Closure $next): Response
     {
         if ($request->user() && $request->session()->get('mfa_verified') !== true) {
-            return redirect()->route('mfa.challenge');
+            return redirect()->route('filament.admin.pages.auth.mfa-challenge');
         }
 
         return $next($request);

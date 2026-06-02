@@ -25,6 +25,7 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->default()
             ->id('admin')
             ->path('admin')
             ->colors([
@@ -34,6 +35,9 @@ class AdminPanelProvider extends PanelProvider
                 FilamentShieldPlugin::make(),
             ])
             ->profile(\App\Filament\Admin\Pages\EditProfile::class)
+            ->login(\App\Filament\Admin\Pages\Auth\Login::class)
+            ->registration(\App\Filament\Admin\Pages\Auth\Register::class)
+            ->passwordReset(resetAction: \App\Filament\Admin\Pages\Auth\ResetPassword::class)
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\Filament\Admin\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\Filament\Admin\Pages')
             ->pages([
@@ -58,7 +62,11 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
                 'mfa.verified',
-            ]);
+            ])
+            ->renderHook(
+                \Filament\View\PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
+                fn (): string => \Illuminate\Support\Facades\Blade::render('@include("filament.components.google-login-button")'),
+            );
     }
 }
 

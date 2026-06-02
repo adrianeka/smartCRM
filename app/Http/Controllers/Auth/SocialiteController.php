@@ -28,7 +28,7 @@ class SocialiteController extends Controller
         try {
             $socialUser = Socialite::driver($provider)->user();
         } catch (\Exception $e) {
-            return redirect('/login')->withErrors(['email' => 'Failed to authenticate with Google.']);
+            return redirect('/admin/login')->withErrors(['email' => 'Failed to authenticate with Google.']);
         }
 
         $user = User::where('email', $socialUser->getEmail())->first();
@@ -61,6 +61,6 @@ class SocialiteController extends Controller
         app(MfaOtpController::class)->generateAndSendOtp($user);
         $request->session()->put('mfa_verified', false);
 
-        return redirect()->route('mfa.challenge');
+        return redirect()->route('filament.admin.pages.auth.mfa-challenge');
     }
 }
