@@ -28,6 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->brandName('SmartCRM')
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')
             ->colors([
