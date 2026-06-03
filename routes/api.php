@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\Api\WebhookController;
 use App\Http\Controllers\Api\AuthController;
 
@@ -33,6 +34,8 @@ Route::prefix('v1')->group(function () {
         });
     });
 
-    // Webhook
+    Route::apiResource('customers', CustomerController::class);
+
+
     Route::post('/webhook/receive', [WebhookController::class, 'receive']);
 });

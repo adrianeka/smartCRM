@@ -1,0 +1,137 @@
+import defaultTheme from 'tailwindcss/defaultTheme';
+import forms from '@tailwindcss/forms';
+
+/** @type {import('tailwindcss').Config} */
+export default {
+    content: [
+        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+        './storage/framework/views/*.php',
+        './resources/views/**/*.blade.php',
+    ],
+
+    theme: {
+        extend: {
+            fontFamily: {
+                sans: ['Inter', ...defaultTheme.fontFamily.sans],
+            },
+            colors: {
+                // Smart-Edu Primary (Navy → Sky Blue)
+                primary: {
+                    900: '#00122A',
+                    800: '#001D3A',
+                    700: '#004C8A',
+                    600: '#0060B3',
+                    500: '#0072E3',
+                    400: '#1C8BF1',
+                    300: '#7AB8F5',
+                    250: '#93C9F8',
+                    200: '#A8D4FA',
+                    150: '#C4E3FC',
+                    100: '#D6ECFD',
+                    50: '#EBF5FE',
+                    0: '#F5FAFF',
+                },
+                // Smart-Edu Secondary (Olive → Gold)
+                secondary: {
+                    900: '#3F5200',
+                    800: '#4A6100',
+                    700: '#6B8B00',
+                    600: '#8DB200',
+                    500: '#A8D200',
+                    400: '#BFDF33',
+                    300: '#D0E766',
+                    200: '#E0EF99',
+                    150: '#E8F3B3',
+                    100: '#EFF7CC',
+                    50: '#F7FBE6',
+                    0: '#FBFDF2',
+                },
+                // Smart-Edu Accent Colors
+                error: {
+                    900: '#7A1B0E',
+                    800: '#9E1F14',
+                    700: '#BF2315',
+                    600: '#E0321E',
+                    500: '#FF5630',
+                    400: '#FF7B5B',
+                    300: '#FF9B82',
+                    200: '#FFBDAD',
+                    150: '#FFCFC4',
+                    100: '#FFE0D9',
+                    50: '#FFF0EC',
+                    0: '#FFF7F5',
+                },
+                warning: {
+                    900: '#664400',
+                    800: '#8A5C00',
+                    700: '#AD7300',
+                    600: '#D18A00',
+                    500: '#FFAB00',
+                    400: '#FFBE33',
+                    300: '#FFD166',
+                    200: '#FFE399',
+                    150: '#FFECB3',
+                    100: '#FFF4CC',
+                    50: '#FFF9E6',
+                    0: '#FFFCF2',
+                },
+                success: {
+                    900: '#0D3B1F',
+                    800: '#165A31',
+                    700: '#1F7A44',
+                    600: '#289957',
+                    500: '#36B37E',
+                    400: '#57C798',
+                    300: '#79D7B1',
+                    200: '#ABE7CB',
+                    150: '#C4EEDB',
+                    100: '#D6F4E6',
+                    50: '#EBF9F3',
+                    0: '#F5FDF9',
+                },
+                info: {
+                    900: '#0D2B66',
+                    800: '#143D8A',
+                    700: '#1B50AD',
+                    600: '#2163D1',
+                    500: '#2684FF',
+                    400: '#4D9DFF',
+                    300: '#80B8FF',
+                    200: '#B3D5FF',
+                    150: '#CCE2FF',
+                    100: '#E0EDFF',
+                    50: '#F0F7FF',
+                    0: '#F7FBFF',
+                },
+                // Smart-Edu Neutral
+                neutral: {
+                    1000: '#000000',
+                    900: '#161B21',
+                    800: '#2D3741',
+                    700: '#455462',
+                    600: '#5C7182',
+                    500: '#748DA3',
+                    400: '#8DA4B5',
+                    300: '#A6BAC8',
+                    200: '#BFD1DA',
+                    100: '#D7E4EC',
+                    50: '#F2F6FA',
+                    0: '#FFFFFF',
+                },
+            },
+            borderRadius: {
+                'xl': '12px',
+                '2xl': '16px',
+                '3xl': '24px',
+            },
+            boxShadow: {
+                'card': '0 2px 8px rgba(0, 0, 0, 0.08)',
+                'card-hover': '0 8px 24px rgba(0, 0, 0, 0.12)',
+                'elevated': '0 4px 16px rgba(0, 0, 0, 0.1)',
+                'modal': '0 16px 48px rgba(0, 0, 0, 0.15)',
+            },
+        },
+    },
+
+    plugins: [forms],
+};
