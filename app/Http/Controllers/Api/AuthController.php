@@ -41,4 +41,48 @@ class AuthController extends Controller
             'user' => $user
         ]);
     }
+
+    public function register(Request $request)
+        {
+            $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'email', 'unique:users,email'],
+                'password' => ['required', 'min:8'],
+            ]);
+
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'role' => 'user',
+            ]);
+
+            $token = $user
+                ->createToken('mobile-token')
+                ->plainTextToken;
+
+            return response()->json([
+                'message' => 'Register success',
+                'token' => $token,
+                'user' => $user,
+            ], 201);
+        }
+
+        public function logout(Request $request)
+        {
+            /** @var \Laravel\Sanctum\PersonalAccessToken $token */
+            $token = $request->user()->currentAccessToken();
+            $token->delete();
+
+            return response()->json([
+                'message' => 'Logout success'
+            ]);
+        }
+
+        public function me(Request $request)
+            {
+                return response()->json([
+                    'user' => $request->user()
+                ]);
+            }
 }
