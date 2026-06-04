@@ -32,6 +32,7 @@ class UserForm
                             ->label('Foto Profil')
                             ->image()
                             ->avatar()
+                            ->disk('public')
                             ->directory('avatars')
                             ->maxSize(2048)
                             ->nullable(),
