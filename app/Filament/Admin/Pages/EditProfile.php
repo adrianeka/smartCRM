@@ -3,9 +3,13 @@
 namespace App\Filament\Admin\Pages;
 
 use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Forms\Components\FileUpload;
 use Filament\Auth\Pages\EditProfile as BaseEditProfile;
-use App\Filament\Admin\Widgets\ActiveSessionsWidget;
+use Illuminate\Support\Arr;
+use Illuminate\Support\HtmlString;
 
 class EditProfile extends BaseEditProfile
 {
@@ -28,16 +32,27 @@ class EditProfile extends BaseEditProfile
             ]);
     }
 
-    public function getFooterWidgets(): array
+    public function content(Schema $schema): Schema
     {
-        return [
-            ActiveSessionsWidget::class,
-        ];
+        return $schema
+            ->components([
+                $this->getFormContentComponent(),
+                ...Arr::wrap($this->getMultiFactorAuthenticationContentComponent()),
+                $this->getSessionManagementComponent(),
+            ]);
     }
 
-    public function getFooterWidgetsColumns(): int|array
+    protected function getSessionManagementComponent(): Component
     {
-        return 1;
+        return Section::make('Manajemen Sesi')
+            ->description('Kelola sesi aktif dan perangkat yang terhubung ke akun Anda.')
+            ->icon('heroicon-o-computer-desktop')
+            ->schema([
+                \Filament\Forms\Components\ViewField::make('active_sessions')
+                    ->hiddenLabel()
+                    ->view('filament.components.active-sessions'),
+            ])
+            ->collapsible();
     }
 
     protected function getCancelFormAction(): \Filament\Actions\Action
@@ -48,4 +63,3 @@ class EditProfile extends BaseEditProfile
             ->color('gray');
     }
 }
-
