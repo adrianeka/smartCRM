@@ -33,7 +33,7 @@ class EditProfile extends BaseEditProfile
                     ->icon('heroicon-o-computer-desktop')
                     ->schema([
                         Placeholder::make('active_sessions')
-                            ->label('')
+                            ->hiddenLabel()
                             ->content(fn (): HtmlString => new HtmlString(
                                 view('filament.components.active-sessions')->render()
                             )),

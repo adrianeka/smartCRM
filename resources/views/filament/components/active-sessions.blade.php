@@ -52,9 +52,9 @@
                 {{-- Device Icon --}}
                 <div class="flex-shrink-0 rounded-lg bg-gray-100 p-2.5 dark:bg-white/10">
                     @if ($session->is_mobile)
-                        <x-heroicon-o-device-phone-mobile class="h-6 w-6 text-gray-500 dark:text-gray-400" />
+                        <x-heroicon-o-device-phone-mobile style="width: 1.5rem; height: 1.5rem;" class="text-gray-500 dark:text-gray-400" />
                     @else
-                        <x-heroicon-o-computer-desktop class="h-6 w-6 text-gray-500 dark:text-gray-400" />
+                        <x-heroicon-o-computer-desktop style="width: 1.5rem; height: 1.5rem;" class="text-gray-500 dark:text-gray-400" />
                     @endif
                 </div>
 
@@ -91,7 +91,7 @@
             </div>
         @empty
             <div class="rounded-xl border border-gray-200 bg-white p-6 text-center dark:border-white/10 dark:bg-white/5">
-                <x-heroicon-o-shield-check class="mx-auto h-8 w-8 text-gray-400" />
+                <x-heroicon-o-shield-check style="width: 2rem; height: 2rem;" class="mx-auto text-gray-400" />
                 <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Tidak ada sesi aktif yang ditemukan.</p>
             </div>
         @endforelse
@@ -105,7 +105,7 @@
                 x-on:click="showModal = true"
                 class="fi-btn fi-btn-size-md relative inline-flex items-center justify-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-semibold shadow-sm outline-none transition-all duration-75 focus-visible:ring-2 bg-danger-600 text-white hover:bg-danger-500 focus-visible:ring-danger-500/50 dark:bg-danger-500 dark:hover:bg-danger-400"
             >
-                <x-heroicon-m-arrow-right-start-on-rectangle class="h-5 w-5" />
+                <x-heroicon-m-arrow-right-start-on-rectangle style="width: 1.25rem; height: 1.25rem;" class="text-white" />
                 <span>Keluarkan {{ $otherSessionsCount }} Perangkat Lain</span>
             </button>
 
@@ -136,7 +136,7 @@
                 >
                     <div class="flex items-center gap-3 mb-4">
                         <div class="flex-shrink-0 rounded-full bg-danger-100 p-2 dark:bg-danger-500/20">
-                            <x-heroicon-o-exclamation-triangle class="h-5 w-5 text-danger-600 dark:text-danger-400" />
+                            <x-heroicon-o-exclamation-triangle style="width: 1.25rem; height: 1.25rem;" class="text-danger-600 dark:text-danger-400" />
                         </div>
                         <h3 class="text-lg font-semibold text-gray-950 dark:text-white">
                             Konfirmasi Keluarkan Perangkat Lain
@@ -189,7 +189,7 @@
         </div>
     @else
         <div class="flex items-center gap-2 rounded-xl border border-green-200 bg-green-50 p-3 dark:border-green-500/20 dark:bg-green-500/10">
-            <x-heroicon-o-shield-check class="h-5 w-5 text-green-600 dark:text-green-400" />
+            <x-heroicon-o-shield-check style="width: 1.25rem; height: 1.25rem;" class="text-green-600 dark:text-green-400" />
             <p class="text-sm font-medium text-green-700 dark:text-green-400">
                 Tidak ada sesi aktif lainnya. Akun Anda aman.
             </p>
@@ -207,7 +207,7 @@
             x-transition:leave-end="opacity-0"
             class="flex items-center gap-2 rounded-xl border border-green-200 bg-green-50 p-3 dark:border-green-500/20 dark:bg-green-500/10"
         >
-            <x-heroicon-o-check-circle class="h-5 w-5 text-green-600 dark:text-green-400" />
+            <x-heroicon-o-check-circle style="width: 1.25rem; height: 1.25rem;" class="text-green-600 dark:text-green-400" />
             <p class="text-sm font-medium text-green-700 dark:text-green-400">
                 {{ session('status') }}
             </p>
