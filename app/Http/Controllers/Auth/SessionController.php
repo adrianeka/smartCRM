@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SessionController extends Controller
 {
@@ -16,6 +17,12 @@ class SessionController extends Controller
 
         Auth::logoutOtherDevices($request->password);
 
-        return back()->with('status', 'Logged out of other devices successfully.');
+        // Delete other sessions from the database
+        DB::table('sessions')
+            ->where('user_id', auth()->id())
+            ->where('id', '!=', session()->getId())
+            ->delete();
+
+        return back()->with('status', 'Berhasil mengeluarkan semua perangkat lain.');
     }
 }
