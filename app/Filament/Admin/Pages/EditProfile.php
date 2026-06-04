@@ -32,11 +32,9 @@ class EditProfile extends BaseEditProfile
                     ->description('Kelola sesi aktif dan perangkat yang terhubung ke akun Anda.')
                     ->icon('heroicon-o-computer-desktop')
                     ->schema([
-                        Placeholder::make('active_sessions')
+                        \Filament\Forms\Components\ViewField::make('active_sessions')
                             ->hiddenLabel()
-                            ->content(fn (): HtmlString => new HtmlString(
-                                view('filament.components.active-sessions')->render()
-                            )),
+                            ->view('filament.components.active-sessions'),
                     ])
                     ->collapsible(),
             ]);
