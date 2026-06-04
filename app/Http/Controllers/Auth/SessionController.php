@@ -15,11 +15,26 @@ class SessionController extends Controller
             'password' => ['required', 'current_password'],
         ]);
 
+        $user = auth()->user();
+
         Auth::logoutOtherDevices($request->password);
+
+        // Update the session's password hashes to match the new database hash.
+        // This prevents the AuthenticateSession middleware from logging out the current user.
+        $passwordHash = $user->getAuthPassword();
+        try {
+            $passwordHash = Auth::guard('web')->hashPasswordForCookie($passwordHash);
+        } catch (\BadMethodCallException $e) {
+        }
+
+        $request->session()->put([
+            'password_hash_web' => $passwordHash,
+            'password_hash_' . Auth::guard('web')->getName() => $user->getAuthPassword(),
+        ]);
 
         // Delete other sessions from the database
         DB::table('sessions')
-            ->where('user_id', auth()->id())
+            ->where('user_id', $user->id)
             ->where('id', '!=', session()->getId())
             ->delete();
 

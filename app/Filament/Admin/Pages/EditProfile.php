@@ -32,6 +32,13 @@ class EditProfile extends BaseEditProfile
             ]);
     }
 
+    public function getFormContentComponent(): Component
+    {
+        return \Filament\Schemas\Components\Form::make([\Filament\Schemas\Components\EmbeddedSchema::make('form')])
+            ->id('form')
+            ->livewireSubmitHandler('save');
+    }
+
     public function content(Schema $schema): Schema
     {
         return $schema
@@ -39,6 +46,11 @@ class EditProfile extends BaseEditProfile
                 $this->getFormContentComponent(),
                 ...Arr::wrap($this->getMultiFactorAuthenticationContentComponent()),
                 $this->getSessionManagementComponent(),
+                \Filament\Schemas\Components\Actions::make($this->getFormActions())
+                    ->alignment($this->getFormActionsAlignment())
+                    ->fullWidth($this->hasFullWidthFormActions())
+                    ->sticky((! static::isSimple()) && $this->areFormActionsSticky())
+                    ->key('form-actions'),
             ]);
     }
 
