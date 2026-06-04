@@ -1,6 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
+// Handle GET requests to admin/logout (e.g. direct browser navigation)
+Route::get('admin/logout', function () {
+    Auth::guard('web')->logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+
+    return redirect('/');
+})->name('filament.admin.auth.logout.get');
 
 // MFA OTP Routes
 Route::middleware('auth')->group(function () {

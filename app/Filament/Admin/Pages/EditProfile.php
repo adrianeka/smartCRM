@@ -18,6 +18,7 @@ class EditProfile extends BaseEditProfile
                     ->label('Foto Profil (Avatar)')
                     ->image()
                     ->avatar()
+                    ->disk('public')
                     ->directory('avatars')
                     ->maxSize(2048)
                     ->nullable(),

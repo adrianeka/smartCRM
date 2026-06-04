@@ -38,6 +38,18 @@ class AdminPanelProvider extends PanelProvider
                 FilamentShieldPlugin::make(),
             ])
             ->profile(\App\Filament\Admin\Pages\EditProfile::class)
+            ->userMenuItems([
+                'profile' => \Filament\Navigation\MenuItem::make()
+                    ->label('Profile')
+                    ->icon(function (): ?string {
+                        $user = filament()->auth()->user();
+                        if ($user && $user->avatar_url) {
+                            return null;
+                        }
+                        return 'heroicon-o-user-circle';
+                    })
+                    ->url(fn (): string => \App\Filament\Admin\Pages\EditProfile::getUrl()),
+            ])
             ->login(\App\Filament\Admin\Pages\Auth\Login::class)
             ->registration(\App\Filament\Admin\Pages\Auth\Register::class)
             ->passwordReset(resetAction: \App\Filament\Admin\Pages\Auth\ResetPassword::class)

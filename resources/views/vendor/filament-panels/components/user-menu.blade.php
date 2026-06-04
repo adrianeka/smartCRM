@@ -86,9 +86,21 @@
 
         {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::USER_MENU_PROFILE_BEFORE) }}
 
-        <x-filament::dropdown.header :color="$itemColor" :icon="$itemIcon">
-            {{ $item->getLabel() }}
-        </x-filament::dropdown.header>
+        @php
+            $avatarUrl = filament()->getUserAvatarUrl($user);
+            $hasCustomAvatar = $user->avatar_url ?? false;
+        @endphp
+
+        @if ($hasCustomAvatar && $avatarUrl)
+            <div class="flex items-center gap-2 p-3">
+                <img src="{{ $avatarUrl }}" alt="{{ $item->getLabel() }}" class="w-8 h-8 rounded-full object-cover" />
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-200">{{ $item->getLabel() }}</span>
+            </div>
+        @else
+            <x-filament::dropdown.header :color="$itemColor" :icon="$itemIcon">
+                {{ $item->getLabel() }}
+            </x-filament::dropdown.header>
+        @endif
 
         {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::USER_MENU_PROFILE_AFTER) }}
     @endif
