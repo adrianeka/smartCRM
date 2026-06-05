@@ -25,6 +25,7 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->default()
             ->id('admin')
             ->path('admin')
             ->databaseNotifications()
@@ -33,7 +34,7 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             ->plugins([
-                FilamentShieldPlugin::make(),
+                FilamentShieldPlugin::make(),  // ✅ hanya satu ->plugins(), isinya objek Plugin yang valid
             ])
             ->profile(\App\Filament\Admin\Pages\EditProfile::class)
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\Filament\Admin\Resources')
@@ -65,4 +66,3 @@ class AdminPanelProvider extends PanelProvider
             ]);
     }
 }
-
