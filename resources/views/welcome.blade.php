@@ -45,6 +45,14 @@
             33% { transform: translate(-25px, 20px) scale(0.95); }
             66% { transform: translate(20px, -10px) scale(1.05); }
         }
+        .hero-text-container {
+            transform: translateY(-40px);
+        }
+        @media (min-width: 1024px) {
+            .hero-text-container {
+                transform: translateY(-90px);
+            }
+        }
     </style>
 </head>
 <body class="antialiased bg-white text-neutral-800 min-h-screen flex flex-col">
@@ -80,33 +88,22 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div class="grid lg:grid-cols-2 gap-12 items-center min-h-[calc(100vh-4rem)] py-12">
                 <!-- Left: Text Content -->
-                <div class="space-y-8">
+                <div class="space-y-8 hero-text-container">
                     <div>
                         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-neutral-900 leading-tight tracking-tight">
                             Selamat Datang di
                             <span class="text-primary-500">Smart CRM</span>
                         </h1>
-                        <p class="mt-6 text-lg text-neutral-500 leading-relaxed max-w-lg">
-                            Platform CRM modern yang membantu Anda mengelola hubungan pelanggan dengan cerdas, efisien, dan terorganisir.
-                        </p>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        @auth
+                    @auth
+                        <div class="flex flex-col sm:flex-row gap-4">
                             <a href="{{ url('/dashboard') }}" class="btn-primary inline-flex items-center justify-center w-auto px-8 py-3.5">
                                 Masuk ke Dashboard
                                 <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
                             </a>
-                        @else
-                            <a href="{{ route('register') }}" class="btn-primary inline-flex items-center justify-center w-auto px-8 py-3.5">
-                                Mulai Sekarang
-                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
-                            </a>
-                            <a href="{{ route('login') }}" class="btn-secondary inline-flex items-center justify-center w-auto px-8 py-3.5">
-                                Masuk
-                            </a>
-                        @endauth
-                    </div>
+                        </div>
+                    @endauth
                 </div>
 
                 <!-- Right: Illustration / Decorative Element -->
