@@ -14,6 +14,15 @@ use OpenApi\Attributes as OA;
     description: "Local Development Server"
 )]
 #[OA\PathItem(path: "/api")]
+
+#[OA\SecurityScheme(
+    securityScheme: "sanctum",
+    type: "http",
+    scheme: "bearer",
+    bearerFormat: "JWT"
+)]
+
+
 class OpenApiSpec
 {
 }

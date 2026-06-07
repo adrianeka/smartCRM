@@ -4,20 +4,54 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Customer; // Mengambil data dari Model Customer
+use OpenApi\Attributes as OA;
 
 class CustomerController extends Controller
 {
     // 1. READ: Menampilkan semua data pelanggan
+
+#[OA\Get(
+    path: "/api/v1/customers",
+    summary: "Get All Customers",
+    tags: ["Customer"],
+    security: [["sanctum" => []]],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: "List of customers"
+        )
+    ]
+)]
     public function index()
     {
         $customers = Customer::all();
-        
+
         // Kita return pakai JSON dulu biar gampang dites
         return response()->json([
             'status' => 'success',
             'data' => $customers
         ]);
     }
+
+    #[OA\Post(
+    path: "/api/v1/customers",
+    summary: "Create Customer",
+    tags: ["Customer"],
+    security: [["sanctum" => []]],
+    requestBody: new OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: "name", type: "string", example: "John Doe"),
+                new OA\Property(property: "email", type: "string", example: "john@example.com"),
+                new OA\Property(property: "phone", type: "string", example: "08123456789")
+            ]
+        )
+    ),
+    responses: [
+        new OA\Response(response: 201, description: "Customer created")
+    ]
+)]
 
     // 2. CREATE: Menyimpan data pelanggan baru ke database
     public function store(Request $request)
@@ -41,16 +75,71 @@ class CustomerController extends Controller
     ]);
     }
 
+
+    #[OA\Get(
+    path: "/api/v1/customers/{id}",
+    summary: "Get Customer Detail",
+    tags: ["Customer"],
+    security: [["sanctum" => []]],
+    parameters: [
+        new OA\Parameter(
+            name: "id",
+            in: "path",
+            required: true,
+            schema: new OA\Schema(type: "integer")
+        )
+    ],
+responses: [
+    new OA\Response(
+        response: 200,
+        description: "List of customers",
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: "status", type: "string", example: "success"),
+                new OA\Property(
+                    property: "data",
+                    type: "array",
+                    items: new OA\Items(ref: "#/components/schemas/Customer")
+                )
+            ]
+        )
+    )
+]
+)]
+
+
     // 3. READ: Menampilkan detail satu pelanggan spesifik
     public function show($id)
     {
         $customer = Customer::findOrFail($id);
-        
+
         return response()->json([
             'status' => 'success',
             'data' => $customer
         ]);
     }
+
+    #[OA\Put(
+    path: "/api/v1/customers/{id}",
+    summary: "Update Customer",
+    tags: ["Customer"],
+    security: [["sanctum" => []]],
+    parameters: [
+        new OA\Parameter(
+            name: "id",
+            in: "path",
+            required: true,
+            schema: new OA\Schema(type: "integer")
+        )
+    ],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: "Customer updated"
+        )
+    ]
+)]
+
 
     // 4. UPDATE: Mengubah data pelanggan yang sudah ada
     public function update(Request $request, $id)
@@ -64,6 +153,27 @@ class CustomerController extends Controller
             'data' => $customer
         ]);
     }
+
+    #[OA\Delete(
+    path: "/api/v1/customers/{id}",
+    summary: "Delete Customer",
+    tags: ["Customer"],
+    security: [["sanctum" => []]],
+    parameters: [
+        new OA\Parameter(
+            name: "id",
+            in: "path",
+            required: true,
+            schema: new OA\Schema(type: "integer")
+        )
+    ],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: "Customer deleted"
+        )
+    ]
+)]
 
     // 5. DELETE: Menghapus data pelanggan
     public function destroy($id)
