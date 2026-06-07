@@ -86,6 +86,26 @@ class UsersTable
                     })
                     ->visible(fn () => auth()->user()?->hasRole('super_admin'))
                     ->hidden(fn ($record) => $record->id === auth()->id()),
+                Action::make('verifyEmail')
+                    ->label('Verifikasi Email')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->modalHeading('Verifikasi Email Pengguna')
+                    ->modalDescription(fn ($record) => "Apakah Anda yakin ingin memverifikasi email \"{$record->name}\"?")
+                    ->modalSubmitActionLabel('Ya, Verifikasi')
+                    ->action(function ($record) {
+                        $record->update([
+                            'email_verified_at' => now(),
+                        ]);
+
+                        Notification::make()
+                            ->title('Berhasil')
+                            ->body("Email \"{$record->name}\" telah diverifikasi.")
+                            ->success()
+                            ->send();
+                    })
+                    ->visible(fn ($record) => empty($record->email_verified_at)),
                 DeleteAction::make(),
             ])
             ->toolbarActions([

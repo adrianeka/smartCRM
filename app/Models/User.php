@@ -45,7 +45,7 @@ use Spatie\Activitylog\LogOptions;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-#[Fillable(['name', 'email', 'password', 'provider_name', 'provider_id', 'avatar_url'])]
+#[Fillable(['name', 'email', 'password', 'provider_name', 'provider_id', 'avatar_url', 'email_verified_at'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements HasAvatar, FilamentUser
 {
@@ -61,6 +61,7 @@ class User extends Authenticatable implements HasAvatar, FilamentUser
         'avatar_url',
         'provider_name',
         'provider_id',
+        'email_verified_at',
     ];
 
     public function getActivitylogOptions(): LogOptions
