@@ -1,68 +1,75 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
+use Illuminate\Foundation\Auth\User as AuthUser;
 use App\Models\Customer;
-use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CustomerPolicy
 {
     use HandlesAuthorization;
-
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    
+    public function viewAny(AuthUser $authUser): bool
     {
-        return $user->hasRole('Support');
+        return $authUser->can('ViewAny:Customer');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Customer $customer): bool
+    public function view(AuthUser $authUser, Customer $customer): bool
     {
-        return $user->hasRole('Support');
+        return $authUser->can('View:Customer');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function create(AuthUser $authUser): bool
     {
-        return $user->hasRole('Support');
+        return $authUser->can('Create:Customer');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Customer $customer): bool
+    public function update(AuthUser $authUser, Customer $customer): bool
     {
-        return $user->hasRole('Support');
+        return $authUser->can('Update:Customer');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Customer $customer): bool
+    public function delete(AuthUser $authUser, Customer $customer): bool
     {
-        return $user->hasRole('Support');
+        return $authUser->can('Delete:Customer');
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Customer $customer): bool
+    public function deleteAny(AuthUser $authUser): bool
     {
-        return $user->hasRole('Support');
+        return $authUser->can('DeleteAny:Customer');
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Customer $customer): bool
+    public function restore(AuthUser $authUser, Customer $customer): bool
     {
-        return $user->hasRole('Support');
+        return $authUser->can('Restore:Customer');
     }
+
+    public function forceDelete(AuthUser $authUser, Customer $customer): bool
+    {
+        return $authUser->can('ForceDelete:Customer');
+    }
+
+    public function forceDeleteAny(AuthUser $authUser): bool
+    {
+        return $authUser->can('ForceDeleteAny:Customer');
+    }
+
+    public function restoreAny(AuthUser $authUser): bool
+    {
+        return $authUser->can('RestoreAny:Customer');
+    }
+
+    public function replicate(AuthUser $authUser, Customer $customer): bool
+    {
+        return $authUser->can('Replicate:Customer');
+    }
+
+    public function reorder(AuthUser $authUser): bool
+    {
+        return $authUser->can('Reorder:Customer');
+    }
+
 }
