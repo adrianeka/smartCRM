@@ -23,31 +23,54 @@ class RoleSeeder extends Seeder
         $support = Role::firstOrCreate(['name' => 'Support', 'guard_name' => 'web']);
         $manager = Role::firstOrCreate(['name' => 'Manager/Analyst', 'guard_name' => 'web']);
 
-
-        // Assign basic permissions to each role
-        // Sales: can view and create users
+        // Assign specific permissions to each role
+        
+        // 1. Sales Permissions (Customer CRUD + Sales Widgets)
         $salesPermissions = Permission::whereIn('name', [
-            'view_shield::role',
+            'ViewAny:Customer',
+            'View:Customer',
+            'Create:Customer',
+            'Update:Customer',
+            'Delete:Customer',
+            'View:SalesPipelineWidget',
+            'View:SalesSummaryWidget',
+            'View:TopDealsWidget',
+            'View:Dashboard',
+            'View:WelcomeWidget',
         ])->get();
         $sales->syncPermissions($salesPermissions);
 
-        // Marketing: can view users
+        // 2. Marketing Permissions (Customer View/Create/Update + Marketing Widgets)
         $marketingPermissions = Permission::whereIn('name', [
-            'view_shield::role',
+            'ViewAny:Customer',
+            'View:Customer',
+            'Create:Customer',
+            'Update:Customer',
+            'View:CampaignPerformanceChart',
+            'View:MarketingStatsWidget',
+            'View:RecentCampaignsWidget',
+            'View:Dashboard',
+            'View:WelcomeWidget',
         ])->get();
         $marketing->syncPermissions($marketingPermissions);
 
-        // Support: can view users
+        // 3. Support Permissions (Customer View-only + Support/Ticket Widgets)
         $supportPermissions = Permission::whereIn('name', [
-            'view_shield::role',
+            'ViewAny:Customer',
+            'View:Customer',
+            'View:SupportStatsWidget',
+            'View:TicketsByPriorityChart',
+            'View:UrgentTicketsWidget',
+            'View:Dashboard',
+            'View:WelcomeWidget',
         ])->get();
         $support->syncPermissions($supportPermissions);
 
-        // Manager/Analyst: can view and manage users, view activity logs
-        $managerPermissions = Permission::whereIn('name', [
-            'view_shield::role',
-            'view_any_shield::role',
-        ])->get();
+        // 4. Manager/Analyst Permissions (Read-only view access to all resources and widgets for business monitoring)
+        $managerPermissions = Permission::where(function ($query) {
+            $query->where('name', 'like', 'View:%')
+                  ->orWhere('name', 'like', 'ViewAny:%');
+        })->get();
         $manager->syncPermissions($managerPermissions);
     }
 }
