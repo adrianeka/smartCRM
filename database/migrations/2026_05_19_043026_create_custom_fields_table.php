@@ -10,11 +10,11 @@ return new class extends Migration
     {
         Schema::create('custom_fields', function (Blueprint $table) {
             $table->id();
-           
+            // Menghubungkan tabel ini ke tabel customers (Foreign Key)
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
-            
-            $table->string('field_key');   
-            $table->string('field_value'); 
+
+            $table->string('field_key');   // Nama field di sistem (misal: 'tanggal_lahir')
+            $table->string('field_value'); // Isi datanya (misal: '2004-05-19')
             $table->timestamps();
         });
     }

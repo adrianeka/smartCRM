@@ -6,31 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('api_logs', function (Blueprint $table) {
+        Schema::create('activity_logs', function (Blueprint $table) {
             $table->id();
-            $table->string('method');
-            $table->string('endpoint');
+            // Menghubungkan log ke pelanggan terkait
+            $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
 
-            $table->integer('status_code');
-
-            $table->text('ip_address')->nullable();
-
-            $table->longText('request_body')->nullable();
-            $table->longText('response_body')->nullable();
-            $table->timestamps();
+            $table->string('activity_type'); // Jenis aktivitas (misal: 'Create', 'Update', 'Merge')
+            $table->text('description');     // Detail aktivitas
+            $table->unsignedBigInteger('causer_id')->nullable(); // ID User/Admin yang melakukan aksi
+            $table->timestamps(); // Menggunakan created_at bawaan sebagai penanda waktu (timeline)
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('api_logs');
+        Schema::dropIfExists('activity_logs');
     }
 };
