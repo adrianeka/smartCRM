@@ -22,9 +22,9 @@ class SessionController extends Controller
         // Update the session's password hashes to match the new database hash.
         // This prevents the AuthenticateSession middleware from logging out the current user.
         $passwordHash = $user->getAuthPassword();
-        try {
-            $passwordHash = Auth::guard('web')->hashPasswordForCookie($passwordHash);
-        } catch (\BadMethodCallException $e) {
+        $guard = Auth::guard('web');
+        if (method_exists($guard, 'hashPasswordForCookie')) {
+            $passwordHash = $guard->hashPasswordForCookie($passwordHash);
         }
 
         $request->session()->put([
