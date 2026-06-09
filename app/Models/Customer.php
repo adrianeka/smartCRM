@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 /**
  * @property int $id
@@ -25,16 +27,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Customer extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     // Daftarkan kolom-kolom yang boleh diisi secara manual
-    protected $fillable = [
-    'customer_code',
-    'full_name', 
-    'email', 
+protected $fillable = [
+    'name',
+    'email',
     'phone',
-    'company_name',
-    'status',
+    'custom_fields',
 ];
 
     public function getActivitylogOptions(): LogOptions
