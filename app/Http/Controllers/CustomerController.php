@@ -243,4 +243,50 @@ responses: [
         'data' => Customer::all()
     ]);
 }
+
+public function exportCsv()
+{
+    $customers = Customer::all();
+
+    $filename = 'customers.csv';
+
+    $headers = [
+        'Content-Type' => 'text/csv',
+        'Content-Disposition' => "attachment; filename={$filename}",
+    ];
+
+    $callback = function () use ($customers) {
+
+        $file = fopen('php://output', 'w');
+
+        fputcsv($file, [
+            'customer_code',
+            'full_name',
+            'email',
+            'phone',
+            'company_name',
+            'status'
+        ]);
+
+        foreach ($customers as $customer) {
+
+            fputcsv($file, [
+                $customer->customer_code,
+                $customer->full_name,
+                $customer->email,
+                $customer->phone,
+                $customer->company_name,
+                $customer->status
+            ]);
+        }
+
+        fclose($file);
+    };
+
+    return response()->stream(
+        $callback,
+        200,
+        $headers
+    );
+}
 }
