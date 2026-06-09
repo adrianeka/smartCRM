@@ -41,8 +41,8 @@ Route::prefix('v1')->group(function () {
     Route::get('/customers/export/json', [CustomerController::class, 'exportJson']);
     Route::apiResource('customers', CustomerController::class);
     Route::get('/customers/export/csv', [CustomerController::class, 'exportCsv']);
-    Route::post('/customers/import',[CustomerController::class, 'importCsv']
-);
+    Route::post('/customers/import',[CustomerController::class, 'importCsv']);
+    Route::get('/customers/duplicates',[CustomerController::class, 'duplicates']);
 
     Route::post('/webhook/receive', [WebhookController::class, 'receive']);
 });

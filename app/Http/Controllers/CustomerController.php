@@ -8,6 +8,9 @@ use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Imports\CustomerImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
+
+
 
 class CustomerController extends Controller
 {
@@ -306,6 +309,13 @@ public function importCsv(Request $request)
     return response()->json([
         'status' => 'success',
         'message' => 'Customer berhasil diimport'
+    ]);
+}
+
+public function duplicates()
+{
+    return response()->json([
+        'status' => 'success'
     ]);
 }
 }
