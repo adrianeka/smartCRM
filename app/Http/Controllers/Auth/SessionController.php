@@ -27,10 +27,15 @@ class SessionController extends Controller
             $passwordHash = $guard->hashPasswordForCookie($passwordHash);
         }
 
-        $request->session()->put([
+        $sessionData = [
             'password_hash_web' => $passwordHash,
-            'password_hash_'.Auth::guard('web')->getName() => $user->getAuthPassword(),
-        ]);
+        ];
+
+        if (method_exists($guard, 'getName')) {
+            $sessionData['password_hash_' . $guard->getName()] = $user->getAuthPassword();
+        }
+
+        $request->session()->put($sessionData);
 
         // Delete other sessions from the database
         DB::table('sessions')
