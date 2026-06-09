@@ -37,6 +37,16 @@ protected $fillable = [
     'custom_fields',
 ];
 
+
+public function activityLogs()
+{
+    return $this->morphMany(
+        \Spatie\Activitylog\Models\Activity::class,
+        'subject'
+    );
+}
+
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

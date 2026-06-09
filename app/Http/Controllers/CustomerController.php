@@ -180,6 +180,21 @@ responses: [
         ]);
     }
 
+
+    public function activities($id)
+{
+    $customer = Customer::findOrFail($id);
+
+    $activities = $customer->activityLogs()
+        ->latest()
+        ->paginate(20);
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $activities
+    ]);
+}
+
     #[OA\Delete(
     path: "/api/v1/customers/{id}",
     summary: "Delete Customer",

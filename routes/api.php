@@ -37,6 +37,10 @@ Route::prefix('v1')->group(function () {
         });
     });
 
+    Route::get(
+        '/customers/{id}/activities',
+        [CustomerController::class, 'activities']
+    );
 
     Route::apiResource('customers', CustomerController::class);
 
