@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Customer; // Mengambil data dari Model Customer
 use OpenApi\Attributes as OA;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class CustomerController extends Controller
 {
@@ -32,9 +33,10 @@ if ($request->filled('search')) {
 
     $query->where(function ($q) use ($search) {
 
-        $q->where('name', 'like', "%{$search}%")
-          ->orWhere('email', 'like', "%{$search}%")
-          ->orWhere('phone', 'like', "%{$search}%");
+$q->where('full_name', 'like', "%{$search}%")
+  ->orWhere('email', 'like', "%{$search}%")
+  ->orWhere('phone', 'like', "%{$search}%")
+  ->orWhere('company_name', 'like', "%{$search}%");
 
     });
 }
@@ -82,12 +84,13 @@ $customers = $query->paginate(
     // 2. CREATE: Menyimpan data pelanggan baru ke database
     public function store(Request $request)
     {
-        // Validasi data yang masuk
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:customers,email',
+            'customer_code' => 'required|string|unique:customers|max:255',
+            'full_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:customers|max:255',
             'phone' => 'nullable|string|max:255',
-            'custom_fields' => 'nullable|array'
+            'company_name' => 'nullable|string|max:255',
+            'status' => 'nullable|string|max:255',
         ]);
 
     $customer = Customer::create($request->all());
@@ -232,4 +235,12 @@ responses: [
             'message' => 'Data pelanggan berhasil dihapus!'
         ]);
     }
+
+    public function exportJson()
+{
+    return response()->json([
+        'status' => 'success',
+        'data' => Customer::all()
+    ]);
+}
 }
