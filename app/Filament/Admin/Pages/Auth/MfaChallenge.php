@@ -9,17 +9,17 @@ class MfaChallenge extends SimplePage
 {
     protected string $view = 'filament.pages.auth.mfa-challenge';
 
-    public function getTitle(): string | Htmlable
+    public function getTitle(): string|Htmlable
     {
         return 'Verifikasi Dua Faktor';
     }
 
-    public function getHeading(): string | Htmlable
+    public function getHeading(): string|Htmlable
     {
         return 'Verifikasi Dua Faktor';
     }
 
-    public function getSubheading(): string | Htmlable | null
+    public function getSubheading(): string|Htmlable|null
     {
         return 'Masukkan 6 digit kode yang telah kami kirimkan ke email Anda untuk memverifikasi akun Anda.';
     }

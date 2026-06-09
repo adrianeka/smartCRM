@@ -2,14 +2,15 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Gate;
-use Spatie\Activitylog\Models\Activity;
-use App\Policies\ActivityPolicy;
-use Spatie\Permission\Models\Role;
-use App\Policies\RolePolicy;
+use App\Http\Responses\LogoutResponse;
 use App\Models\Customer;
+use App\Policies\ActivityPolicy;
 use App\Policies\CustomerPolicy;
+use App\Policies\RolePolicy;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\ServiceProvider;
+use Spatie\Activitylog\Models\Activity;
+use Spatie\Permission\Models\Role;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             \Filament\Auth\Http\Responses\Contracts\LogoutResponse::class,
-            \App\Http\Responses\LogoutResponse::class
+            LogoutResponse::class
         );
     }
 
@@ -33,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
             if (isset($args[0]) && ($args[0] === Customer::class || $args[0] instanceof Customer)) {
                 return null;
             }
+
             return $user->hasRole('super_admin') ? true : null;
         });
 

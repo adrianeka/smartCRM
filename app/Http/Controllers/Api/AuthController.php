@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
 {
@@ -13,7 +14,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
         ]);
 
         $user = User::query()
@@ -21,14 +22,14 @@ class AuthController extends Controller
             ->first();
 
         if (
-            !$user ||
-            !Hash::check(
+            ! $user ||
+            ! Hash::check(
                 $request->password,
                 $user->password
             )
         ) {
             return response()->json([
-                'message' => 'Invalid credentials'
+                'message' => 'Invalid credentials',
             ], 401);
         }
 
@@ -38,51 +39,51 @@ class AuthController extends Controller
 
         return response()->json([
             'token' => $token,
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
     public function register(Request $request)
-        {
-            $request->validate([
-                'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'email', 'unique:users,email'],
-                'password' => ['required', 'min:8'],
-            ]);
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'unique:users,email'],
+            'password' => ['required', 'min:8'],
+        ]);
 
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
-                'role' => 'user',
-            ]);
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'role' => 'user',
+        ]);
 
-            $token = $user
-                ->createToken('mobile-token')
-                ->plainTextToken;
+        $token = $user
+            ->createToken('mobile-token')
+            ->plainTextToken;
 
-            return response()->json([
-                'message' => 'Register success',
-                'token' => $token,
-                'user' => $user,
-            ], 201);
-        }
+        return response()->json([
+            'message' => 'Register success',
+            'token' => $token,
+            'user' => $user,
+        ], 201);
+    }
 
-        public function logout(Request $request)
-        {
-            /** @var \Laravel\Sanctum\PersonalAccessToken $token */
-            $token = $request->user()->currentAccessToken();
-            $token->delete();
+    public function logout(Request $request)
+    {
+        /** @var PersonalAccessToken $token */
+        $token = $request->user()->currentAccessToken();
+        $token->delete();
 
-            return response()->json([
-                'message' => 'Logout success'
-            ]);
-        }
+        return response()->json([
+            'message' => 'Logout success',
+        ]);
+    }
 
-        public function me(Request $request)
-            {
-                return response()->json([
-                    'user' => $request->user()
-                ]);
-            }
+    public function me(Request $request)
+    {
+        return response()->json([
+            'user' => $request->user(),
+        ]);
+    }
 }

@@ -34,7 +34,7 @@ class MfaOtpController extends Controller
             ->where('expires_at', '>', now())
             ->first();
 
-        if (!$mfaCode) {
+        if (! $mfaCode) {
             return back()->withErrors(['code' => 'Kode yang Anda masukkan tidak valid atau telah kedaluwarsa.']);
         }
 

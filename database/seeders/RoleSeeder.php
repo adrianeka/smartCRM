@@ -3,16 +3,16 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use BezhanSalleh\FilamentShield\Support\Utils;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class RoleSeeder extends Seeder
 {
     public function run(): void
     {
         // Reset cached roles and permissions
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // Create Super Admin role (gets all permissions via Gate::before in AuthServiceProvider)
         $superAdmin = Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => 'web']);
@@ -24,7 +24,7 @@ class RoleSeeder extends Seeder
         $manager = Role::firstOrCreate(['name' => 'Manager/Analyst', 'guard_name' => 'web']);
 
         // Assign specific permissions to each role
-        
+
         // 1. Sales Permissions (Customer CRUD + Sales Widgets)
         $salesPermissions = Permission::whereIn('name', [
             'ViewAny:Customer',
@@ -69,7 +69,7 @@ class RoleSeeder extends Seeder
         // 4. Manager/Analyst Permissions (Read-only view access to all resources and widgets for business monitoring)
         $managerPermissions = Permission::where(function ($query) {
             $query->where('name', 'like', 'View:%')
-                  ->orWhere('name', 'like', 'ViewAny:%');
+                ->orWhere('name', 'like', 'ViewAny:%');
         })->get();
         $manager->syncPermissions($managerPermissions);
     }

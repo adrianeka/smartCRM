@@ -7,10 +7,10 @@ use Filament\Widgets\Widget;
 class SalesPipelineWidget extends Widget
 {
     protected string $view = 'filament.widgets.sales-pipeline-widget';
+
     protected static ?int $sort = 5;
 
-
-    public function getColumnSpan(): int | string | array
+    public function getColumnSpan(): int|string|array
     {
         return auth()->user()?->hasRole(['sales', 'Sales']) ? 4 : 3;
     }
@@ -23,7 +23,7 @@ class SalesPipelineWidget extends Widget
                 ['stage' => 'Proposal', 'deals' => 1, 'percentage' => 50],
                 ['stage' => 'Qualified', 'deals' => 5, 'percentage' => 70],
                 ['stage' => 'Lead', 'deals' => 7, 'percentage' => 100],
-            ]
+            ],
         ];
     }
 }

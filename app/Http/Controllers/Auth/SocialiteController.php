@@ -15,7 +15,7 @@ class SocialiteController extends Controller
         if ($provider !== 'google') {
             abort(404);
         }
-        
+
         return Socialite::driver($provider)->redirect();
     }
 
@@ -51,7 +51,6 @@ class SocialiteController extends Controller
                 'provider_id' => $socialUser->getId(),
                 'email_verified_at' => now(),
             ]);
-
 
         }
 

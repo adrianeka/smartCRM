@@ -8,15 +8,13 @@ use App\Filament\Resources\WebhookLogs\Pages\ListWebhookLogs;
 use App\Filament\Resources\WebhookLogs\Pages\ViewWebhookLog;
 use App\Filament\Resources\WebhookLogs\Schemas\WebhookLogForm;
 use App\Filament\Resources\WebhookLogs\Schemas\WebhookLogInfolist;
-use App\Filament\Resources\WebhookLogs\Tables\WebhookLogsTable;
 use App\Models\WebhookLog;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
-
+use Filament\Tables\Table;
 
 class WebhookLogResource extends Resource
 {
@@ -36,27 +34,27 @@ class WebhookLogResource extends Resource
         return WebhookLogInfolist::configure($schema);
     }
 
-public static function table(Table $table): Table
-{
-    return $table
-        ->columns([
-            TextColumn::make('id')
-                ->sortable(),
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('id')
+                    ->sortable(),
 
-            TextColumn::make('event_type')
-                ->searchable(),
+                TextColumn::make('event_type')
+                    ->searchable(),
 
-            TextColumn::make('source_module')
-                ->searchable(),
+                TextColumn::make('source_module')
+                    ->searchable(),
 
-            TextColumn::make('status')
-                ->badge(),
+                TextColumn::make('status')
+                    ->badge(),
 
-            TextColumn::make('created_at')
-                ->dateTime(),
-        ])
-        ->defaultSort('id', 'desc');
-}
+                TextColumn::make('created_at')
+                    ->dateTime(),
+            ])
+            ->defaultSort('id', 'desc');
+    }
 
     public static function getRelations(): array
     {

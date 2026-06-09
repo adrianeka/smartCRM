@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\URL;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\URL;
 
 uses(RefreshDatabase::class);
 
@@ -18,7 +18,7 @@ it('renders the reset password page and contains the password criteria box', fun
     $response = $this->get($url);
     $response->assertStatus(200);
     $html = $response->getContent();
-    
+
     expect($html)->toContain('id="form.password"');
     expect($html)->toContain('id="form.passwordConfirmation"');
     expect($html)->toContain('Kriteria Kata Sandi');

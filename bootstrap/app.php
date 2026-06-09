@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\ApiLoggerMiddleware;
+use App\Http\Middleware\EnsureMfaIsVerified;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -13,8 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'mfa.verified' => \App\Http\Middleware\EnsureMfaIsVerified::class,
-            'api.logger' => \App\Http\Middleware\ApiLoggerMiddleware::class,
+            'mfa.verified' => EnsureMfaIsVerified::class,
+            'api.logger' => ApiLoggerMiddleware::class,
         ]);
         $middleware->redirectTo('/admin/login');
     })

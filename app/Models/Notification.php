@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -11,8 +12,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $notifiable_id
  * @property string $data
  * @property string|null $read_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification query()
@@ -24,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification whereReadAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Notification extends Model
@@ -37,6 +40,6 @@ class Notification extends Model
         'priority',
         'is_read',
         'read_at',
-        'action_url'
+        'action_url',
     ];
 }

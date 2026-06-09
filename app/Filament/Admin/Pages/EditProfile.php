@@ -2,14 +2,17 @@
 
 namespace App\Filament\Admin\Pages;
 
-use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Component;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Utilities\Get;
-use Filament\Forms\Components\FileUpload;
+use Filament\Actions\Action;
 use Filament\Auth\Pages\EditProfile as BaseEditProfile;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\ViewField;
+use Filament\Schemas\Components\Actions;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\EmbeddedSchema;
+use Filament\Schemas\Components\Form;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Arr;
-use Illuminate\Support\HtmlString;
 
 class EditProfile extends BaseEditProfile
 {
@@ -34,7 +37,7 @@ class EditProfile extends BaseEditProfile
 
     public function getFormContentComponent(): Component
     {
-        return \Filament\Schemas\Components\Form::make([\Filament\Schemas\Components\EmbeddedSchema::make('form')])
+        return Form::make([EmbeddedSchema::make('form')])
             ->id('form')
             ->livewireSubmitHandler('save');
     }
@@ -46,7 +49,7 @@ class EditProfile extends BaseEditProfile
                 $this->getFormContentComponent(),
                 ...Arr::wrap($this->getMultiFactorAuthenticationContentComponent()),
                 $this->getSessionManagementComponent(),
-                \Filament\Schemas\Components\Actions::make($this->getFormActions())
+                Actions::make($this->getFormActions())
                     ->alignment($this->getFormActionsAlignment())
                     ->fullWidth($this->hasFullWidthFormActions())
                     ->sticky((! static::isSimple()) && $this->areFormActionsSticky())
@@ -54,7 +57,7 @@ class EditProfile extends BaseEditProfile
             ]);
     }
 
-    protected function getSaveFormAction(): \Filament\Actions\Action
+    protected function getSaveFormAction(): Action
     {
         return parent::getSaveFormAction()
             ->extraAttributes(['form' => 'form']);
@@ -66,14 +69,14 @@ class EditProfile extends BaseEditProfile
             ->description('Kelola sesi aktif dan perangkat yang terhubung ke akun Anda.')
             ->icon('heroicon-o-computer-desktop')
             ->schema([
-                \Filament\Forms\Components\ViewField::make('active_sessions')
+                ViewField::make('active_sessions')
                     ->hiddenLabel()
                     ->view('filament.components.active-sessions'),
             ])
             ->collapsible();
     }
 
-    protected function getCancelFormAction(): \Filament\Actions\Action
+    protected function getCancelFormAction(): Action
     {
         return parent::getCancelFormAction()
             ->label('Kembali')

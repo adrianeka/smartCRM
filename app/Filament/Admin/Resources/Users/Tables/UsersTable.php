@@ -2,11 +2,11 @@
 
 namespace App\Filament\Admin\Resources\Users\Tables;
 
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -24,7 +24,7 @@ class UsersTable
                     ->label('Avatar')
                     ->circular()
                     ->disk('public')
-                    ->defaultImageUrl(fn ($record) => 'https://ui-avatars.com/api/?name=' . urlencode($record->name) . '&color=7F9CF5&background=EBF4FF'),
+                    ->defaultImageUrl(fn ($record) => 'https://ui-avatars.com/api/?name='.urlencode($record->name).'&color=7F9CF5&background=EBF4FF'),
                 TextColumn::make('name')
                     ->label('Nama')
                     ->searchable()

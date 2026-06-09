@@ -2,12 +2,12 @@
 
 namespace App\Filament\Admin\Pages\Auth;
 
-use Filament\Auth\Pages\Login as BaseLogin;
+use App\Http\Controllers\Auth\MfaOtpController;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
-use Filament\Facades\Filament;
 use Filament\Auth\Http\Responses\Contracts\LoginResponse;
+use Filament\Auth\Pages\Login as BaseLogin;
+use Filament\Facades\Filament;
 use Filament\Models\Contracts\FilamentUser;
-use Illuminate\Validation\ValidationException;
 
 class Login extends BaseLogin
 {
@@ -43,7 +43,7 @@ class Login extends BaseLogin
         session()->regenerate();
 
         // MFA OTP Logic
-        app(\App\Http\Controllers\Auth\MfaOtpController::class)->generateAndSendOtp($user);
+        app(MfaOtpController::class)->generateAndSendOtp($user);
         session()->put('mfa_verified', false);
 
         return app(LoginResponse::class);

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Jobs\ProcessWebhookJob;
+use Illuminate\Http\Request;
 
 class WebhookController extends Controller
 {

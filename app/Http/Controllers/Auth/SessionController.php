@@ -29,7 +29,7 @@ class SessionController extends Controller
 
         $request->session()->put([
             'password_hash_web' => $passwordHash,
-            'password_hash_' . Auth::guard('web')->getName() => $user->getAuthPassword(),
+            'password_hash_'.Auth::guard('web')->getName() => $user->getAuthPassword(),
         ]);
 
         // Delete other sessions from the database

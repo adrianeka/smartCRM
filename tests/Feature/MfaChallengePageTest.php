@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\MfaCode;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -12,7 +13,7 @@ it('redirects to login when accessing MFA challenge page unauthenticated', funct
 
 it('renders the MFA challenge page for authenticated users with unverified MFA status', function () {
     $user = User::factory()->create();
-    
+
     // Log the user in
     $response = $this->actingAs($user)
         ->withSession(['mfa_verified' => false])
@@ -26,8 +27,8 @@ it('renders the MFA challenge page for authenticated users with unverified MFA s
 it('successfully verifies OTP and redirects to the Filament dashboard', function () {
     $user = User::factory()->create();
     $code = '123456';
-    
-    \App\Models\MfaCode::create([
+
+    MfaCode::create([
         'user_id' => $user->id,
         'code' => $code,
         'expires_at' => now()->addMinutes(5),

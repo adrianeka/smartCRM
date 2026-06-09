@@ -4,14 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
  * @property string $name
  * @property string $email
  * @property string|null $phone
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer query()
@@ -21,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Customer extends Model
@@ -29,13 +32,13 @@ class Customer extends Model
 
     // Daftarkan kolom-kolom yang boleh diisi secara manual
     protected $fillable = [
-    'customer_code',
-    'full_name', 
-    'email', 
-    'phone',
-    'company_name',
-    'status',
-];
+        'customer_code',
+        'full_name',
+        'email',
+        'phone',
+        'company_name',
+        'status',
+    ];
 
     public function getActivitylogOptions(): LogOptions
     {

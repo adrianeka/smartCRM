@@ -3,13 +3,12 @@
 namespace App\Filament\Admin\Resources\Users\Schemas;
 
 use Filament\Forms\Components\FileUpload;
-use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 
 class UserForm
 {
@@ -58,7 +57,7 @@ class UserForm
                         Toggle::make('email_verified_at')
                             ->label('Email Terverifikasi')
                             ->dehydrateStateUsing(fn ($state) => $state ? now() : null)
-                            ->formatStateUsing(fn ($state) => !empty($state)),
+                            ->formatStateUsing(fn ($state) => ! empty($state)),
                     ])->columns(2),
             ]);
     }

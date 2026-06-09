@@ -2,16 +2,14 @@
 
 namespace App\Filament\Admin\Pages\Auth;
 
-use Filament\Auth\Pages\Register as BaseRegister;
+use App\Http\Controllers\Auth\MfaOtpController;
+use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Auth\Events\Registered;
 use Filament\Auth\Http\Responses\Contracts\RegistrationResponse;
+use Filament\Auth\Pages\Register as BaseRegister;
 use Filament\Facades\Filament;
-use Illuminate\Database\Eloquent\Model;
-use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
-use Illuminate\Http\RedirectResponse;
-
 use Filament\Schemas\Components\Component;
-use Illuminate\Support\HtmlString;
+use Illuminate\Database\Eloquent\Model;
 
 class Register extends BaseRegister
 {
@@ -64,11 +62,12 @@ class Register extends BaseRegister
         session()->regenerate();
 
         // Send OTP and set MFA session
-        app(\App\Http\Controllers\Auth\MfaOtpController::class)->generateAndSendOtp($user);
+        app(MfaOtpController::class)->generateAndSendOtp($user);
         session()->put('mfa_verified', false);
 
         // Redirect to MFA Challenge
-        return new class implements RegistrationResponse {
+        return new class implements RegistrationResponse
+        {
             public function toResponse($request)
             {
                 return redirect()->route('filament.admin.pages.auth.mfa-challenge');

@@ -1,11 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\Api\WebhookController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\WebhookController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotificationController;
+use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
 
@@ -35,7 +35,6 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::apiResource('customers', CustomerController::class);
-
 
     Route::post('/webhook/receive', [WebhookController::class, 'receive']);
 });
