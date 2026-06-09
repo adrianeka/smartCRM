@@ -22,9 +22,35 @@ class CustomerController extends Controller
         )
     ]
 )]
-    public function index()
+public function index(Request $request)
     {
-        $customers = Customer::all();
+        $query = Customer::query();
+
+if ($request->filled('search')) {
+
+    $search = $request->search;
+
+    $query->where(function ($q) use ($search) {
+
+        $q->where('name', 'like', "%{$search}%")
+          ->orWhere('email', 'like', "%{$search}%")
+          ->orWhere('phone', 'like', "%{$search}%");
+
+    });
+}
+
+
+if ($request->filled('sort')) {
+
+    $query->orderBy(
+        $request->sort,
+        'asc'
+    );
+}
+
+$customers = $query->paginate(
+    $request->get('per_page', 10)
+);
 
         // Kita return pakai JSON dulu biar gampang dites
         return response()->json([
