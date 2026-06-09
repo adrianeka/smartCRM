@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Customer; // Mengambil data dari Model Customer
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use App\Imports\CustomerImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CustomerController extends Controller
 {
@@ -288,5 +290,22 @@ public function exportCsv()
         200,
         $headers
     );
+}
+
+public function importCsv(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:csv,txt,xlsx'
+    ]);
+
+    Excel::import(
+        new CustomerImport,
+        $request->file('file')
+    );
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Customer berhasil diimport'
+    ]);
 }
 }
