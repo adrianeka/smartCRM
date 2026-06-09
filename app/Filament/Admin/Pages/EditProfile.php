@@ -34,9 +34,20 @@ class EditProfile extends BaseEditProfile
 
     public function getFormContentComponent(): Component
     {
-        return \Filament\Schemas\Components\Form::make([\Filament\Schemas\Components\EmbeddedSchema::make('form')])
-            ->id('form')
-            ->livewireSubmitHandler('save');
+        return \Filament\Schemas\Components\Form::make([
+            \Filament\Schemas\Components\EmbeddedSchema::make('form'),
+            ...Arr::wrap($this->getMultiFactorAuthenticationContentComponent()),
+            $this->getSessionManagementComponent(),
+        ])
+        ->id('form')
+        ->livewireSubmitHandler('save')
+        ->footer([
+            \Filament\Schemas\Components\Actions::make($this->getFormActions())
+                ->alignment($this->getFormActionsAlignment())
+                ->fullWidth($this->hasFullWidthFormActions())
+                ->sticky((! static::isSimple()) && $this->areFormActionsSticky())
+                ->key('form-actions'),
+        ]);
     }
 
     public function content(Schema $schema): Schema
@@ -44,13 +55,6 @@ class EditProfile extends BaseEditProfile
         return $schema
             ->components([
                 $this->getFormContentComponent(),
-                ...Arr::wrap($this->getMultiFactorAuthenticationContentComponent()),
-                $this->getSessionManagementComponent(),
-                \Filament\Schemas\Components\Actions::make($this->getFormActions())
-                    ->alignment($this->getFormActionsAlignment())
-                    ->fullWidth($this->hasFullWidthFormActions())
-                    ->sticky((! static::isSimple()) && $this->areFormActionsSticky())
-                    ->key('form-actions'),
             ]);
     }
 
