@@ -83,14 +83,12 @@ $customers = $query->paginate(
     public function store(Request $request)
     {
         // Validasi data yang masuk
-       $request->validate([
-        'customer_code' => 'required|string|unique:customers|max:255',
-        'full_name'     => 'required|string|max:255',
-        'email'         => 'required|email|unique:customers|max:255',
-        'phone'         => 'nullable|string|max:255',
-        'company_name'  => 'nullable|string|max:255',
-        'status'        => 'nullable|string|max:255',
-    ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:customers,email',
+            'phone' => 'nullable|string|max:255',
+            'custom_fields' => 'nullable|array'
+        ]);
 
     $customer = Customer::create($request->all());
 
@@ -170,6 +168,13 @@ responses: [
     // 4. UPDATE: Mengubah data pelanggan yang sudah ada
     public function update(Request $request, $id)
     {
+
+        $request->validate([
+        'name' => 'sometimes|string|max:255',
+        'email' => 'sometimes|email',
+        'phone' => 'nullable|string|max:255',
+        'custom_fields' => 'nullable|array'
+    ]);
         $customer = Customer::findOrFail($id);
         $customer->update($request->all());
 

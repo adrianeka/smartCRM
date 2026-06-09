@@ -37,6 +37,10 @@ protected $fillable = [
     'custom_fields',
 ];
 
+protected $casts = [
+    'custom_fields' => 'array',
+];
+
 
 public function activityLogs()
 {
