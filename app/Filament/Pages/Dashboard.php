@@ -76,9 +76,9 @@ class Dashboard extends BaseDashboard
         }
 
         if ($user?->hasRole(['manager', 'Manager/Analyst'])) {
+            // WebhookStats is removed from Manager's dashboard as it is technical API logs summary
             return [
                 WelcomeWidget::class,
-                WebhookStats::class,
                 CompanyPerformanceWidget::class,
                 RevenueForecastChart::class,
                 CampaignPerformanceChart::class,
@@ -89,6 +89,7 @@ class Dashboard extends BaseDashboard
             ];
         }
 
+        // Default widgets (e.g. Super Admin)
         return [
             WelcomeWidget::class,
             WebhookStats::class,
@@ -98,6 +99,8 @@ class Dashboard extends BaseDashboard
             TicketsByPriorityChart::class,
             QuickLinksWidget::class,
             TopDealsWidget::class,
+            TodayTasksWidget::class,
+            UpcomingDeadlinesWidget::class,
             UrgentTicketsWidget::class,
             RecentActivitiesWidget::class,
         ];
