@@ -379,4 +379,15 @@ public function toggleFavorite($id)
     ]);
 }
 
+public function attachments($id)
+{
+    $customer = Customer::with('attachments')
+        ->findOrFail($id);
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $customer->attachments
+    ]);
+}
+
 }

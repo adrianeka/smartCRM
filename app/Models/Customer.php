@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use App\Models\CustomerAttachment;
+
 
 /**
  * @property int $id
@@ -57,13 +59,20 @@ public function activityLogs()
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logFillable() // Otomatis mencatat semua kolom yang ada di $fillable
-            ->logOnlyDirty() // Hanya mencatat kolom yang nilainya benar-benar berubah (biar hemat storage)
-            ->dontSubmitEmptyLogs(); // Jangan simpan log kalau tidak ada perubahan data
+            ->logFillable()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 
     public function tags()
         {
             return $this->belongsToMany(Tag::class);
+        }
+
+        public function attachments()
+        {
+            return $this->hasMany(
+                CustomerAttachment::class
+            );
         }
 }
