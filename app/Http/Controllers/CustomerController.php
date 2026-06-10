@@ -355,4 +355,19 @@ public function attachTags(Request $request, $id)
 }
 
 
+public function toggleFavorite($id)
+{
+    $customer = Customer::findOrFail($id);
+
+    $customer->is_favorite =
+        !$customer->is_favorite;
+
+    $customer->save();
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $customer
+    ]);
+}
+
 }

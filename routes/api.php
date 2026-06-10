@@ -46,4 +46,6 @@ Route::prefix('v1')->group(function () {
     Route::get('/customers/duplicates',[CustomerController::class, 'duplicates']);
 
     Route::post('/webhook/receive', [WebhookController::class, 'receive']);
+    Route::patch('/customers/{id}/favorite', [CustomerController::class, 'toggleFavorite']
+);
 });
