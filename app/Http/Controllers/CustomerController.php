@@ -30,7 +30,7 @@ class CustomerController extends Controller
 )]
 public function index(Request $request)
     {
-        $query = Customer::query();
+        $query = Customer::with('tags');
 
 if ($request->filled('search')) {
 
@@ -44,6 +44,20 @@ $q->where('full_name', 'like', "%{$search}%")
   ->orWhere('company_name', 'like', "%{$search}%");
 
     });
+}
+
+if ($request->filled('tag')) {
+
+    $query->whereHas('tags', function ($q) use ($request) {
+
+        $q->where(
+            'name',
+            'like',
+            "%{$request->tag}%"
+        );
+
+    });
+
 }
 
 
