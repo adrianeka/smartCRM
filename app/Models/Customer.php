@@ -61,4 +61,9 @@ public function activityLogs()
             ->logOnlyDirty() // Hanya mencatat kolom yang nilainya benar-benar berubah (biar hemat storage)
             ->dontSubmitEmptyLogs(); // Jangan simpan log kalau tidak ada perubahan data
     }
+
+    public function tags()
+        {
+            return $this->belongsToMany(Tag::class);
+        }
 }
