@@ -30,55 +30,64 @@ class CustomerController extends Controller
 )]
 public function index(Request $request)
     {
+
+
         $query = Customer::with('tags');
 
-if ($request->filled('search')) {
+    if ($request->filled('search')) {
 
     $search = $request->search;
 
     $query->where(function ($q) use ($search) {
 
-$q->where('full_name', 'like', "%{$search}%")
-  ->orWhere('email', 'like', "%{$search}%")
-  ->orWhere('phone', 'like', "%{$search}%")
-  ->orWhere('company_name', 'like', "%{$search}%");
+        $q->where('full_name', 'like', "%{$search}%")
+        ->orWhere('email', 'like', "%{$search}%")
+        ->orWhere('phone', 'like', "%{$search}%")
+        ->orWhere('company_name', 'like', "%{$search}%");
 
-    });
-}
+            });
+        }
 
-if ($request->filled('tag')) {
+    if ($request->filled('tag')) {
 
-    $query->whereHas('tags', function ($q) use ($request) {
+        $query->whereHas('tags', function ($q) use ($request) {
 
-        $q->where(
-            'name',
-            'like',
-            "%{$request->tag}%"
+            $q->where(
+                'name',
+                'like',
+                "%{$request->tag}%"
+            );
+
+        });
+
+    }
+
+    if ($request->filled('favorite')) {
+
+    $query->where(
+        'is_favorite',
+        $request->favorite
         );
 
-    });
-
-}
-
-
-if ($request->filled('sort')) {
-
-    $query->orderBy(
-        $request->sort,
-        'asc'
-    );
-}
-
-$customers = $query->paginate(
-    $request->get('per_page', 10)
-);
-
-        // Kita return pakai JSON dulu biar gampang dites
-        return response()->json([
-            'status' => 'success',
-            'data' => $customers
-        ]);
     }
+
+
+    if ($request->filled('sort')) {
+
+        $query->orderBy(
+            $request->sort,
+            'asc'
+        );
+    }
+
+    $customers = $query->paginate(
+        $request->get('per_page', 10)
+    );
+            return response()->json([
+                'status' => 'success',
+                'data' => $customers
+            ]);
+}
 
     #[OA\Post(
     path: "/api/v1/customers",
