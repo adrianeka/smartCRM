@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Imports\CustomerImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
+use App\Models\CustomerAttachment;
+use Illuminate\Support\Facades\Storage;
 
 
 
@@ -387,6 +389,36 @@ public function attachments($id)
     return response()->json([
         'status' => 'success',
         'data' => $customer->attachments
+    ]);
+}
+
+public function uploadAttachment(Request $request, $id)
+{
+    $customer = Customer::findOrFail($id);
+
+    $request->validate([
+        'file' => 'required|file|max:10240'
+    ]);
+
+    $file = $request->file('file');
+
+    $path = $file->store(
+        'customer-attachments',
+        'public'
+    );
+
+    $attachment = CustomerAttachment::create([
+        'customer_id' => $customer->id,
+        'file_name' => $file->getClientOriginalName(),
+        'file_path' => $path,
+        'file_type' => $file->getMimeType(),
+        'file_size' => $file->getSize()
+    ]);
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'File berhasil diupload',
+        'data' => $attachment
     ]);
 }
 

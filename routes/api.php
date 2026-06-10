@@ -45,6 +45,7 @@ Route::prefix('v1')->group(function () {
     Route::post('/customers/import',[CustomerController::class, 'importCsv']);
     Route::get('/customers/duplicates',[CustomerController::class, 'duplicates']);
     Route::get('/customers/{id}/attachments',[CustomerController::class, 'attachments']);
+    Route::post('/customers/{id}/attachments',[CustomerController::class, 'uploadAttachment']);
 
     Route::post('/webhook/receive', [WebhookController::class, 'receive']);
     Route::patch('/customers/{id}/favorite', [CustomerController::class, 'toggleFavorite']
