@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 
 
 
+
 class CustomerController extends Controller
 {
     // 1. READ: Menampilkan semua data pelanggan
@@ -419,6 +420,35 @@ public function uploadAttachment(Request $request, $id)
         'status' => 'success',
         'message' => 'File berhasil diupload',
         'data' => $attachment
+    ]);
+}
+
+public function downloadAttachment($attachmentId)
+{
+    $attachment = CustomerAttachment::findOrFail($attachmentId);
+
+    /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+    $disk = Storage::disk('public');
+
+    return $disk->download(
+            $attachment->file_path,
+            $attachment->file_name
+        );
+}
+
+public function previewAttachment($attachmentId)
+{
+    $attachment = CustomerAttachment::findOrFail($attachmentId);
+
+    return response()->json([
+        'status' => 'success',
+        'data' => [
+            'file_name' => $attachment->file_name,
+            'file_type' => $attachment->file_type,
+            'url' => asset(
+                'storage/' . $attachment->file_path
+            )
+        ]
     ]);
 }
 

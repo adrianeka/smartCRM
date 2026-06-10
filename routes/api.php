@@ -46,6 +46,8 @@ Route::prefix('v1')->group(function () {
     Route::get('/customers/duplicates',[CustomerController::class, 'duplicates']);
     Route::get('/customers/{id}/attachments',[CustomerController::class, 'attachments']);
     Route::post('/customers/{id}/attachments',[CustomerController::class, 'uploadAttachment']);
+    Route::get('/attachments/{id}/preview',[CustomerController::class, 'previewAttachment']);
+    Route::get('/attachments/{id}/download',[CustomerController::class, 'downloadAttachment']);
 
     Route::post('/webhook/receive', [WebhookController::class, 'receive']);
     Route::patch('/customers/{id}/favorite', [CustomerController::class, 'toggleFavorite']
