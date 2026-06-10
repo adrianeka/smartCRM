@@ -1,20 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\Api\WebhookController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\WebhookController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotificationController;
+use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
-
 
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
     Route::post('/reset-password', [AuthController::class, 'resetPassword']);
-
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
@@ -22,9 +20,7 @@ Route::prefix('v1')->group(function () {
         Route::post('/change-password', [AuthController::class, 'changePassword']); // ← pindah ke sini
     });
 
-
     Route::get('/dashboard/summary', [DashboardController::class, 'summary']);
-
 
     Route::middleware(['api.logger'])->prefix('notifications')->group(function () {
         Route::get('/', [NotificationController::class, 'index']);
@@ -39,17 +35,18 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/customers/{id}/activities', [CustomerController::class, 'activities']);
     Route::get('/customers/export/json', [CustomerController::class, 'exportJson']);
-    Route::post('/customers/{id}/tags',[CustomerController::class, 'attachTags']);
+    Route::post('/customers/{id}/tags', [CustomerController::class, 'attachTags']);
     Route::apiResource('customers', CustomerController::class);
     Route::get('/customers/export/csv', [CustomerController::class, 'exportCsv']);
-    Route::post('/customers/import',[CustomerController::class, 'importCsv']);
-    Route::get('/customers/duplicates',[CustomerController::class, 'duplicates']);
-    Route::get('/customers/{id}/attachments',[CustomerController::class, 'attachments']);
-    Route::post('/customers/{id}/attachments',[CustomerController::class, 'uploadAttachment']);
-    Route::get('/attachments/{id}/preview',[CustomerController::class, 'previewAttachment']);
-    Route::get('/attachments/{id}/download',[CustomerController::class, 'downloadAttachment']);
+    Route::post('/customers/import', [CustomerController::class, 'importCsv']);
+    Route::get('/customers/duplicates', [CustomerController::class, 'duplicates']);
+    Route::get('/customers/{id}/attachments', [CustomerController::class, 'attachments']);
+    Route::post('/customers/{id}/attachments', [CustomerController::class, 'uploadAttachment']);
+    Route::get('/attachments/{id}/preview', [CustomerController::class, 'previewAttachment']);
+    Route::get('/attachments/{id}/download', [CustomerController::class, 'downloadAttachment']);
+    Route::delete('/attachments/{id}', [CustomerController::class, 'deleteAttachment']);
 
     Route::post('/webhook/receive', [WebhookController::class, 'receive']);
     Route::patch('/customers/{id}/favorite', [CustomerController::class, 'toggleFavorite']
-);
+    );
 });
