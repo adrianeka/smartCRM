@@ -143,7 +143,8 @@ responses: [
     // 3. READ: Menampilkan detail satu pelanggan spesifik
     public function show($id)
     {
-        $customer = Customer::findOrFail($id);
+        $customer = Customer::with('tags')
+            ->findOrFail($id);
 
         return response()->json([
             'status' => 'success',
@@ -318,4 +319,26 @@ public function duplicates()
         'status' => 'success'
     ]);
 }
+
+
+public function attachTags(Request $request, $id)
+{
+    $customer = Customer::findOrFail($id);
+
+    $request->validate([
+        'tag_ids' => 'required|array'
+    ]);
+
+    $customer->tags()->syncWithoutDetaching(
+        $request->tag_ids
+    );
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Tag berhasil ditambahkan',
+        'data' => $customer->tags
+    ]);
+}
+
+
 }

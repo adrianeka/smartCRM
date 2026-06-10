@@ -39,6 +39,7 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/customers/{id}/activities', [CustomerController::class, 'activities']);
     Route::get('/customers/export/json', [CustomerController::class, 'exportJson']);
+    Route::post('/customers/{id}/tags',[CustomerController::class, 'attachTags']);
     Route::apiResource('customers', CustomerController::class);
     Route::get('/customers/export/csv', [CustomerController::class, 'exportCsv']);
     Route::post('/customers/import',[CustomerController::class, 'importCsv']);
