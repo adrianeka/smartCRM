@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\CustomerImport;
 use App\Models\Customer;
+use App\Models\CustomerAttachment;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use OpenApi\Attributes as OA;
 
 class CustomerController extends Controller
 {
-    // 1. READ: Menampilkan semua data pelanggan
     #[OA\Get(
         path: '/api/v1/customers',
         summary: 'Get All Customers',
@@ -21,11 +25,36 @@ class CustomerController extends Controller
             ),
         ]
     )]
-    public function index()
+    public function index(Request $request)
     {
-        $customers = Customer::all();
+        $query = Customer::with('tags');
 
-        // Kita return pakai JSON dulu biar gampang dites
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('full_name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%")
+                    ->orWhere('company_name', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('tag')) {
+            $query->whereHas('tags', function ($q) use ($request) {
+                $q->where('name', 'like', "%{$request->tag}%");
+            });
+        }
+
+        if ($request->filled('favorite')) {
+            $query->where('is_favorite', $request->favorite);
+        }
+
+        if ($request->filled('sort')) {
+            $query->orderBy($request->sort, 'asc');
+        }
+
+        $customers = $query->paginate($request->get('per_page', 10));
+
         return response()->json([
             'status' => 'success',
             'data' => $customers,
@@ -51,10 +80,8 @@ class CustomerController extends Controller
             new OA\Response(response: 201, description: 'Customer created'),
         ]
     )]
-    // 2. CREATE: Menyimpan data pelanggan baru ke database
     public function store(Request $request)
     {
-        // Validasi data yang masuk
         $request->validate([
             'customer_code' => 'required|string|unique:customers|max:255',
             'full_name' => 'required|string|max:255',
@@ -103,10 +130,9 @@ class CustomerController extends Controller
             ),
         ]
     )]
-    // 3. READ: Menampilkan detail satu pelanggan spesifik
     public function show($id)
     {
-        $customer = Customer::findOrFail($id);
+        $customer = Customer::with('tags')->findOrFail($id);
 
         return response()->json([
             'status' => 'success',
@@ -134,9 +160,14 @@ class CustomerController extends Controller
             ),
         ]
     )]
-    // 4. UPDATE: Mengubah data pelanggan yang sudah ada
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|email',
+            'phone' => 'nullable|string|max:255',
+            'custom_fields' => 'nullable|array',
+        ]);
         $customer = Customer::findOrFail($id);
         $customer->update($request->all());
 
@@ -144,6 +175,17 @@ class CustomerController extends Controller
             'status' => 'success',
             'message' => 'Data pelanggan berhasil diperbarui!',
             'data' => $customer,
+        ]);
+    }
+
+    public function activities($id)
+    {
+        $customer = Customer::findOrFail($id);
+        $activities = $customer->activityLogs()->latest()->paginate(20);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $activities,
         ]);
     }
 
@@ -167,7 +209,6 @@ class CustomerController extends Controller
             ),
         ]
     )]
-    // 5. DELETE: Menghapus data pelanggan
     public function destroy($id)
     {
         $customer = Customer::findOrFail($id);
@@ -176,6 +217,177 @@ class CustomerController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Data pelanggan berhasil dihapus!',
+        ]);
+    }
+
+    public function exportJson()
+    {
+        return response()->json([
+            'status' => 'success',
+            'data' => Customer::all(),
+        ]);
+    }
+
+    public function exportCsv()
+    {
+        $customers = Customer::all();
+        $filename = 'customers.csv';
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename={$filename}",
+        ];
+
+        $callback = function () use ($customers) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, [
+                'customer_code',
+                'full_name',
+                'email',
+                'phone',
+                'company_name',
+                'status',
+            ]);
+
+            foreach ($customers as $customer) {
+                fputcsv($file, [
+                    $customer->customer_code,
+                    $customer->full_name,
+                    $customer->email,
+                    $customer->phone,
+                    $customer->company_name,
+                    $customer->status,
+                ]);
+            }
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    public function importCsv(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv,txt,xlsx',
+        ]);
+
+        Excel::import(new CustomerImport, $request->file('file'));
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Customer berhasil diimport',
+        ]);
+    }
+
+    public function duplicates()
+    {
+        return response()->json([
+            'status' => 'success',
+        ]);
+    }
+
+    public function attachTags(Request $request, $id)
+    {
+        $customer = Customer::findOrFail($id);
+        $request->validate([
+            'tag_ids' => 'required|array',
+        ]);
+
+        $customer->tags()->syncWithoutDetaching($request->tag_ids);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Tag berhasil ditambahkan',
+            'data' => $customer->tags,
+        ]);
+    }
+
+    public function toggleFavorite($id)
+    {
+        $customer = Customer::findOrFail($id);
+        $customer->is_favorite = !$customer->is_favorite;
+        $customer->save();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $customer,
+        ]);
+    }
+
+    public function attachments($id)
+    {
+        $customer = Customer::with('attachments')->findOrFail($id);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $customer->attachments,
+        ]);
+    }
+
+    public function uploadAttachment(Request $request, $id)
+    {
+        $customer = Customer::findOrFail($id);
+        $request->validate([
+            'file' => 'required|file|max:10240',
+        ]);
+
+        $file = $request->file('file');
+        $path = $file->store('customer-attachments', 'public');
+
+        $attachment = CustomerAttachment::create([
+            'customer_id' => $customer->id,
+            'file_name' => $file->getClientOriginalName(),
+            'file_path' => $path,
+            'file_type' => $file->getMimeType(),
+            'file_size' => $file->getSize(),
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'File berhasil diupload',
+            'data' => $attachment,
+        ]);
+    }
+
+    public function downloadAttachment($attachmentId)
+    {
+        $attachment = CustomerAttachment::findOrFail($attachmentId);
+
+        /** @var FilesystemAdapter $disk */
+        $disk = Storage::disk('public');
+
+        return $disk->download(
+            $attachment->file_path,
+            $attachment->file_name
+        );
+    }
+
+    public function previewAttachment($attachmentId)
+    {
+        $attachment = CustomerAttachment::findOrFail($attachmentId);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'file_name' => $attachment->file_name,
+                'file_type' => $attachment->file_type,
+                'url' => asset('storage/' . $attachment->file_path),
+            ],
+        ]);
+    }
+
+    public function deleteAttachment($attachmentId)
+    {
+        $attachment = CustomerAttachment::findOrFail($attachmentId);
+
+        if (Storage::disk('public')->exists($attachment->file_path)) {
+            Storage::disk('public')->delete($attachment->file_path);
+        }
+
+        $attachment->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Attachment berhasil dihapus',
         ]);
     }
 }

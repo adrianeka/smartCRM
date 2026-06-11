@@ -17,7 +17,7 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('/me', [AuthController::class, 'me']);
-        Route::post('/change-password', [AuthController::class, 'changePassword']); // ← pindah ke sini
+        Route::post('/change-password', [AuthController::class, 'changePassword']);
     });
 
     Route::get('/dashboard/summary', [DashboardController::class, 'summary']);
@@ -33,7 +33,19 @@ Route::prefix('v1')->group(function () {
         });
     });
 
+    Route::get('/customers/{id}/activities', [CustomerController::class, 'activities']);
+    Route::get('/customers/export/json', [CustomerController::class, 'exportJson']);
+    Route::post('/customers/{id}/tags', [CustomerController::class, 'attachTags']);
     Route::apiResource('customers', CustomerController::class);
+    Route::get('/customers/export/csv', [CustomerController::class, 'exportCsv']);
+    Route::post('/customers/import', [CustomerController::class, 'importCsv']);
+    Route::get('/customers/duplicates', [CustomerController::class, 'duplicates']);
+    Route::get('/customers/{id}/attachments', [CustomerController::class, 'attachments']);
+    Route::post('/customers/{id}/attachments', [CustomerController::class, 'uploadAttachment']);
+    Route::get('/attachments/{id}/preview', [CustomerController::class, 'previewAttachment']);
+    Route::get('/attachments/{id}/download', [CustomerController::class, 'downloadAttachment']);
+    Route::delete('/attachments/{id}', [CustomerController::class, 'deleteAttachment']);
 
     Route::post('/webhook/receive', [WebhookController::class, 'receive']);
+    Route::patch('/customers/{id}/favorite', [CustomerController::class, 'toggleFavorite']);
 });

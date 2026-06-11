@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+use App\Models\CustomerAttachment;
 
 /**
  * @property int $id
@@ -28,9 +31,8 @@ use Illuminate\Support\Carbon;
  */
 class Customer extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
-    // Daftarkan kolom-kolom yang boleh diisi secara manual
     protected $fillable = [
         'customer_code',
         'full_name',
@@ -38,13 +40,40 @@ class Customer extends Model
         'phone',
         'company_name',
         'status',
+        'custom_fields',
+        'is_favorite',
     ];
+
+    protected $casts = [
+        'custom_fields' => 'array',
+        'is_favorite' => 'boolean',
+    ];
+
+    public function activityLogs()
+    {
+        return $this->morphMany(
+            \Spatie\Activitylog\Models\Activity::class,
+            'subject'
+        );
+    }
 
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logFillable() // Otomatis mencatat semua kolom yang ada di $fillable
-            ->logOnlyDirty() // Hanya mencatat kolom yang nilainya benar-benar berubah (biar hemat storage)
-            ->dontSubmitEmptyLogs(); // Jangan simpan log kalau tidak ada perubahan data
+            ->logFillable()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany(
+            CustomerAttachment::class
+        );
     }
 }
