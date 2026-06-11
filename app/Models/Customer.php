@@ -4,44 +4,54 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-/**
- * @property int $id
- * @property string $name
- * @property string $email
- * @property string|null $phone
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer wherePhone($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer whereUpdatedAt($value)
- * @mixin \Eloquent
- */
 class Customer extends Model
 {
     use HasFactory;
 
-    // Daftarkan kolom-kolom yang boleh diisi secara manual
     protected $fillable = [
-    'customer_code',
-    'full_name', 
-    'email', 
-    'phone',
-    'company_name',
-    'status',
-];
+        'customer_code',
+        'full_name',
+        'email',
+        'phone',
+        'company_name',
+        'status',
+    ];
 
-    public function getActivitylogOptions(): LogOptions
+    // Relasi ke Kolom Fleksibel
+    public function customFields(): HasMany
     {
-        return LogOptions::defaults()
-            ->logFillable() // Otomatis mencatat semua kolom yang ada di $fillable
-            ->logOnlyDirty() // Hanya mencatat kolom yang nilainya benar-benar berubah (biar hemat storage)
-            ->dontSubmitEmptyLogs(); // Jangan simpan log kalau tidak ada perubahan data
+        return $this->hasMany(CustomerCustomField::class);
+    }
+
+    // Relasi ke Catatan Aktivitas
+    public function activityLogs(): HasMany
+    {
+        return $this->hasMany(CustomerActivityLog::class);
+    }
+
+    // Otomatis mencatat riwayat kronologis saat ada aktivitas CRUD
+    protected static function booted(): void
+    {
+        static::created(function ($customer) {
+            $customer->activityLogs()->create([
+                'activity_type' => 'Created',
+                'description' => 'Pelanggan baru berhasil didaftarkan ke sistem.',
+                'causer' => auth()->user()?->name ?? 'System',
+            ]);
+        });
+
+        static::updated(function ($customer) {
+            // Mencari tahu kolom apa saja yang diubah oleh user
+            $dirtyFields = array_keys($customer->getDirty());
+            $changedList = implode(', ', $dirtyFields);
+
+            $customer->activityLogs()->create([
+                'activity_type' => 'Updated',
+                'description' => "Melakukan pembaruan pada kolom data: [{$changedList}].",
+                'causer' => auth()->user()?->name ?? 'System',
+            ]);
+        });
     }
 }
