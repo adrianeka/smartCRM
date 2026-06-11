@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Customer;
 use Filament\Widgets\Widget;
 
 class SalesPipelineWidget extends Widget
@@ -22,7 +23,7 @@ class SalesPipelineWidget extends Widget
         $pipelines = [];
 
         foreach ($stages as $stage) {
-            $count = \App\Models\Customer::where('status', $stage)->count();
+            $count = Customer::where('status', $stage)->count();
             $pipelines[] = [
                 'stage' => $stage,
                 'deals' => $count,

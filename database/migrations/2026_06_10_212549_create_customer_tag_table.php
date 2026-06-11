@@ -6,22 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-public function up(): void
-{
-    Schema::create('customer_tag', function (Blueprint $table) {
-        $table->id();
+    public function up(): void
+    {
+        Schema::create('customer_tag', function (Blueprint $table) {
+            $table->id();
 
-        $table->foreignId('customer_id')
-            ->constrained()
-            ->cascadeOnDelete();
+            $table->foreignId('customer_id')
+                ->constrained()
+                ->cascadeOnDelete();
 
-        $table->foreignId('tag_id')
-            ->constrained()
-            ->cascadeOnDelete();
+            $table->foreignId('tag_id')
+                ->constrained()
+                ->cascadeOnDelete();
 
-        $table->timestamps();
-    });
-}
+            $table->timestamps();
+        });
+    }
 
     public function down(): void
     {

@@ -11,7 +11,7 @@ class CustomerAttachment extends Model
         'file_name',
         'file_path',
         'file_type',
-        'file_size'
+        'file_size',
     ];
 
     public function customer()

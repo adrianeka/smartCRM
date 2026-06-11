@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
-use App\Models\CustomerAttachment;
+use Spatie\Activitylog\Models\Activity;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property int $id
@@ -52,7 +52,7 @@ class Customer extends Model
     public function activityLogs()
     {
         return $this->morphMany(
-            \Spatie\Activitylog\Models\Activity::class,
+            Activity::class,
             'subject'
         );
     }

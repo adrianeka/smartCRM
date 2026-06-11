@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use App\Http\Responses\LogoutResponse;
+use App\Listeners\LogFailedLogin;
+use App\Listeners\LogSuccessfulLogin;
+use App\Listeners\LogSuccessfulLogout;
 use App\Models\Customer;
 use App\Models\WebhookLog;
 use App\Observers\CustomerObserver;
@@ -10,6 +13,10 @@ use App\Observers\WebhookLogObserver;
 use App\Policies\ActivityPolicy;
 use App\Policies\CustomerPolicy;
 use App\Policies\RolePolicy;
+use Illuminate\Auth\Events\Failed;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Logout;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Activitylog\Models\Activity;
@@ -47,5 +54,9 @@ class AppServiceProvider extends ServiceProvider
 
         Customer::observe(CustomerObserver::class);
         WebhookLog::observe(WebhookLogObserver::class);
+
+        Event::listen(Login::class, LogSuccessfulLogin::class);
+        Event::listen(Logout::class, LogSuccessfulLogout::class);
+        Event::listen(Failed::class, LogFailedLogin::class);
     }
 }

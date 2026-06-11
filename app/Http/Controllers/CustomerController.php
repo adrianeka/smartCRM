@@ -304,7 +304,7 @@ class CustomerController extends Controller
     public function toggleFavorite($id)
     {
         $customer = Customer::findOrFail($id);
-        $customer->is_favorite = !$customer->is_favorite;
+        $customer->is_favorite = ! $customer->is_favorite;
         $customer->save();
 
         return response()->json([
@@ -370,7 +370,7 @@ class CustomerController extends Controller
             'data' => [
                 'file_name' => $attachment->file_name,
                 'file_type' => $attachment->file_type,
-                'url' => asset('storage/' . $attachment->file_path),
+                'url' => asset('storage/'.$attachment->file_path),
             ],
         ]);
     }

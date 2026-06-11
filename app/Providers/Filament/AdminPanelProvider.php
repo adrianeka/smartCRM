@@ -7,6 +7,7 @@ use App\Filament\Admin\Pages\Auth\Register;
 use App\Filament\Admin\Pages\Auth\ResetPassword;
 use App\Filament\Admin\Pages\EditProfile;
 use App\Filament\Pages\Dashboard;
+use App\Http\Middleware\EnsureUserHasRole;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -86,6 +87,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                EnsureUserHasRole::class,
                 'mfa.verified',
             ])
             ->renderHook(

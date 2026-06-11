@@ -67,6 +67,9 @@ class ActivityLogResource extends Resource implements HasShieldPermissions
                         'created' => 'success',
                         'updated' => 'warning',
                         'deleted' => 'danger',
+                        'login' => 'info',
+                        'logout' => 'gray',
+                        'failed' => 'danger',
                         default => 'gray',
                     }),
                 TextColumn::make('created_at')
@@ -85,6 +88,9 @@ class ActivityLogResource extends Resource implements HasShieldPermissions
                         'created' => 'Created',
                         'updated' => 'Updated',
                         'deleted' => 'Deleted',
+                        'login' => 'Login',
+                        'logout' => 'Logout',
+                        'failed' => 'Failed Login',
                     ]),
             ])
             ->recordActions([])
