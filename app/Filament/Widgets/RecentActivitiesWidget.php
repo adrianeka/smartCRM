@@ -14,21 +14,43 @@ class RecentActivitiesWidget extends Widget
 
     protected function getViewData(): array
     {
-        return [
-            'activities' => [
+        $realActivities = \Spatie\Activitylog\Models\Activity::latest()->limit(5)->get();
+
+        $activities = [];
+
+        foreach ($realActivities as $activity) {
+            $activities[] = [
+                'title' => ucfirst($activity->description),
+                'description' => $activity->subject_type ? class_basename($activity->subject_type) . ' #' . $activity->subject_id : '',
+                'time' => $activity->created_at->format('Y-m-d H:i'),
+                'color' => match ($activity->event) {
+                    'created' => '#22c55e',
+                    'updated' => '#3b82f6',
+                    'deleted' => '#ef4444',
+                    default => '#f59e0b',
+                },
+            ];
+        }
+
+        if (empty($activities)) {
+            $activities = [
                 [
                     'title' => 'Product Demo',
                     'description' => 'Sarah Johnson - TechCorp',
                     'time' => '2026-04-21 14:00',
-                    'color' => '#f59e0b', // amber/orange
+                    'color' => '#f59e0b',
                 ],
                 [
                     'title' => 'Follow-up Call',
                     'description' => 'Kevin Ardian - Global System',
                     'time' => '2026-04-21 10:30',
-                    'color' => '#22c55e', // green
+                    'color' => '#22c55e',
                 ],
-            ],
+            ];
+        }
+
+        return [
+            'activities' => $activities,
         ];
     }
 }
