@@ -9,14 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-public function up(): void
-{
-    Schema::table('users', function (Blueprint $table) {
-        $table->string('provider_name')->nullable();
-        $table->string('provider_id')->nullable();
-        $table->string('avatar_url')->nullable();
-    });
-}
+    public function up(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+            if (! Schema::hasColumn('users', 'provider_name')) {
+                $table->string('provider_name')->nullable();
+            }
+            if (! Schema::hasColumn('users', 'provider_id')) {
+                $table->string('provider_id')->nullable();
+            }
+            if (! Schema::hasColumn('users', 'avatar_url')) {
+                $table->string('avatar_url')->nullable();
+            }
+        });
+    }
 
     /**
      * Reverse the migrations.

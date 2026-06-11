@@ -9,12 +9,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
 
-
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
     Route::post('/reset-password', [AuthController::class, 'resetPassword']);
-
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
@@ -22,9 +20,7 @@ Route::prefix('v1')->group(function () {
         Route::post('/change-password', [AuthController::class, 'changePassword']); // ← pindah ke sini
     });
 
-
     Route::get('/dashboard/summary', [DashboardController::class, 'summary']);
-
 
     Route::middleware(['api.logger'])->prefix('notifications')->group(function () {
         Route::get('/', [NotificationController::class, 'index']);
@@ -36,7 +32,6 @@ Route::prefix('v1')->group(function () {
             return response()->json(['message' => 'API logging active']);
         });
     });
-
 
     Route::apiResource('customers', CustomerController::class);
 

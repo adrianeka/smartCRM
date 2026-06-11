@@ -49,5 +49,8 @@ class DatabaseSeeder extends Seeder
             );
             $user->assignRole($userData['role']);
         }
+
+        // 4. Seed Role-specific app notifications
+        $this->call(NotificationSeeder::class);
     }
 }

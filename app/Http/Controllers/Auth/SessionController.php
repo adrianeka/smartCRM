@@ -32,7 +32,7 @@ class SessionController extends Controller
         ];
 
         if (method_exists($guard, 'getName')) {
-            $sessionData['password_hash_' . $guard->getName()] = $user->getAuthPassword();
+            $sessionData['password_hash_'.$guard->getName()] = $user->getAuthPassword();
         }
 
         $request->session()->put($sessionData);

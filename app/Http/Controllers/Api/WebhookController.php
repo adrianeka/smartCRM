@@ -10,23 +10,23 @@ use OpenApi\Attributes as OA;
 class WebhookController extends Controller
 {
     #[OA\Post(
-        path: "/api/v1/webhook/receive",
-        summary: "Receive External Webhook",
-        tags: ["Webhook"],
+        path: '/api/v1/webhook/receive',
+        summary: 'Receive External Webhook',
+        tags: ['Webhook'],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
                 properties: [
-                    new OA\Property(property: "event", type: "string", example: "customer.created"),
-                    new OA\Property(property: "customer_id", type: "integer", example: 1)
+                    new OA\Property(property: 'event', type: 'string', example: 'customer.created'),
+                    new OA\Property(property: 'customer_id', type: 'integer', example: 1),
                 ]
             )
         ),
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Webhook accepted"
-            )
+                description: 'Webhook accepted'
+            ),
         ]
     )]
     public function receive(Request $request)

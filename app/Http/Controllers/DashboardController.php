@@ -10,14 +10,14 @@ use OpenApi\Attributes as OA;
 class DashboardController extends Controller
 {
     #[OA\Get(
-        path: "/api/v1/dashboard/summary",
-        summary: "Dashboard Summary",
-        tags: ["Dashboard"],
+        path: '/api/v1/dashboard/summary',
+        summary: 'Dashboard Summary',
+        tags: ['Dashboard'],
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Dashboard statistics"
-            )
+                description: 'Dashboard statistics'
+            ),
         ]
     )]
     public function summary()

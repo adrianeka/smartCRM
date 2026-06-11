@@ -8,9 +8,9 @@ return new class extends Migration
 {
     public function up(): void
     {
-       Schema::table('customers', function (Blueprint $table) {
-    $table->json('custom_fields')->nullable();
-    });
+        Schema::table('customers', function (Blueprint $table) {
+            $table->json('custom_fields')->nullable();
+        });
     }
 
     public function down(): void

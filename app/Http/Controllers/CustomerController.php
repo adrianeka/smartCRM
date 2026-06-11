@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Customer;
+use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
 
 class CustomerController extends Controller
 {
     // 1. READ: Menampilkan semua data pelanggan
     #[OA\Get(
-        path: "/api/v1/customers",
-        summary: "Get All Customers",
-        tags: ["Customer"],
-        security: [["sanctum" => []]],
+        path: '/api/v1/customers',
+        summary: 'Get All Customers',
+        tags: ['Customer'],
+        security: [['sanctum' => []]],
         responses: [
             new OA\Response(
                 response: 200,
-                description: "List of customers"
-            )
+                description: 'List of customers'
+            ),
         ]
     )]
     public function index()
@@ -33,22 +33,22 @@ class CustomerController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/v1/customers",
-        summary: "Create Customer",
-        tags: ["Customer"],
-        security: [["sanctum" => []]],
+        path: '/api/v1/customers',
+        summary: 'Create Customer',
+        tags: ['Customer'],
+        security: [['sanctum' => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
                 properties: [
-                    new OA\Property(property: "name", type: "string", example: "John Doe"),
-                    new OA\Property(property: "email", type: "string", example: "john@example.com"),
-                    new OA\Property(property: "phone", type: "string", example: "08123456789")
+                    new OA\Property(property: 'name', type: 'string', example: 'John Doe'),
+                    new OA\Property(property: 'email', type: 'string', example: 'john@example.com'),
+                    new OA\Property(property: 'phone', type: 'string', example: '08123456789'),
                 ]
             )
         ),
         responses: [
-            new OA\Response(response: 201, description: "Customer created")
+            new OA\Response(response: 201, description: 'Customer created'),
         ]
     )]
     // 2. CREATE: Menyimpan data pelanggan baru ke database
@@ -74,33 +74,33 @@ class CustomerController extends Controller
     }
 
     #[OA\Get(
-        path: "/api/v1/customers/{id}",
-        summary: "Get Customer Detail",
-        tags: ["Customer"],
-        security: [["sanctum" => []]],
+        path: '/api/v1/customers/{id}',
+        summary: 'Get Customer Detail',
+        tags: ['Customer'],
+        security: [['sanctum' => []]],
         parameters: [
             new OA\Parameter(
-                name: "id",
-                in: "path",
+                name: 'id',
+                in: 'path',
                 required: true,
-                schema: new OA\Schema(type: "integer")
-            )
+                schema: new OA\Schema(type: 'integer')
+            ),
         ],
         responses: [
             new OA\Response(
                 response: 200,
-                description: "List of customers",
+                description: 'List of customers',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(property: "status", type: "string", example: "success"),
+                        new OA\Property(property: 'status', type: 'string', example: 'success'),
                         new OA\Property(
-                            property: "data",
-                            type: "array",
-                            items: new OA\Items(ref: "#/components/schemas/Customer")
-                        )
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(ref: '#/components/schemas/Customer')
+                        ),
                     ]
                 )
-            )
+            ),
         ]
     )]
     // 3. READ: Menampilkan detail satu pelanggan spesifik
@@ -115,23 +115,23 @@ class CustomerController extends Controller
     }
 
     #[OA\Put(
-        path: "/api/v1/customers/{id}",
-        summary: "Update Customer",
-        tags: ["Customer"],
-        security: [["sanctum" => []]],
+        path: '/api/v1/customers/{id}',
+        summary: 'Update Customer',
+        tags: ['Customer'],
+        security: [['sanctum' => []]],
         parameters: [
             new OA\Parameter(
-                name: "id",
-                in: "path",
+                name: 'id',
+                in: 'path',
                 required: true,
-                schema: new OA\Schema(type: "integer")
-            )
+                schema: new OA\Schema(type: 'integer')
+            ),
         ],
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Customer updated"
-            )
+                description: 'Customer updated'
+            ),
         ]
     )]
     // 4. UPDATE: Mengubah data pelanggan yang sudah ada
@@ -148,23 +148,23 @@ class CustomerController extends Controller
     }
 
     #[OA\Delete(
-        path: "/api/v1/customers/{id}",
-        summary: "Delete Customer",
-        tags: ["Customer"],
-        security: [["sanctum" => []]],
+        path: '/api/v1/customers/{id}',
+        summary: 'Delete Customer',
+        tags: ['Customer'],
+        security: [['sanctum' => []]],
         parameters: [
             new OA\Parameter(
-                name: "id",
-                in: "path",
+                name: 'id',
+                in: 'path',
                 required: true,
-                schema: new OA\Schema(type: "integer")
-            )
+                schema: new OA\Schema(type: 'integer')
+            ),
         ],
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Customer deleted"
-            )
+                description: 'Customer deleted'
+            ),
         ]
     )]
     // 5. DELETE: Menghapus data pelanggan

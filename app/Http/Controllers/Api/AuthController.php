@@ -6,29 +6,29 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Sanctum\PersonalAccessToken;
-use OpenApi\Attributes as OA;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
+use Laravel\Sanctum\PersonalAccessToken;
+use OpenApi\Attributes as OA;
 
 class AuthController extends Controller
 {
     #[OA\Post(
-        path: "/api/v1/login",
-        summary: "User Login",
-        tags: ["Authentication"],
+        path: '/api/v1/login',
+        summary: 'User Login',
+        tags: ['Authentication'],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
                 properties: [
-                    new OA\Property(property: "email", type: "string", example: "user@example.com"),
-                    new OA\Property(property: "password", type: "string", example: "password123"),
+                    new OA\Property(property: 'email', type: 'string', example: 'user@example.com'),
+                    new OA\Property(property: 'password', type: 'string', example: 'password123'),
                 ]
             )
         ),
         responses: [
-            new OA\Response(response: 200, description: "Login success"),
-            new OA\Response(response: 401, description: "Invalid credentials"),
+            new OA\Response(response: 200, description: 'Login success'),
+            new OA\Response(response: 401, description: 'Invalid credentials'),
         ]
     )]
     public function login(Request $request)
@@ -65,23 +65,23 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/v1/register",
-        summary: "User Register",
-        tags: ["Authentication"],
+        path: '/api/v1/register',
+        summary: 'User Register',
+        tags: ['Authentication'],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
                 properties: [
-                    new OA\Property(property: "name", type: "string", example: "Vonny"),
-                    new OA\Property(property: "email", type: "string", example: "vonny@gmail.com"),
-                    new OA\Property(property: "password", type: "string", example: "password123"),
-                    new OA\Property(property: "password_confirmation", type: "string", example: "password123")
+                    new OA\Property(property: 'name', type: 'string', example: 'Vonny'),
+                    new OA\Property(property: 'email', type: 'string', example: 'vonny@gmail.com'),
+                    new OA\Property(property: 'password', type: 'string', example: 'password123'),
+                    new OA\Property(property: 'password_confirmation', type: 'string', example: 'password123'),
                 ]
             )
         ),
         responses: [
-            new OA\Response(response: 201, description: "Register success"),
-            new OA\Response(response: 422, description: "Validation error")
+            new OA\Response(response: 201, description: 'Register success'),
+            new OA\Response(response: 422, description: 'Validation error'),
         ]
     )]
     public function register(Request $request)
@@ -111,15 +111,15 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/v1/logout",
-        summary: "User Logout",
-        tags: ["Authentication"],
-        security: [["sanctum" => []]],
+        path: '/api/v1/logout',
+        summary: 'User Logout',
+        tags: ['Authentication'],
+        security: [['sanctum' => []]],
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Logout success"
-            )
+                description: 'Logout success'
+            ),
         ]
     )]
     public function logout(Request $request)
@@ -134,15 +134,15 @@ class AuthController extends Controller
     }
 
     #[OA\Get(
-        path: "/api/v1/me",
-        summary: "Current User Profile",
-        tags: ["Authentication"],
-        security: [["sanctum" => []]],
+        path: '/api/v1/me',
+        summary: 'Current User Profile',
+        tags: ['Authentication'],
+        security: [['sanctum' => []]],
         responses: [
             new OA\Response(
                 response: 200,
-                description: "User profile"
-            )
+                description: 'User profile'
+            ),
         ]
     )]
     public function me(Request $request)
@@ -153,26 +153,26 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/v1/forgot-password",
-        summary: "Forgot Password",
-        tags: ["Authentication"],
+        path: '/api/v1/forgot-password',
+        summary: 'Forgot Password',
+        tags: ['Authentication'],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
                 properties: [
-                    new OA\Property(property: "email", type: "string", example: "user@example.com"),
+                    new OA\Property(property: 'email', type: 'string', example: 'user@example.com'),
                 ]
             )
         ),
         responses: [
-            new OA\Response(response: 200, description: "Reset link sent"),
-            new OA\Response(response: 422, description: "Validation error"),
+            new OA\Response(response: 200, description: 'Reset link sent'),
+            new OA\Response(response: 422, description: 'Validation error'),
         ]
     )]
     public function forgotPassword(Request $request)
     {
         $request->validate([
-            'email' => 'required|email'
+            'email' => 'required|email',
         ]);
 
         Password::sendResetLink(
@@ -180,28 +180,28 @@ class AuthController extends Controller
         );
 
         return response()->json([
-            'message' => 'Reset password link sent'
+            'message' => 'Reset password link sent',
         ]);
     }
 
     #[OA\Post(
-        path: "/api/v1/reset-password",
-        summary: "Reset Password",
-        tags: ["Authentication"],
+        path: '/api/v1/reset-password',
+        summary: 'Reset Password',
+        tags: ['Authentication'],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
                 properties: [
-                    new OA\Property(property: "token", type: "string"),
-                    new OA\Property(property: "email", type: "string", example: "user@example.com"),
-                    new OA\Property(property: "password", type: "string", example: "newpassword123"),
-                    new OA\Property(property: "password_confirmation", type: "string", example: "newpassword123"),
+                    new OA\Property(property: 'token', type: 'string'),
+                    new OA\Property(property: 'email', type: 'string', example: 'user@example.com'),
+                    new OA\Property(property: 'password', type: 'string', example: 'newpassword123'),
+                    new OA\Property(property: 'password_confirmation', type: 'string', example: 'newpassword123'),
                 ]
             )
         ),
         responses: [
-            new OA\Response(response: 200, description: "Password reset success"),
-            new OA\Response(response: 422, description: "Validation error"),
+            new OA\Response(response: 200, description: 'Password reset success'),
+            new OA\Response(response: 422, description: 'Validation error'),
         ]
     )]
     public function resetPassword(Request $request)
@@ -221,41 +221,41 @@ class AuthController extends Controller
             ),
             function ($user, $password) {
                 $user->forceFill([
-                    'password' => Hash::make($password)
+                    'password' => Hash::make($password),
                 ])->save();
             }
         );
 
         return response()->json([
-            'message' => __($status)
+            'message' => __($status),
         ]);
     }
 
     #[OA\Post(
-        path: "/api/v1/change-password",
-        summary: "Change Password",
-        tags: ["Authentication"],
-        security: [["sanctum" => []]],
+        path: '/api/v1/change-password',
+        summary: 'Change Password',
+        tags: ['Authentication'],
+        security: [['sanctum' => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
                 properties: [
-                    new OA\Property(property: "current_password", type: "string", example: "oldpassword"),
-                    new OA\Property(property: "new_password", type: "string", example: "newpassword123"),
-                    new OA\Property(property: "new_password_confirmation", type: "string", example: "newpassword123"),
+                    new OA\Property(property: 'current_password', type: 'string', example: 'oldpassword'),
+                    new OA\Property(property: 'new_password', type: 'string', example: 'newpassword123'),
+                    new OA\Property(property: 'new_password_confirmation', type: 'string', example: 'newpassword123'),
                 ]
             )
         ),
         responses: [
-            new OA\Response(response: 200, description: "Password updated"),
-            new OA\Response(response: 422, description: "Validation error"),
+            new OA\Response(response: 200, description: 'Password updated'),
+            new OA\Response(response: 422, description: 'Validation error'),
         ]
     )]
     public function changePassword(Request $request)
     {
         $request->validate([
             'current_password' => 'required',
-            'new_password' => 'required|min:8|confirmed'
+            'new_password' => 'required|min:8|confirmed',
         ]);
 
         $user = $request->user();
@@ -266,19 +266,19 @@ class AuthController extends Controller
         )) {
             throw ValidationException::withMessages([
                 'current_password' => [
-                    'Current password is incorrect'
-                ]
+                    'Current password is incorrect',
+                ],
             ]);
         }
 
         $user->update([
             'password' => Hash::make(
                 $request->new_password
-            )
+            ),
         ]);
 
         return response()->json([
-            'message' => 'Password updated successfully'
+            'message' => 'Password updated successfully',
         ]);
     }
 }

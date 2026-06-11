@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use App\Http\Responses\LogoutResponse;
 use App\Models\Customer;
+use App\Models\WebhookLog;
+use App\Observers\CustomerObserver;
+use App\Observers\WebhookLogObserver;
 use App\Policies\ActivityPolicy;
 use App\Policies\CustomerPolicy;
 use App\Policies\RolePolicy;
@@ -41,5 +44,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Activity::class, ActivityPolicy::class);
         Gate::policy(Role::class, RolePolicy::class);
         Gate::policy(Customer::class, CustomerPolicy::class);
+
+        Customer::observe(CustomerObserver::class);
+        WebhookLog::observe(WebhookLogObserver::class);
     }
 }
