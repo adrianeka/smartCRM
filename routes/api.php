@@ -60,4 +60,5 @@ Route::prefix('v1')->group(function () {
 
 
     Route::get('/analytics/summary', [AnalyticsController::class, 'summary']);
+    Route::get('/analytics/customer-growth', [AnalyticsController::class, 'customerGrowth']);
 });

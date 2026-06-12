@@ -28,6 +28,20 @@
                 }
             }
         },
+        "/api/v1/analytics/customer-growth": {
+            "get": {
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Customer Growth Analytics",
+                "operationId": "d6f9d477f8188d28c74e3fa35844e6b0",
+                "responses": {
+                    "200": {
+                        "description": "Customer growth chart data"
+                    }
+                }
+            }
+        },
         "/api/v1/login": {
             "post": {
                 "tags": [
