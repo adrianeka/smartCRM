@@ -28,6 +28,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/dashboard/notifications',[DashboardController::class, 'notifications']);
     Route::get('/dashboard/guide',[DashboardController::class, 'guide']);
     Route::get('/dashboard/quick-links', [DashboardController::class, 'quickLinks']);
+    Route::get('/dashboard/tasks', [DashboardController::class, 'tasks']);
 
     Route::middleware(['api.logger'])->prefix('notifications')->group(function () {
         Route::get('/', [NotificationController::class, 'index']);

@@ -238,4 +238,40 @@ public function overview()
                 ]
             ]);
         }
+
+        #[OA\Get(
+    path: '/api/v1/dashboard/tasks',
+    summary: 'Today Tasks & Upcoming Deadlines',
+    tags: ['Dashboard'],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: 'Dashboard tasks'
+        )
+    ]
+)]
+
+public function tasks()
+{
+    return response()->json([
+        'status' => 'success',
+        'data' => [
+            [
+                'task' => 'Review customer imports',
+                'deadline' => now()->addDay()->toDateString(),
+                'status' => 'pending'
+            ],
+            [
+                'task' => 'Monitor notification logs',
+                'deadline' => now()->addDays(2)->toDateString(),
+                'status' => 'pending'
+            ],
+            [
+                'task' => 'Check webhook delivery',
+                'deadline' => now()->addDays(3)->toDateString(),
+                'status' => 'pending'
+            ]
+        ]
+    ]);
+}
 }
