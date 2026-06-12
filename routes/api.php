@@ -6,6 +6,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AnalyticsController;
 
 Route::prefix('v1')->group(function () {
 
@@ -56,4 +57,7 @@ Route::prefix('v1')->group(function () {
 
     Route::post('/webhook/receive', [WebhookController::class, 'receive']);
     Route::patch('/customers/{id}/favorite', [CustomerController::class, 'toggleFavorite']);
+
+
+    Route::get('/analytics/summary', [AnalyticsController::class, 'summary']);
 });
