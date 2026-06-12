@@ -35,17 +35,9 @@ public function summary()
 
             'notifications_unread' => Notification::whereNull('read_at')->count(),
 
-            'customers_today' => Customer::whereDate(
-                'created_at',
-                Carbon::today()
-            )->count(),
+            'customers_today' => Customer::whereDate('created_at',Carbon::today())->count(),
 
-            'customers_this_month' => Customer::whereMonth(
-                'created_at',
-                Carbon::now()->month
-            )->whereYear(
-                'created_at',
-                Carbon::now()->year
+            'customers_this_month' => Customer::whereMonth('created_at',Carbon::now()->month)->whereYear('created_at',Carbon::now()->year
             )->count(),
         ]
     ]);
@@ -127,6 +119,35 @@ public function overview()
                 'latest_notifications' => Notification::latest()
                     ->take(5)
                     ->get()
+            ]
+        ]);
+    }
+
+    public function guide()
+    {
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                [
+                    'step' => 1,
+                    'title' => 'Create Customer',
+                    'description' => 'Tambahkan pelanggan baru ke sistem CRM'
+                ],
+                [
+                    'step' => 2,
+                    'title' => 'Manage Customer',
+                    'description' => 'Kelola data pelanggan, tag, dan custom field'
+                ],
+                [
+                    'step' => 3,
+                    'title' => 'Monitor Notifications',
+                    'description' => 'Pantau notifikasi terbaru dari sistem'
+                ],
+                [
+                    'step' => 4,
+                    'title' => 'View Dashboard Reports',
+                    'description' => 'Lihat statistik dan ringkasan bisnis'
+                ]
             ]
         ]);
     }
