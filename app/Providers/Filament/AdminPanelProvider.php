@@ -93,8 +93,4 @@ class AdminPanelProvider extends PanelProvider
                 fn (): string => Blade::render('@include("filament.components.google-login-button")'),
             );
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 92117236d2a356558d4a3ba2b67bdfc2a5dc0e2e
