@@ -173,7 +173,7 @@
                     "Authentication"
                 ],
                 "summary": "Reset Password",
-                "operationId": "c72671cef8914513a10d5bc2240c50cf",
+                "operationId": "e37d100fe1f75b045a6cc6ab349205a6",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -287,6 +287,45 @@
                 "responses": {
                     "200": {
                         "description": "Webhook accepted"
+                    }
+                }
+            }
+        },
+        "/auth/{provider}/redirect": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Redirect To OAuth Provider",
+                "operationId": "01c2876307a726e55c358f009cb489a2",
+                "parameters": [
+                    {
+                        "name": "provider",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "google"
+                    }
+                ],
+                "responses": {
+                    "302": {
+                        "description": "Redirect to OAuth Provider"
+                    }
+                }
+            }
+        },
+        "/auth/{provider}/callback": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "OAuth Callback",
+                "operationId": "66da5b2224e2a9f3a17117357c5a885e",
+                "responses": {
+                    "200": {
+                        "description": "OAuth Login Success"
                     }
                 }
             }
@@ -466,6 +505,62 @@
                     }
                 }
             }
+        },
+        "/api/v1/dashboard/overview": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Dashboard Overview",
+                "operationId": "a8d5b8ad142fd3322389fa020bfb7f95",
+                "responses": {
+                    "200": {
+                        "description": "Dashboard overview data"
+                    }
+                }
+            }
+        },
+        "/api/v1/dashboard/customer-growth": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Customer Growth Statistics",
+                "operationId": "5c9971eae15195346ebc4d42ae6a6bfc",
+                "responses": {
+                    "200": {
+                        "description": "Customer growth chart data"
+                    }
+                }
+            }
+        },
+        "/api/v1/dashboard/notifications": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Dashboard Notification Center",
+                "operationId": "cadca0e4270ad70ce49684ba49831e0a",
+                "responses": {
+                    "200": {
+                        "description": "Latest notifications"
+                    }
+                }
+            }
+        },
+        "/api/v1/dashboard/guide": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Quick Start Guide",
+                "operationId": "87d6850038df3d19a2b017943066643a",
+                "responses": {
+                    "200": {
+                        "description": "Quick start guide"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -530,6 +625,10 @@
         {
             "name": "Webhook",
             "description": "Webhook"
+        },
+        {
+            "name": "Auth",
+            "description": "Auth"
         },
         {
             "name": "Customer",

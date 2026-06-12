@@ -43,6 +43,18 @@ public function summary()
     ]);
 }
 
+#[OA\Get(
+    path: "/api/v1/dashboard/overview",
+    summary: "Dashboard Overview",
+    tags: ["Dashboard"],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: "Dashboard overview data"
+        )
+    ]
+)]
+
 public function overview()
 {
     $user = Auth::user();
@@ -90,6 +102,18 @@ public function overview()
     ]);
 }
 
+#[OA\Get(
+    path: "/api/v1/dashboard/customer-growth",
+    summary: "Customer Growth Statistics",
+    tags: ["Dashboard"],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: "Customer growth chart data"
+        )
+    ]
+)]
+
     public function customerGrowth()
     {
         $growth = Customer::select(
@@ -110,6 +134,20 @@ public function overview()
         ]);
     }
 
+
+    #[OA\Get(
+    path: "/api/v1/dashboard/notifications",
+    summary: "Dashboard Notification Center",
+    tags: ["Dashboard"],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: "Latest notifications"
+        )
+    ]
+)]
+
+
     public function notifications()
     {
         return response()->json([
@@ -122,6 +160,18 @@ public function overview()
             ]
         ]);
     }
+
+    #[OA\Get(
+    path: "/api/v1/dashboard/guide",
+    summary: "Quick Start Guide",
+    tags: ["Dashboard"],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: "Quick start guide"
+        )
+    ]
+)]
 
     public function guide()
     {
