@@ -28,4 +28,21 @@ class DashboardController extends Controller
             'notifications_unread' => Notification::whereNull('read_at')->count(),
         ]);
     }
+
+    public function overview()
+    {
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'welcome_message' => 'Welcome to SmartCRM',
+                'role' => 'Admin',
+                'quick_links' => [
+                    'dashboard',
+                    'customers',
+                    'notifications',
+                    'auth'
+                ]
+            ]
+        ]);
+    }
 }
