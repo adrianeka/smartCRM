@@ -10,6 +10,7 @@ use OpenApi\Attributes as OA;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
+
 class DashboardController extends Controller
 {
     #[OA\Get(
@@ -114,6 +115,19 @@ public function overview()
         return response()->json([
             'status' => 'success',
             'data' => $growth
+        ]);
+    }
+
+    public function notifications()
+    {
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'unread_count' => Notification::whereNull('read_at')->count(),
+                'latest_notifications' => Notification::latest()
+                    ->take(5)
+                    ->get()
+            ]
         ]);
     }
 }
