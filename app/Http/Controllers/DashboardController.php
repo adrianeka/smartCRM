@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Notification;
 use App\Models\User;
+use Carbon\Carbon;
 use OpenApi\Attributes as OA;
 
 class DashboardController extends Controller
@@ -20,14 +21,32 @@ class DashboardController extends Controller
             ),
         ]
     )]
-    public function summary()
-    {
-        return response()->json([
+public function summary()
+{
+    return response()->json([
+        'status' => 'success',
+        'data' => [
             'total_users' => User::count(),
+
             'total_customers' => Customer::count(),
+
             'notifications_unread' => Notification::whereNull('read_at')->count(),
-        ]);
-    }
+
+            'customers_today' => Customer::whereDate(
+                'created_at',
+                Carbon::today()
+            )->count(),
+
+            'customers_this_month' => Customer::whereMonth(
+                'created_at',
+                Carbon::now()->month
+            )->whereYear(
+                'created_at',
+                Carbon::now()->year
+            )->count(),
+        ]
+    ]);
+}
 
     public function overview()
     {
