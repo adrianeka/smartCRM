@@ -11,11 +11,26 @@ use OpenApi\Attributes as OA;
 
 class SocialiteController extends Controller
 {
-    #[OA\Get(
-        path: '/auth/google/redirect',
-        summary: 'Redirect to Google OAuth',
-        tags: ['OAuth']
-    )]
+        #[OA\Get(
+            path: "/auth/{provider}/redirect",
+            summary: "Redirect To OAuth Provider",
+            tags: ["Auth"],
+            parameters: [
+                new OA\Parameter(
+                    name: "provider",
+                    in: "path",
+                    required: true,
+                    schema: new OA\Schema(type: "string"),
+                    example: "google"
+                )
+            ],
+            responses: [
+                new OA\Response(
+                    response: 302,
+                    description: "Redirect to OAuth Provider"
+                )
+            ]
+        )]
     public function redirectToProvider(string $provider)
     {
         if ($provider !== 'google') {
@@ -26,9 +41,15 @@ class SocialiteController extends Controller
     }
 
     #[OA\Get(
-        path: '/auth/google/callback',
-        summary: 'Google OAuth Callback',
-        tags: ['OAuth']
+        path: "/auth/{provider}/callback",
+        summary: "OAuth Callback",
+        tags: ["Auth"],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "OAuth Login Success"
+            )
+        ]
     )]
     public function handleProviderCallback(string $provider, Request $request)
     {
