@@ -41,7 +41,28 @@ class CustomerController extends Controller
                     ->orWhere('full_name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
                     ->orWhere('phone', 'like', "%{$search}%")
-                    ->orWhere('company_name', 'like', "%{$search}%");
+                    ->orWhere('whatsapp', 'like', "%{$search}%")
+                    ->orWhere('company_name', 'like', "%{$search}%")
+                    ->orWhere('industry', 'like', "%{$search}%")
+                    ->orWhere('city', 'like', "%{$search}%")
+                    ->orWhere('province', 'like', "%{$search}%")
+                    ->orWhere('source', 'like', "%{$search}%");
+
+                if (DB::connection()->getDriverName() === 'mysql') {
+                    $q->orWhereFullText([
+                            'customer_code',
+                            'full_name',
+                            'email',
+                            'phone',
+                            'whatsapp',
+                            'company_name',
+                            'industry',
+                            'city',
+                            'province',
+                            'source',
+                            'notes',
+                        ], $search);
+                }
             });
         }
 
@@ -51,6 +72,22 @@ class CustomerController extends Controller
 
         if ($request->filled('company_name')) {
             $query->where('company_name', 'like', "%{$request->company_name}%");
+        }
+
+        if ($request->filled('industry')) {
+            $query->where('industry', 'like', "%{$request->industry}%");
+        }
+
+        if ($request->filled('city')) {
+            $query->where('city', 'like', "%{$request->city}%");
+        }
+
+        if ($request->filled('customer_type')) {
+            $query->where('customer_type', $request->customer_type);
+        }
+
+        if ($request->filled('source')) {
+            $query->where('source', $request->source);
         }
 
         if ($request->filled('tag')) {
@@ -87,8 +124,13 @@ class CustomerController extends Controller
                 'full_name',
                 'email',
                 'phone',
+                'whatsapp',
                 'company_name',
+                'industry',
                 'status',
+                'customer_type',
+                'source',
+                'lead_score',
                 'assigned_user_id',
                 'created_at',
                 'updated_at',
@@ -291,8 +333,29 @@ class CustomerController extends Controller
                 'full_name',
                 'email',
                 'phone',
+                'whatsapp',
+                'website',
                 'company_name',
+                'industry',
+                'job_title',
+                'identity_number',
+                'tax_number',
+                'gender',
+                'birth_date',
+                'address',
+                'city',
+                'province',
+                'postal_code',
+                'country',
                 'status',
+                'customer_type',
+                'source',
+                'lead_score',
+                'preferred_contact_method',
+                'last_contacted_at',
+                'next_follow_up_at',
+                'notes',
+                'is_favorite',
                 'assigned_to',
             ]);
 
@@ -302,8 +365,29 @@ class CustomerController extends Controller
                     $customer->full_name,
                     $customer->email,
                     $customer->phone,
+                    $customer->whatsapp,
+                    $customer->website,
                     $customer->company_name,
+                    $customer->industry,
+                    $customer->job_title,
+                    $customer->identity_number,
+                    $customer->tax_number,
+                    $customer->gender,
+                    optional($customer->birth_date)->format('Y-m-d'),
+                    $customer->address,
+                    $customer->city,
+                    $customer->province,
+                    $customer->postal_code,
+                    $customer->country,
                     $customer->status,
+                    $customer->customer_type,
+                    $customer->source,
+                    $customer->lead_score,
+                    $customer->preferred_contact_method,
+                    optional($customer->last_contacted_at)->format('Y-m-d H:i:s'),
+                    optional($customer->next_follow_up_at)->format('Y-m-d H:i:s'),
+                    $customer->notes,
+                    $customer->is_favorite ? 'yes' : 'no',
                     $customer->assignedUser?->name,
                 ]);
             }
@@ -342,8 +426,29 @@ class CustomerController extends Controller
                     'full_name',
                     'email',
                     'phone',
+                    'whatsapp',
+                    'website',
                     'company_name',
+                    'industry',
+                    'job_title',
+                    'identity_number',
+                    'tax_number',
+                    'gender',
+                    'birth_date',
+                    'address',
+                    'city',
+                    'province',
+                    'postal_code',
+                    'country',
                     'status',
+                    'customer_type',
+                    'source',
+                    'lead_score',
+                    'preferred_contact_method',
+                    'last_contacted_at',
+                    'next_follow_up_at',
+                    'notes',
+                    'is_favorite',
                     'assigned_to',
                     'custom_fields',
                 ];
@@ -356,13 +461,44 @@ class CustomerController extends Controller
                     $customer->full_name,
                     $customer->email,
                     $customer->phone,
+                    $customer->whatsapp,
+                    $customer->website,
                     $customer->company_name,
+                    $customer->industry,
+                    $customer->job_title,
+                    $customer->identity_number,
+                    $customer->tax_number,
+                    $customer->gender,
+                    optional($customer->birth_date)->format('Y-m-d'),
+                    $customer->address,
+                    $customer->city,
+                    $customer->province,
+                    $customer->postal_code,
+                    $customer->country,
                     $customer->status,
+                    $customer->customer_type,
+                    $customer->source,
+                    $customer->lead_score,
+                    $customer->preferred_contact_method,
+                    optional($customer->last_contacted_at)->format('Y-m-d H:i:s'),
+                    optional($customer->next_follow_up_at)->format('Y-m-d H:i:s'),
+                    $customer->notes,
+                    $customer->is_favorite ? 'yes' : 'no',
                     $customer->assignedUser?->name,
                     $customer->customFields
-                        ->mapWithKeys(fn ($field) => [$field->field_key => $field->field_value])
+                        ->mapWithKeys(fn ($field) => [$field->field_key => $this->customFieldDisplayValue($field)])
                         ->toJson(),
                 ];
+            }
+
+            private function customFieldDisplayValue($field): mixed
+            {
+                return match ($field->field_type) {
+                    'date' => optional($field->field_date)->format('Y-m-d'),
+                    'checkbox' => $field->field_boolean,
+                    'file' => $field->file_path,
+                    default => $field->field_value,
+                };
             }
         };
 
@@ -578,8 +714,29 @@ class CustomerController extends Controller
                 Rule::unique('customers', 'email')->ignore($customerId),
             ],
             'phone' => 'nullable|string|max:255',
+            'whatsapp' => 'nullable|string|max:255',
+            'website' => 'nullable|url|max:255',
             'company_name' => 'nullable|string|max:255',
+            'industry' => 'nullable|string|max:255',
+            'job_title' => 'nullable|string|max:255',
+            'identity_number' => 'nullable|string|max:255',
+            'tax_number' => 'nullable|string|max:255',
+            'gender' => 'nullable|string|max:255',
+            'birth_date' => 'nullable|date',
+            'address' => 'nullable|string',
+            'city' => 'nullable|string|max:255',
+            'province' => 'nullable|string|max:255',
+            'postal_code' => 'nullable|string|max:255',
+            'country' => 'nullable|string|max:255',
             'status' => 'nullable|string|max:255',
+            'customer_type' => 'nullable|string|max:255',
+            'source' => 'nullable|string|max:255',
+            'lead_score' => 'nullable|integer|min:0|max:100',
+            'preferred_contact_method' => 'nullable|string|max:255',
+            'last_contacted_at' => 'nullable|date',
+            'next_follow_up_at' => 'nullable|date',
+            'notes' => 'nullable|string',
+            'is_favorite' => 'nullable|boolean',
             'assigned_user_id' => 'nullable|exists:users,id',
             'custom_fields' => 'nullable|array',
         ];
@@ -591,10 +748,31 @@ class CustomerController extends Controller
             ->only([
                 'customer_code',
                 'full_name',
+                'job_title',
                 'email',
+                'website',
                 'phone',
+                'whatsapp',
                 'company_name',
+                'industry',
+                'identity_number',
+                'tax_number',
+                'gender',
+                'birth_date',
+                'address',
+                'city',
+                'province',
+                'postal_code',
+                'country',
                 'status',
+                'customer_type',
+                'source',
+                'lead_score',
+                'preferred_contact_method',
+                'last_contacted_at',
+                'next_follow_up_at',
+                'notes',
+                'is_favorite',
                 'assigned_user_id',
                 'custom_fields',
             ])
@@ -628,19 +806,34 @@ class CustomerController extends Controller
                 if ($isList) {
                     return [
                         'field_key' => $value['field_key'] ?? null,
+                        'field_type' => $value['field_type'] ?? 'text',
+                        'field_options' => $value['field_options'] ?? null,
                         'field_value' => $value['field_value'] ?? null,
+                        'field_date' => $value['field_date'] ?? null,
+                        'field_boolean' => $value['field_boolean'] ?? null,
+                        'file_path' => $value['file_path'] ?? null,
                     ];
                 }
 
                 return [
                     'field_key' => $key,
+                    'field_type' => 'text',
+                    'field_options' => null,
                     'field_value' => $value,
+                    'field_date' => null,
+                    'field_boolean' => null,
+                    'file_path' => null,
                 ];
             })
             ->filter(fn ($field) => filled($field['field_key']))
             ->map(fn ($field) => [
                 'field_key' => (string) $field['field_key'],
+                'field_type' => (string) ($field['field_type'] ?? 'text'),
+                'field_options' => $field['field_options'] ?? null,
                 'field_value' => (string) ($field['field_value'] ?? ''),
+                'field_date' => $field['field_date'] ?? null,
+                'field_boolean' => $field['field_boolean'] ?? null,
+                'file_path' => $field['file_path'] ?? null,
             ])
             ->values()
             ->all();
@@ -696,7 +889,36 @@ class CustomerController extends Controller
 
     private function mergedCustomerPayload(Customer $primary, Customer $duplicate, string $strategy, array $overrides): array
     {
-        $fields = ['customer_code', 'full_name', 'email', 'phone', 'company_name', 'status'];
+        $fields = [
+            'customer_code',
+            'full_name',
+            'job_title',
+            'email',
+            'website',
+            'phone',
+            'whatsapp',
+            'company_name',
+            'industry',
+            'identity_number',
+            'tax_number',
+            'gender',
+            'birth_date',
+            'address',
+            'city',
+            'province',
+            'postal_code',
+            'country',
+            'status',
+            'customer_type',
+            'source',
+            'lead_score',
+            'preferred_contact_method',
+            'last_contacted_at',
+            'next_follow_up_at',
+            'notes',
+            'assigned_user_id',
+            'is_favorite',
+        ];
         $payload = [];
 
         foreach ($fields as $field) {
@@ -726,4 +948,5 @@ class CustomerController extends Controller
 
         $this->syncCustomFields($primary, $fields);
     }
+
 }

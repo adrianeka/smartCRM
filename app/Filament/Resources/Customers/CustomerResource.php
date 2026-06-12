@@ -16,9 +16,16 @@ use Filament\Tables\Table;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Illuminate\Support\Facades\DB;
 use App\Filament\Resources\Customers\Pages\CreateCustomer;
 use App\Filament\Resources\Customers\Pages\DuplicateCustomers;
@@ -59,19 +66,48 @@ class CustomerResource extends Resource
                         ->required()
                         ->maxLength(255)
                         ->label('Nama Lengkap'),
+                    TextInput::make('job_title')
+                        ->maxLength(255)
+                        ->label('Jabatan'),
                     TextInput::make('email')
                         ->email()
                         ->required()
                         ->unique(ignoreRecord: true)
                         ->maxLength(255)
                         ->label('Alamat Email'),
+                    TextInput::make('website')
+                        ->url()
+                        ->maxLength(255)
+                        ->label('Website'),
                     TextInput::make('phone')
                         ->tel()
                         ->maxLength(20)
                         ->label('No. Telepon'),
+                    TextInput::make('whatsapp')
+                        ->tel()
+                        ->maxLength(20)
+                        ->label('No. WhatsApp'),
                     TextInput::make('company_name')
                         ->maxLength(255)
                         ->label('Nama Perusahaan'),
+                    TextInput::make('industry')
+                        ->maxLength(255)
+                        ->label('Industri'),
+                    TextInput::make('identity_number')
+                        ->maxLength(255)
+                        ->label('No. Identitas / KTP'),
+                    TextInput::make('tax_number')
+                        ->maxLength(255)
+                        ->label('NPWP'),
+                    Select::make('gender')
+                        ->options([
+                            'male' => 'Laki-laki',
+                            'female' => 'Perempuan',
+                            'other' => 'Lainnya',
+                        ])
+                        ->label('Jenis Kelamin'),
+                    DatePicker::make('birth_date')
+                        ->label('Tanggal Lahir'),
                     Select::make('status')
                         ->options([
                             'Lead'     => 'Lead (Calon)',
@@ -82,6 +118,45 @@ class CustomerResource extends Resource
                         ->required()
                         ->default('Lead')
                         ->label('Status Pelanggan'),
+                    Select::make('customer_type')
+                        ->options([
+                            'Individual' => 'Individual',
+                            'B2B' => 'B2B',
+                            'Retail' => 'Retail',
+                            'Enterprise' => 'Enterprise',
+                            'Government' => 'Government',
+                        ])
+                        ->label('Tipe Customer'),
+                    Select::make('source')
+                        ->options([
+                            'Website' => 'Website',
+                            'Referral' => 'Referral',
+                            'Campaign' => 'Campaign',
+                            'Social Media' => 'Social Media',
+                            'Event' => 'Event',
+                            'Walk-in' => 'Walk-in',
+                            'Other' => 'Lainnya',
+                        ])
+                        ->label('Sumber Data'),
+                    TextInput::make('lead_score')
+                        ->numeric()
+                        ->minValue(0)
+                        ->maxValue(100)
+                        ->label('Lead Score'),
+                    Select::make('preferred_contact_method')
+                        ->options([
+                            'Email' => 'Email',
+                            'Phone' => 'Telepon',
+                            'WhatsApp' => 'WhatsApp',
+                            'Meeting' => 'Meeting',
+                        ])
+                        ->label('Metode Kontak Favorit'),
+                    DateTimePicker::make('last_contacted_at')
+                        ->label('Terakhir Dihubungi'),
+                    DateTimePicker::make('next_follow_up_at')
+                        ->label('Jadwal Follow-up Berikutnya'),
+                    Toggle::make('is_favorite')
+                        ->label('Masuk Favorite List'),
                     Select::make('assigned_user_id')
                         ->label('Ditugaskan ke Sales/Admin')
                         ->options(fn (): array => User::query()
@@ -91,6 +166,29 @@ class CustomerResource extends Resource
                             ->all())
                         ->searchable()
                         ->preload(),
+                    Textarea::make('address')
+                        ->rows(3)
+                        ->maxLength(1000)
+                        ->label('Alamat')
+                        ->columnSpanFull(),
+                    TextInput::make('city')
+                        ->maxLength(255)
+                        ->label('Kota'),
+                    TextInput::make('province')
+                        ->maxLength(255)
+                        ->label('Provinsi'),
+                    TextInput::make('postal_code')
+                        ->maxLength(20)
+                        ->label('Kode Pos'),
+                    TextInput::make('country')
+                        ->maxLength(255)
+                        ->default('Indonesia')
+                        ->label('Negara'),
+                    Textarea::make('notes')
+                        ->rows(3)
+                        ->maxLength(2000)
+                        ->label('Catatan Internal')
+                        ->columnSpanFull(),
                 ])->columns(2),
 
             Section::make('Segmentasi Pelanggan')
@@ -124,15 +222,73 @@ class CustomerResource extends Resource
                                 ->maxLength(100)
                                 ->placeholder('Contoh: NPWP, LinkedIn, No. Akta')
                                 ->label('Nama Atribut / Label Kolom'),
+                            Select::make('field_type')
+                                ->options([
+                                    'text' => 'Text',
+                                    'dropdown' => 'Dropdown',
+                                    'date' => 'Date',
+                                    'checkbox' => 'Checkbox',
+                                    'file' => 'File',
+                                ])
+                                ->default('text')
+                                ->required()
+                                ->label('Tipe Field'),
+                            TextInput::make('field_options')
+                                ->helperText('Khusus dropdown. Pisahkan opsi dengan koma, contoh: Gold, Silver, Bronze.')
+                                ->dehydrateStateUsing(fn ($state) => filled($state)
+                                    ? collect(explode(',', $state))->map(fn ($option) => trim($option))->filter()->values()->all()
+                                    : null)
+                                ->formatStateUsing(fn ($state) => is_array($state) ? implode(', ', $state) : $state)
+                                ->label('Opsi Dropdown'),
                             TextInput::make('field_value')
                                 ->maxLength(500)
-                                ->placeholder('Masukkan isi data atribut...')
-                                ->label('Isi Data / Nilai'),
+                                ->placeholder('Masukkan isi data atribut atau nilai dropdown...')
+                                ->label('Nilai Text/Dropdown'),
+                            DatePicker::make('field_date')
+                                ->label('Nilai Tanggal'),
+                            Toggle::make('field_boolean')
+                                ->label('Nilai Checkbox'),
+                            FileUpload::make('file_path')
+                                ->disk('public')
+                                ->directory('customer-custom-fields')
+                                ->downloadable()
+                                ->openable()
+                                ->label('Nilai File'),
                         ])
                         ->columns(2)
                         ->defaultItems(0)
                         ->addActionLabel('Tambah Kolom Fleksibel Baru')
                         ->label('')
+                ])->columnSpanFull(),
+
+            Section::make('Lampiran Pelanggan')
+                ->description('Upload dokumen pendukung seperti foto KTP, kontrak PDF, atau dokumen legal pelanggan.')
+                ->collapsible()
+                ->schema([
+                    Repeater::make('attachments')
+                        ->relationship('attachments')
+                        ->schema([
+                            TextInput::make('file_name')
+                                ->required()
+                                ->maxLength(255)
+                                ->label('Nama Dokumen'),
+                            FileUpload::make('file_path')
+                                ->required()
+                                ->disk('public')
+                                ->directory('customer-attachments')
+                                ->downloadable()
+                                ->openable()
+                                ->previewable()
+                                ->label('File'),
+                            TextInput::make('file_type')
+                                ->maxLength(255)
+                                ->placeholder('application/pdf, image/jpeg')
+                                ->label('Tipe File'),
+                        ])
+                        ->columns(3)
+                        ->defaultItems(0)
+                        ->addActionLabel('Tambah Lampiran')
+                        ->label(''),
                 ])->columnSpanFull(),
 
             // FITUR: CATATAN RIWAYAT & TIMELINE (CUSTOMER ACTIVITY LOGS)
@@ -169,9 +325,24 @@ class CustomerResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('customer_code')->searchable()->sortable()->label('Kode'),
+                IconColumn::make('is_favorite')
+                    ->boolean()
+                    ->trueIcon('heroicon-s-star')
+                    ->falseIcon('heroicon-o-star')
+                    ->trueColor('warning')
+                    ->falseColor('gray')
+                    ->label('Favorit'),
                 TextColumn::make('full_name')->searchable()->sortable()->label('Nama Lengkap'),
                 TextColumn::make('email')->searchable()->label('Email'),
                 TextColumn::make('company_name')->searchable()->label('Perusahaan'),
+                TextColumn::make('industry')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Industri'),
+                TextColumn::make('city')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Kota'),
                 TextColumn::make('assignedUser.name')
                     ->searchable()
                     ->sortable()
@@ -227,8 +398,25 @@ class CustomerResource extends Resource
                     ->searchable()
                     ->preload()
                     ->label('Filter Tag'),
+                TernaryFilter::make('is_favorite')
+                    ->label('Favorite List')
+                    ->trueLabel('Hanya Favorit')
+                    ->falseLabel('Bukan Favorit')
+                    ->native(false),
             ])
             ->recordActions([
+                Action::make('toggleFavorite')
+                    ->label(fn (Customer $record): string => $record->is_favorite ? 'Hapus Favorit' : 'Jadikan Favorit')
+                    ->icon(fn (Customer $record): string => $record->is_favorite ? 'heroicon-s-star' : 'heroicon-o-star')
+                    ->color('warning')
+                    ->action(function (Customer $record): void {
+                        $record->update(['is_favorite' => ! $record->is_favorite]);
+
+                        Notification::make()
+                            ->title($record->is_favorite ? 'Customer masuk favorite list' : 'Customer dihapus dari favorite list')
+                            ->success()
+                            ->send();
+                    }),
                 ViewAction::make()
                     ->visible(fn (): bool => auth()->user()?->hasAnyRole(['super_admin', 'Support', 'Manager/Analyst']) ?? false),
                 EditAction::make()
@@ -275,11 +463,41 @@ class CustomerResource extends Resource
                             }
 
                             if ($strategy === 'prefer_complete') {
-                                $primary->update([
-                                    'phone' => $primary->phone ?: $duplicate->phone,
-                                    'company_name' => $primary->company_name ?: $duplicate->company_name,
-                                    'status' => $primary->status ?: $duplicate->status,
-                                ]);
+                                $mergeFields = [
+                                    'job_title',
+                                    'website',
+                                    'phone',
+                                    'whatsapp',
+                                    'company_name',
+                                    'industry',
+                                    'identity_number',
+                                    'tax_number',
+                                    'gender',
+                                    'birth_date',
+                                    'address',
+                                    'city',
+                                    'province',
+                                    'postal_code',
+                                    'country',
+                                    'status',
+                                    'customer_type',
+                                    'source',
+                                    'lead_score',
+                                    'preferred_contact_method',
+                                    'last_contacted_at',
+                                    'next_follow_up_at',
+                                    'notes',
+                                    'assigned_user_id',
+                                    'is_favorite',
+                                ];
+
+                                $payload = [];
+
+                                foreach ($mergeFields as $field) {
+                                    $payload[$field] = filled($primary->{$field}) ? $primary->{$field} : $duplicate->{$field};
+                                }
+
+                                $primary->update($payload);
                             }
 
                             $customFields = $primary->customFields

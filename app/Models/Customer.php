@@ -17,16 +17,41 @@ class Customer extends Model
     protected $fillable = [
         'customer_code',
         'full_name',
+        'job_title',
         'email',
+        'website',
         'phone',
+        'whatsapp',
         'company_name',
+        'industry',
+        'identity_number',
+        'tax_number',
+        'gender',
+        'birth_date',
+        'address',
+        'city',
+        'province',
+        'postal_code',
+        'country',
         'status',
+        'customer_type',
+        'source',
+        'lead_score',
+        'preferred_contact_method',
+        'last_contacted_at',
+        'next_follow_up_at',
+        'notes',
+        'is_favorite',
         'assigned_user_id',
         'custom_fields',
     ];
 
     protected $casts = [
         'custom_fields' => 'array',
+        'birth_date' => 'date',
+        'last_contacted_at' => 'datetime',
+        'next_follow_up_at' => 'datetime',
+        'is_favorite' => 'boolean',
     ];
 
     // Relasi ke Kolom Fleksibel (Custom Fields)

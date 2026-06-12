@@ -52,12 +52,41 @@ class DuplicateCustomers extends Page
                 return;
             }
 
-            $primary->update([
-                'phone' => $primary->phone ?: $duplicate->phone,
-                'company_name' => $primary->company_name ?: $duplicate->company_name,
-                'status' => $primary->status ?: $duplicate->status,
-                'assigned_user_id' => $primary->assigned_user_id ?: $duplicate->assigned_user_id,
-            ]);
+            $mergeFields = [
+                'job_title',
+                'website',
+                'phone',
+                'whatsapp',
+                'company_name',
+                'industry',
+                'identity_number',
+                'tax_number',
+                'gender',
+                'birth_date',
+                'address',
+                'city',
+                'province',
+                'postal_code',
+                'country',
+                'status',
+                'customer_type',
+                'source',
+                'lead_score',
+                'preferred_contact_method',
+                'last_contacted_at',
+                'next_follow_up_at',
+                'notes',
+                'assigned_user_id',
+                'is_favorite',
+            ];
+
+            $payload = [];
+
+            foreach ($mergeFields as $field) {
+                $payload[$field] = filled($primary->{$field}) ? $primary->{$field} : $duplicate->{$field};
+            }
+
+            $primary->update($payload);
 
             $customFields = $primary->customFields
                 ->mapWithKeys(fn ($field) => [$field->field_key => $field->field_value])
