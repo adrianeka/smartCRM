@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\Customers\Schemas;
 
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea; // 1. Kita import Textarea yang asli di sini Kel
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput; // 1. Kita import Textarea yang asli di sini Kel
 use Filament\Schemas\Schema;
 
 class CustomerForm
@@ -27,13 +27,13 @@ class CustomerForm
                 TextInput::make('status')
                     ->required()
                     ->default('Lead'),
-                
+
                 // 2. Kita selipkan komponen Textarea di paling bawah array components
                 Textarea::make('custom_fields')
                     ->label('Informasi Tambahan (Format JSON)')
                     ->placeholder('{"Instagram": "@budi_jaya", "Kategori": "VIP"}')
                     ->rows(3)
-                    ->helperText('Masukkan data tambahan dengan format JSON kustom jika diperlukan.')
+                    ->helperText('Masukkan data tambahan dengan format JSON kustom jika diperlukan.'),
             ]);
     }
 }

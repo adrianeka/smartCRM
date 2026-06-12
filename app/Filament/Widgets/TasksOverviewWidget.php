@@ -2,14 +2,16 @@
 
 namespace App\Filament\Widgets;
 
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
-use Filament\Tables\Columns\TextColumn;
 
 class TasksOverviewWidget extends BaseWidget
 {
-    protected int | string | array $columnSpan = 1;
+    protected int|string|array $columnSpan = 1;
+
     protected static ?int $sort = 6;
+
     protected static ?string $heading = 'Tasks Overview';
 
     public function table(Table $table): Table

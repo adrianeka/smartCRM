@@ -14,7 +14,7 @@ class MfaOtpController extends Controller
     public function showChallenge(Request $request)
     {
         if ($request->session()->get('mfa_verified') === true) {
-            return redirect()->intended(route('dashboard', absolute: false));
+            return redirect()->intended(route('filament.admin.pages.dashboard'));
         }
 
         return view('auth.mfa-challenge');
@@ -34,8 +34,8 @@ class MfaOtpController extends Controller
             ->where('expires_at', '>', now())
             ->first();
 
-        if (!$mfaCode) {
-            return back()->withErrors(['code' => 'The provided code is invalid or has expired.']);
+        if (! $mfaCode) {
+            return back()->withErrors(['code' => 'Kode yang Anda masukkan tidak valid atau telah kedaluwarsa.']);
         }
 
         $mfaCode->update(['used' => true]);
@@ -43,14 +43,14 @@ class MfaOtpController extends Controller
         $request->session()->put('mfa_verified', true);
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('filament.admin.pages.dashboard'));
     }
 
     public function sendOtp(Request $request)
     {
         $this->generateAndSendOtp($request->user());
 
-        return back()->with('status', 'A new verification code has been sent to your email.');
+        return back()->with('status', 'Kode verifikasi yang baru telah dikirimkan ke email Anda.');
     }
 
     public function generateAndSendOtp(User $user)

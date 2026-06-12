@@ -2,14 +2,18 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Gate;
-use Spatie\Activitylog\Models\Activity;
-use App\Policies\ActivityPolicy;
-use Spatie\Permission\Models\Role;
-use App\Policies\RolePolicy;
+use App\Http\Responses\LogoutResponse;
 use App\Models\Customer;
+use App\Models\WebhookLog;
+use App\Observers\CustomerObserver;
+use App\Observers\WebhookLogObserver;
+use App\Policies\ActivityPolicy;
 use App\Policies\CustomerPolicy;
+use App\Policies\RolePolicy;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\ServiceProvider;
+use Spatie\Activitylog\Models\Activity;
+use Spatie\Permission\Models\Role;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,7 +22,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            \Filament\Auth\Http\Responses\Contracts\LogoutResponse::class,
+            LogoutResponse::class
+        );
     }
 
     /**
@@ -30,11 +37,15 @@ class AppServiceProvider extends ServiceProvider
             if (isset($args[0]) && ($args[0] === Customer::class || $args[0] instanceof Customer)) {
                 return null;
             }
+
             return $user->hasRole('super_admin') ? true : null;
         });
 
         Gate::policy(Activity::class, ActivityPolicy::class);
         Gate::policy(Role::class, RolePolicy::class);
         Gate::policy(Customer::class, CustomerPolicy::class);
+
+        Customer::observe(CustomerObserver::class);
+        WebhookLog::observe(WebhookLogObserver::class);
     }
 }

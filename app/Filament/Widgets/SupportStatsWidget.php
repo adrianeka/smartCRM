@@ -8,7 +8,8 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 class SupportStatsWidget extends BaseWidget
 {
     protected static ?int $sort = 7;
-    protected int | string | array $columnSpan = 'full';
+
+    protected int|string|array $columnSpan = 'full';
 
     protected function getStats(): array
     {

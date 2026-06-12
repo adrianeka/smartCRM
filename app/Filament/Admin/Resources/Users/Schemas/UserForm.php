@@ -3,12 +3,12 @@
 namespace App\Filament\Admin\Resources\Users\Schemas;
 
 use Filament\Forms\Components\FileUpload;
-use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 
 class UserForm
 {
@@ -32,6 +32,7 @@ class UserForm
                             ->label('Foto Profil')
                             ->image()
                             ->avatar()
+                            ->disk('public')
                             ->directory('avatars')
                             ->maxSize(2048)
                             ->nullable(),
@@ -53,6 +54,10 @@ class UserForm
                             ->multiple()
                             ->preload()
                             ->searchable(),
+                        Toggle::make('email_verified_at')
+                            ->label('Email Terverifikasi')
+                            ->dehydrateStateUsing(fn ($state) => $state ? now() : null)
+                            ->formatStateUsing(fn ($state) => ! empty($state)),
                     ])->columns(2),
             ]);
     }

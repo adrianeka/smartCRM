@@ -15,8 +15,8 @@ trait ApiResponseTrait
             'data' => $data,
             'meta' => [
                 'timestamp' => now(),
-                'version' => 'v1'
-            ]
+                'version' => 'v1',
+            ],
         ], $code);
     }
 
@@ -31,8 +31,8 @@ trait ApiResponseTrait
             'errors' => $errors,
             'meta' => [
                 'timestamp' => now(),
-                'version' => 'v1'
-            ]
+                'version' => 'v1',
+            ],
         ], $code);
     }
 }

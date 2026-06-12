@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -14,8 +15,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property array<array-key, mixed>|null $request_body
  * @property array<array-key, mixed>|null $response_body
  * @property string|null $error_message
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ApiLog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ApiLog newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ApiLog query()
@@ -30,6 +32,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ApiLog whereStatusCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ApiLog whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ApiLog whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class ApiLog extends Model

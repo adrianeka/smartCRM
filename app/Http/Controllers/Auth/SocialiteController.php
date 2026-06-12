@@ -7,18 +7,29 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use OpenApi\Attributes as OA;
 
 class SocialiteController extends Controller
 {
+    #[OA\Get(
+        path: '/auth/google/redirect',
+        summary: 'Redirect to Google OAuth',
+        tags: ['OAuth']
+    )]
     public function redirectToProvider(string $provider)
     {
         if ($provider !== 'google') {
             abort(404);
         }
-        
+
         return Socialite::driver($provider)->redirect();
     }
 
+    #[OA\Get(
+        path: '/auth/google/callback',
+        summary: 'Google OAuth Callback',
+        tags: ['OAuth']
+    )]
     public function handleProviderCallback(string $provider, Request $request)
     {
         if ($provider !== 'google') {
@@ -28,7 +39,7 @@ class SocialiteController extends Controller
         try {
             $socialUser = Socialite::driver($provider)->user();
         } catch (\Exception $e) {
-            return redirect('/login')->withErrors(['email' => 'Failed to authenticate with Google.']);
+            return redirect('/admin/login')->withErrors(['email' => 'Failed to authenticate with Google.']);
         }
 
         $user = User::where('email', $socialUser->getEmail())->first();
@@ -49,9 +60,9 @@ class SocialiteController extends Controller
                 'password' => null,
                 'provider_name' => $provider,
                 'provider_id' => $socialUser->getId(),
-                'role' => 'sales',
                 'email_verified_at' => now(),
             ]);
+
         }
 
         Auth::login($user);
@@ -60,6 +71,6 @@ class SocialiteController extends Controller
         app(MfaOtpController::class)->generateAndSendOtp($user);
         $request->session()->put('mfa_verified', false);
 
-        return redirect()->route('mfa.challenge');
+        return redirect()->route('filament.admin.pages.auth.mfa-challenge');
     }
 }

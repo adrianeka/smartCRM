@@ -9,8 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('customers', function (Blueprint $table) {
-            // Menambahkan kolom json untuk menyimpan data dinamis kustom
-            $table->json('custom_fields')->nullable()->after('status');
+            $table->json('custom_fields')->nullable();
         });
     }
 

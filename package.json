@@ -7,7 +7,11 @@
         "dev": "vite"
     },
     "devDependencies": {
+<<<<<<< HEAD
         "@tailwindcss/vite": "^4.0.0",
+=======
+        "@tailwindcss/forms": "^0.5.2",
+>>>>>>> 92117236d2a356558d4a3ba2b67bdfc2a5dc0e2e
         "alpinejs": "^3.4.2",
         "axios": "^1.16.1",
         "concurrently": "^9.0.1",

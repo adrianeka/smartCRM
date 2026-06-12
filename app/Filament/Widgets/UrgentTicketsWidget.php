@@ -2,15 +2,17 @@
 
 namespace App\Filament\Widgets;
 
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
-use Filament\Tables\Columns\TextColumn;
 
 class UrgentTicketsWidget extends BaseWidget
 {
     protected static ?int $sort = 6;
-    protected int | string | array $columnSpan = 'full';
-    protected static ?string $heading = "Urgent Tickets (Near SLA)";
+
+    protected int|string|array $columnSpan = 'full';
+
+    protected static ?string $heading = 'Urgent Tickets (Near SLA)';
 
     public function table(Table $table): Table
     {
@@ -26,7 +28,7 @@ class UrgentTicketsWidget extends BaseWidget
                 TextColumn::make('issue')
                     ->label('Issue / Customer')
                     ->weight('bold')
-                    ->description(fn ($record) => is_array($record) ? $record['customer'] . ' (' . $record['id'] . ')' : '')
+                    ->description(fn ($record) => is_array($record) ? $record['customer'].' ('.$record['id'].')' : '')
                     ->limit(40),
                 TextColumn::make('time_left')
                     ->label('Time Left')

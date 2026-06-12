@@ -9,17 +9,17 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-        public function up(): void
-        {
-            Schema::create('notifications', function (Blueprint $table) {
-                $table->id();
-                $table->unsignedBigInteger('user_id')->nullable();
-                $table->string('title');
-                $table->text('message');
-                $table->boolean('is_read')->default(false);
-                $table->timestamps();
-            });
-        }
+    public function up(): void
+    {
+        Schema::create('notifications', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('title');
+            $table->text('message');
+            $table->boolean('is_read')->default(false);
+            $table->timestamps();
+        });
+    }
 
     /**
      * Reverse the migrations.

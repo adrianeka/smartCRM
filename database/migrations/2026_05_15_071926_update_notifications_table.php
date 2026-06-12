@@ -27,7 +27,7 @@ return new class extends Migration
                 'source_module',
                 'priority',
                 'read_at',
-                'action_url'
+                'action_url',
             ]);
 
         });

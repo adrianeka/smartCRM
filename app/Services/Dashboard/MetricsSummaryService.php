@@ -15,7 +15,7 @@ class MetricsSummaryService
             'open_tickets' => '0',
         ];
     }
-    
+
     public function salesSummary(User $user): array
     {
         return [
@@ -24,7 +24,7 @@ class MetricsSummaryService
             'conversion_rate' => '0',
         ];
     }
-    
+
     public function ticketsSummary(User $user): array
     {
         return [

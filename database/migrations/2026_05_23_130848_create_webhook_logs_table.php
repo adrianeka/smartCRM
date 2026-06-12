@@ -29,11 +29,11 @@ return new class extends Migration
             $table->enum('status', [
                 'pending',
                 'success',
-                'failed'
+                'failed',
             ])->default('pending');
 
             $table->timestamps();
-});
+        });
     }
 
     /**
