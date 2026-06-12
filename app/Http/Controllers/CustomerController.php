@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\CustomerImport;
-use App\Models\Customer; // Mengambil data dari Model Customer
+use App\Models\Customer;
 use App\Models\CustomerAttachment;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\Request;
