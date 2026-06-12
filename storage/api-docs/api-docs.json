@@ -14,6 +14,20 @@
                 }
             ]
         },
+        "/api/v1/analytics/summary": {
+            "get": {
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Analytics Summary",
+                "operationId": "508c315fb7a2d03b3708e0b1191ff03f",
+                "responses": {
+                    "200": {
+                        "description": "Analytics KPI Summary"
+                    }
+                }
+            }
+        },
         "/api/v1/login": {
             "post": {
                 "tags": [
@@ -575,6 +589,20 @@
                     }
                 }
             }
+        },
+        "/api/v1/dashboard/tasks": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Today Tasks & Upcoming Deadlines",
+                "operationId": "d07d66dcc3414bedbe9acde8d877b0bb",
+                "responses": {
+                    "200": {
+                        "description": "Dashboard tasks"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -632,6 +660,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Analytics",
+            "description": "Analytics"
+        },
         {
             "name": "Authentication",
             "description": "Authentication"
