@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\CustomerImport;
+use App\Http\Controllers\Notification;
 use App\Models\Customer;
 use App\Models\CustomerAttachment;
 use Illuminate\Filesystem\FilesystemAdapter;
@@ -92,6 +93,10 @@ class CustomerController extends Controller
         ]);
 
         $customer = Customer::create($request->all());
+        Notification::create([
+            'title' => 'Customer Created',
+            'message' => 'Customer '.$customer->full_name.' has been registered',
+        ]);
 
         return response()->json([
             'status' => 'success',
