@@ -2,17 +2,17 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\ApiLog;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-use App\Models\ApiLog;
 
 class ApiLoggerMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        
+
         $response = $next($request);
 
         try {
@@ -29,7 +29,7 @@ class ApiLoggerMiddleware
                     : null,
             ]);
         } catch (\Exception $e) {
-            logger()->error('API Log Failed: ' . $e->getMessage());
+            logger()->error('API Log Failed: '.$e->getMessage());
         }
 
         return $response;

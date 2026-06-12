@@ -1,79 +1,43 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\ConfirmablePasswordController;
-use App\Http\Controllers\Auth\EmailVerificationNotificationController;
-use App\Http\Controllers\Auth\EmailVerificationPromptController;
-use App\Http\Controllers\Auth\NewPasswordController;
-use App\Http\Controllers\Auth\PasswordController;
-use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Filament\Admin\Pages\Auth\MfaChallenge;
+use App\Http\Controllers\Auth\MfaOtpController;
+use App\Http\Controllers\Auth\SessionController;
+use App\Http\Controllers\Auth\SocialiteController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('guest')->group(function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])
-        ->name('register');
+// Handle GET requests to admin/logout (e.g. direct browser navigation)
+Route::get('admin/logout', function () {
+    Auth::guard('web')->logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
 
-    Route::post('register', [RegisteredUserController::class, 'store']);
+    return redirect('/');
+})->name('filament.admin.auth.logout.get');
 
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-        ->name('login');
-
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
-
-    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
-        ->name('password.request');
-
-    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
-        ->name('password.email');
-
-    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
-        ->name('password.reset');
-
-    Route::post('reset-password', [NewPasswordController::class, 'store'])
-        ->name('password.store');
-});
-
+// MFA OTP Routes
 Route::middleware('auth')->group(function () {
-    Route::get('verify-email', EmailVerificationPromptController::class)
-        ->name('verification.notice');
+    Route::get('admin/mfa-challenge', MfaChallenge::class)
+        ->name('filament.admin.pages.auth.mfa-challenge');
 
-    Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
-        ->middleware(['signed', 'throttle:6,1'])
-        ->name('verification.verify');
-
-    Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-        ->middleware('throttle:6,1')
-        ->name('verification.send');
-
-    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
-        ->name('password.confirm');
-
-    Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
-
-    Route::put('password', [PasswordController::class, 'update'])->name('password.update');
-
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-        ->name('logout');
-
-    // MFA OTP Routes
-    Route::get('mfa/challenge', [\App\Http\Controllers\Auth\MfaOtpController::class, 'showChallenge'])
+    Route::get('admin/mfa-challenge-alias', MfaChallenge::class)
         ->name('mfa.challenge');
-    Route::post('mfa/challenge/send', [\App\Http\Controllers\Auth\MfaOtpController::class, 'sendOtp'])
+
+    Route::post('mfa/challenge/send', [MfaOtpController::class, 'sendOtp'])
         ->name('mfa.challenge.send');
-    Route::post('mfa/challenge/verify', [\App\Http\Controllers\Auth\MfaOtpController::class, 'verifyOtp'])
+    Route::post('mfa/challenge/verify', [MfaOtpController::class, 'verifyOtp'])
         ->name('mfa.challenge.verify');
 });
 
 // Session Management Routes (Requires fully verified MFA)
 Route::middleware(['auth', 'mfa.verified'])->group(function () {
-    Route::post('session/logout-others', [\App\Http\Controllers\Auth\SessionController::class, 'logoutOtherDevices'])
+    Route::post('session/logout-others', [SessionController::class, 'logoutOtherDevices'])
         ->name('session.logout-others');
 });
 
 // Google OAuth Routes
-Route::get('auth/{provider}/redirect', [\App\Http\Controllers\Auth\SocialiteController::class, 'redirectToProvider'])
+Route::get('auth/{provider}/redirect', [SocialiteController::class, 'redirectToProvider'])
     ->name('socialite.redirect');
-Route::get('auth/{provider}/callback', [\App\Http\Controllers\Auth\SocialiteController::class, 'handleProviderCallback'])
+Route::get('auth/{provider}/callback', [SocialiteController::class, 'handleProviderCallback'])
     ->name('socialite.callback');

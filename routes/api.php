@@ -17,7 +17,7 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('/me', [AuthController::class, 'me']);
-        Route::post('/change-password', [AuthController::class, 'changePassword']); // ← pindah ke sini
+        Route::post('/change-password', [AuthController::class, 'changePassword']);
     });
 
     Route::get('/dashboard/summary', [DashboardController::class, 'summary']);
@@ -47,6 +47,5 @@ Route::prefix('v1')->group(function () {
     Route::delete('/attachments/{id}', [CustomerController::class, 'deleteAttachment']);
 
     Route::post('/webhook/receive', [WebhookController::class, 'receive']);
-    Route::patch('/customers/{id}/favorite', [CustomerController::class, 'toggleFavorite']
-    );
+    Route::patch('/customers/{id}/favorite', [CustomerController::class, 'toggleFavorite']);
 });

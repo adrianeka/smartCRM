@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             // Menghubungkan log ke pelanggan terkait
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
-            
+
             $table->string('activity_type'); // Jenis aktivitas (misal: 'Create', 'Update', 'Merge')
             $table->text('description');     // Detail aktivitas
             $table->unsignedBigInteger('causer_id')->nullable(); // ID User/Admin yang melakukan aksi

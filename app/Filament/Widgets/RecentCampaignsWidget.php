@@ -2,16 +2,17 @@
 
 namespace App\Filament\Widgets;
 
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\IconColumn;
 
 class RecentCampaignsWidget extends BaseWidget
 {
     protected static ?int $sort = 6;
-    protected int | string | array $columnSpan = 'full';
-    protected static ?string $heading = "Recent Campaigns";
+
+    protected int|string|array $columnSpan = 'full';
+
+    protected static ?string $heading = 'Recent Campaigns';
 
     public function table(Table $table): Table
     {

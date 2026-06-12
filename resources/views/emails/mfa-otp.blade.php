@@ -1,5 +1,5 @@
 <div>
-    <h1>Login Verification</h1>
-    <p>Your verification code is: <strong>{{ $code }}</strong></p>
-    <p>This code will expire in 5 minutes.</p>
+    <h1>Verifikasi Login</h1>
+    <p>Kode verifikasi Anda adalah: <strong>{{ $code }}</strong></p>
+    <p>Kode ini akan kedaluwarsa dalam 5 menit.</p>
 </div>

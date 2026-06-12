@@ -13,7 +13,6 @@ use OpenApi\Attributes as OA;
 
 class CustomerController extends Controller
 {
-
     #[OA\Get(
         path: '/api/v1/customers',
         summary: 'Get All Customers',
@@ -28,57 +27,33 @@ class CustomerController extends Controller
     )]
     public function index(Request $request)
     {
-
         $query = Customer::with('tags');
 
         if ($request->filled('search')) {
-
             $search = $request->search;
-
             $query->where(function ($q) use ($search) {
-
                 $q->where('full_name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
                     ->orWhere('phone', 'like', "%{$search}%")
                     ->orWhere('company_name', 'like', "%{$search}%");
-
             });
         }
 
         if ($request->filled('tag')) {
-
             $query->whereHas('tags', function ($q) use ($request) {
-
-                $q->where(
-                    'name',
-                    'like',
-                    "%{$request->tag}%"
-                );
-
+                $q->where('name', 'like', "%{$request->tag}%");
             });
-
         }
 
         if ($request->filled('favorite')) {
-
-            $query->where(
-                'is_favorite',
-                $request->favorite
-            );
-
+            $query->where('is_favorite', $request->favorite);
         }
 
         if ($request->filled('sort')) {
-
-            $query->orderBy(
-                $request->sort,
-                'asc'
-            );
+            $query->orderBy($request->sort, 'asc');
         }
 
-        $customers = $query->paginate(
-            $request->get('per_page', 10)
-        );
+        $customers = $query->paginate($request->get('per_page', 10));
 
         return response()->json([
             'status' => 'success',
@@ -105,8 +80,6 @@ class CustomerController extends Controller
             new OA\Response(response: 201, description: 'Customer created'),
         ]
     )]
-
-
     public function store(Request $request)
     {
         $request->validate([
@@ -157,12 +130,9 @@ class CustomerController extends Controller
             ),
         ]
     )]
-
-    // 3. READ: Menampilkan detail satu pelanggan spesifik
     public function show($id)
     {
-        $customer = Customer::with('tags')
-            ->findOrFail($id);
+        $customer = Customer::with('tags')->findOrFail($id);
 
         return response()->json([
             'status' => 'success',
@@ -190,11 +160,8 @@ class CustomerController extends Controller
             ),
         ]
     )]
-
-
     public function update(Request $request, $id)
     {
-
         $request->validate([
             'name' => 'sometimes|string|max:255',
             'email' => 'sometimes|email',
@@ -214,10 +181,7 @@ class CustomerController extends Controller
     public function activities($id)
     {
         $customer = Customer::findOrFail($id);
-
-        $activities = $customer->activityLogs()
-            ->latest()
-            ->paginate(20);
+        $activities = $customer->activityLogs()->latest()->paginate(20);
 
         return response()->json([
             'status' => 'success',
@@ -245,8 +209,6 @@ class CustomerController extends Controller
             ),
         ]
     )]
-
-
     public function destroy($id)
     {
         $customer = Customer::findOrFail($id);
@@ -269,18 +231,14 @@ class CustomerController extends Controller
     public function exportCsv()
     {
         $customers = Customer::all();
-
         $filename = 'customers.csv';
-
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => "attachment; filename={$filename}",
         ];
 
         $callback = function () use ($customers) {
-
             $file = fopen('php://output', 'w');
-
             fputcsv($file, [
                 'customer_code',
                 'full_name',
@@ -291,7 +249,6 @@ class CustomerController extends Controller
             ]);
 
             foreach ($customers as $customer) {
-
                 fputcsv($file, [
                     $customer->customer_code,
                     $customer->full_name,
@@ -301,15 +258,10 @@ class CustomerController extends Controller
                     $customer->status,
                 ]);
             }
-
             fclose($file);
         };
 
-        return response()->stream(
-            $callback,
-            200,
-            $headers
-        );
+        return response()->stream($callback, 200, $headers);
     }
 
     public function importCsv(Request $request)
@@ -318,10 +270,7 @@ class CustomerController extends Controller
             'file' => 'required|mimes:csv,txt,xlsx',
         ]);
 
-        Excel::import(
-            new CustomerImport,
-            $request->file('file')
-        );
+        Excel::import(new CustomerImport, $request->file('file'));
 
         return response()->json([
             'status' => 'success',
@@ -339,14 +288,11 @@ class CustomerController extends Controller
     public function attachTags(Request $request, $id)
     {
         $customer = Customer::findOrFail($id);
-
         $request->validate([
             'tag_ids' => 'required|array',
         ]);
 
-        $customer->tags()->syncWithoutDetaching(
-            $request->tag_ids
-        );
+        $customer->tags()->syncWithoutDetaching($request->tag_ids);
 
         return response()->json([
             'status' => 'success',
@@ -358,10 +304,7 @@ class CustomerController extends Controller
     public function toggleFavorite($id)
     {
         $customer = Customer::findOrFail($id);
-
-        $customer->is_favorite =
-            ! $customer->is_favorite;
-
+        $customer->is_favorite = !$customer->is_favorite;
         $customer->save();
 
         return response()->json([
@@ -372,8 +315,7 @@ class CustomerController extends Controller
 
     public function attachments($id)
     {
-        $customer = Customer::with('attachments')
-            ->findOrFail($id);
+        $customer = Customer::with('attachments')->findOrFail($id);
 
         return response()->json([
             'status' => 'success',
@@ -384,17 +326,12 @@ class CustomerController extends Controller
     public function uploadAttachment(Request $request, $id)
     {
         $customer = Customer::findOrFail($id);
-
         $request->validate([
             'file' => 'required|file|max:10240',
         ]);
 
         $file = $request->file('file');
-
-        $path = $file->store(
-            'customer-attachments',
-            'public'
-        );
+        $path = $file->store('customer-attachments', 'public');
 
         $attachment = CustomerAttachment::create([
             'customer_id' => $customer->id,
@@ -433,9 +370,7 @@ class CustomerController extends Controller
             'data' => [
                 'file_name' => $attachment->file_name,
                 'file_type' => $attachment->file_type,
-                'url' => asset(
-                    'storage/'.$attachment->file_path
-                ),
+                'url' => asset('storage/' . $attachment->file_path),
             ],
         ]);
     }
@@ -444,12 +379,8 @@ class CustomerController extends Controller
     {
         $attachment = CustomerAttachment::findOrFail($attachmentId);
 
-        if (
-            Storage::disk('public')
-                ->exists($attachment->file_path)
-        ) {
-            Storage::disk('public')
-                ->delete($attachment->file_path);
+        if (Storage::disk('public')->exists($attachment->file_path)) {
+            Storage::disk('public')->delete($attachment->file_path);
         }
 
         $attachment->delete();
