@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\CustomerImport;
-use App\Http\Controllers\Notification;
+use App\Models\Notification;
 use App\Models\Customer;
 use App\Models\CustomerAttachment;
 use Illuminate\Filesystem\FilesystemAdapter;

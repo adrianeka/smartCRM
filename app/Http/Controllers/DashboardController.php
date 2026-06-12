@@ -201,4 +201,41 @@ public function overview()
             ]
         ]);
     }
+
+
+    #[OA\Get(
+    path: '/api/v1/dashboard/quick-links',
+    summary: 'Dashboard Quick Links',
+    tags: ['Dashboard'],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: 'Quick links dashboard'
+            )
+        ]
+    )]
+    public function quickLinks()
+        {
+            return response()->json([
+                'status' => 'success',
+                'data' => [
+                    [
+                        'name' => 'Customers',
+                        'url' => '/customers',
+                    ],
+                    [
+                        'name' => 'Notifications',
+                        'url' => '/notifications',
+                    ],
+                    [
+                        'name' => 'Dashboard',
+                        'url' => '/dashboard',
+                    ],
+                    [
+                        'name' => 'API Documentation',
+                        'url' => '/api/documentation',
+                    ],
+                ]
+            ]);
+        }
 }

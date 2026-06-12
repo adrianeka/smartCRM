@@ -561,6 +561,20 @@
                     }
                 }
             }
+        },
+        "/api/v1/dashboard/quick-links": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Dashboard Quick Links",
+                "operationId": "941fd1e08ac7101bd11cbf105d62e407",
+                "responses": {
+                    "200": {
+                        "description": "Quick links dashboard"
+                    }
+                }
+            }
         }
     },
     "components": {
