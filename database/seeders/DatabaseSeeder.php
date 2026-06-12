@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
 
         // 2. Create Super Admin user
-        $superAdmin = User::firstOrCreate(
+        $superAdmin = User::updateOrCreate(
             ['email' => 'admin@smartcrm.com'],
             [
                 'name' => 'Super Admin',
@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($testUsers as $userData) {
-            $user = User::firstOrCreate(
+            $user = User::updateOrCreate(
                 ['email' => $userData['email']],
                 [
                     'name' => $userData['name'],
@@ -51,6 +51,8 @@ class DatabaseSeeder extends Seeder
         }
 
         // 4. Seed Role-specific app notifications
+        $this->call(TagSeeder::class);
+        $this->call(CustomerDemoSeeder::class);
         $this->call(NotificationSeeder::class);
     }
 }

@@ -43,6 +43,11 @@ class UserResource extends Resource implements HasShieldPermissions
         ];
     }
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('super_admin') ?? false;
+    }
+
     public static function form(Schema $schema): Schema
     {
         return UserForm::configure($schema);

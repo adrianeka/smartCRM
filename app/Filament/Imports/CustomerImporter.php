@@ -32,6 +32,8 @@ class CustomerImporter extends Importer
             ImportColumn::make('status')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
+            ImportColumn::make('assigned_user_id')
+                ->rules(['nullable', 'exists:users,id']),
         ];
     }
 

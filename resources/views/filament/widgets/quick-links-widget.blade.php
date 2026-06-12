@@ -6,55 +6,36 @@
                 $allLinks = [
                     'users' => ['title' => 'Users', 'icon' => 'heroicon-s-users', 'color' => 'white', 'bg' => '#9a3412', 'url' => '/admin/users'],
                     'customers' => ['title' => 'Customers', 'icon' => 'heroicon-s-user-group', 'color' => 'white', 'bg' => '#0ea5e9', 'url' => '/admin/customers'],
-                    'leads' => ['title' => 'Leads', 'icon' => 'heroicon-s-identification', 'color' => 'white', 'bg' => '#a855f7', 'url' => '#'],
-                    'opportunities' => ['title' => 'Opportunities', 'icon' => 'heroicon-s-currency-dollar', 'color' => 'white', 'bg' => '#22c55e', 'url' => '#'],
-                    'calendar' => ['title' => 'Calendar', 'icon' => 'heroicon-s-calendar', 'color' => 'white', 'bg' => '#4b5563', 'url' => '#'],
-                    'campaigns' => ['title' => 'Campaigns', 'icon' => 'heroicon-s-megaphone', 'color' => 'white', 'bg' => '#ec4899', 'url' => '#'],
-                    'tickets' => ['title' => 'Tickets', 'icon' => 'heroicon-s-ticket', 'color' => 'white', 'bg' => '#f97316', 'url' => '#'],
-                    'knowledge_base' => ['title' => 'Knowledge Base', 'icon' => 'heroicon-s-book-open', 'color' => 'white', 'bg' => '#6366f1', 'url' => '#'],
+                    'webhooks' => ['title' => 'Webhook Logs', 'icon' => 'heroicon-s-rectangle-stack', 'color' => 'white', 'bg' => '#4b5563', 'url' => '/admin/webhook-logs'],
                     'reports' => ['title' => 'Reports', 'icon' => 'heroicon-s-document-chart-bar', 'color' => 'white', 'bg' => '#eab308', 'url' => '/admin/activity-logs'],
-                    'approvals' => ['title' => 'Approvals', 'icon' => 'heroicon-s-check-badge', 'color' => 'white', 'bg' => '#ef4444', 'url' => '#'],
                 ];
 
-                if ($user?->hasRole('super_admin') || $user?->hasRole('admin')) {
-                    // Super Admin manages system configurations, users, roles, and overall monitoring (Reports)
-                    // Excludes Customers since they don't have access to customer data
+                if ($user?->hasRole('super_admin')) {
                     $links = [
                         $allLinks['users'],
+                        $allLinks['customers'],
                         $allLinks['reports'],
-                        $allLinks['approvals']
+                        $allLinks['webhooks'],
                     ];
                 } elseif ($user?->hasRole('Sales')) {
-                    // Sales manages leads, opportunities, pipelines, and customers
                     $links = [
                         $allLinks['customers'],
-                        $allLinks['leads'],
-                        $allLinks['opportunities'],
-                        $allLinks['calendar']
                     ];
                 } elseif ($user?->hasRole('Marketing')) {
-                    // Marketing manages campaigns, calendar, customers, and reports
                     $links = [
                         $allLinks['customers'],
-                        $allLinks['campaigns'],
-                        $allLinks['calendar'],
-                        $allLinks['reports']
                     ];
                 } elseif ($user?->hasRole('Support')) {
-                    // Support manages tickets, knowledge base, and customers
                     $links = [
-                        $allLinks['tickets'],
-                        $allLinks['knowledge_base'],
                         $allLinks['customers']
                     ];
                 } elseif ($user?->hasRole('Manager/Analyst')) {
-                    // Manager/Analyst accesses dashboards, reports, and insights
                     $links = [
+                        $allLinks['customers'],
                         $allLinks['reports'],
-                        $allLinks['approvals']
                     ];
                 } else {
-                    $links = array_values($allLinks);
+                    $links = [$allLinks['customers']];
                 }
             @endphp
 

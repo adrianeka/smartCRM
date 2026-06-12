@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Customers\Pages;
 use App\Filament\Exports\CustomerExporter;
 use App\Filament\Imports\CustomerImporter;
 use App\Filament\Resources\Customers\CustomerResource;
+use App\Filament\Resources\Customers\Widgets\CustomerStatsOverview;
+use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Actions\ExportAction;
 use Filament\Actions\ImportAction;
@@ -14,20 +16,54 @@ class ListCustomers extends ListRecords
 {
     protected static string $resource = CustomerResource::class;
 
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            CustomerStatsOverview::class,
+        ];
+    }
+
     protected function getHeaderActions(): array
     {
         return [
             ImportAction::make()
                 ->importer(CustomerImporter::class)
                 ->label('Import CSV/Excel')
-                ->color('info'),
+                ->color('info')
+                ->visible(fn (): bool => auth()->user()?->hasAnyRole(['super_admin', 'Marketing']) ?? false),
 
             ExportAction::make()
                 ->exporter(CustomerExporter::class)
-                ->label('Export Data')
-                ->color('success'),
+                ->label('Export Data (Filament)')
+                ->color('success')
+                ->visible(fn (): bool => auth()->user()?->hasAnyRole(['super_admin', 'Marketing', 'Manager/Analyst']) ?? false),
 
-            CreateAction::make(),
+            Action::make('download_excel')
+                ->label('Download Excel')
+                ->icon('heroicon-o-document-arrow-down')
+                ->url('/api/v1/customers/export/excel')
+                ->openUrlInNewTab()
+                ->color('success')
+                ->visible(fn (): bool => auth()->user()?->hasAnyRole(['super_admin', 'Marketing', 'Manager/Analyst']) ?? false),
+
+            Action::make('download_csv')
+                ->label('Download CSV')
+                ->icon('heroicon-o-document-arrow-down')
+                ->url('/api/v1/customers/export/csv')
+                ->openUrlInNewTab()
+                ->color('gray')
+                ->visible(fn (): bool => auth()->user()?->hasAnyRole(['super_admin', 'Marketing', 'Manager/Analyst']) ?? false),
+
+            Action::make('check_duplicates')
+                ->label('Cek Duplikat')
+                ->icon('heroicon-o-magnifying-glass')
+                ->url('/api/v1/customers/duplicates')
+                ->openUrlInNewTab()
+                ->color('warning')
+                ->visible(fn (): bool => auth()->user()?->hasAnyRole(['super_admin', 'Sales', 'Manager/Analyst']) ?? false),
+
+            CreateAction::make()
+                ->visible(fn (): bool => auth()->user()?->hasAnyRole(['super_admin', 'Sales', 'Marketing']) ?? false),
         ];
     }
 }

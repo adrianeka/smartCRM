@@ -56,6 +56,11 @@ class WebhookLogResource extends Resource
             ->defaultSort('id', 'desc');
     }
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('super_admin') ?? false;
+    }
+
     public static function getRelations(): array
     {
         return [

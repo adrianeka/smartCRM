@@ -23,6 +23,8 @@ class CustomerExporter extends Exporter
             ExportColumn::make('phone'),
             ExportColumn::make('company_name'),
             ExportColumn::make('status'),
+            ExportColumn::make('assignedUser.name')
+                ->label('assigned_to'),
             ExportColumn::make('created_at'),
             ExportColumn::make('updated_at'),
         ];

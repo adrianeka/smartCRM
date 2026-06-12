@@ -8,20 +8,20 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('activity_logs', function (Blueprint $table) {
+        Schema::create('api_logs', function (Blueprint $table) {
             $table->id();
-            // Menghubungkan log ke pelanggan terkait
-            $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
-
-            $table->string('activity_type'); // Jenis aktivitas (misal: 'Create', 'Update', 'Merge')
-            $table->text('description');     // Detail aktivitas
-            $table->unsignedBigInteger('causer_id')->nullable(); // ID User/Admin yang melakukan aksi
-            $table->timestamps(); // Menggunakan created_at bawaan sebagai penanda waktu (timeline)
+            $table->string('method');
+            $table->string('endpoint');
+            $table->unsignedSmallInteger('status_code');
+            $table->string('ip_address')->nullable();
+            $table->json('request_body')->nullable();
+            $table->json('response_body')->nullable();
+            $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('activity_logs');
+        Schema::dropIfExists('api_logs');
     }
 };

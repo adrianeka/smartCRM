@@ -18,36 +18,40 @@ class UserSeeder extends Seeder
                 'name' => 'Super Admin',
                 'email' => 'admin@smartcrm.com',
                 'password' => Hash::make('password'),
-                'role' => 'admin',
+                'role' => 'super_admin',
             ],
             [
                 'name' => 'Manager Analyst',
                 'email' => 'manager@smartcrm.com',
                 'password' => Hash::make('password'),
-                'role' => 'manager',
+                'role' => 'Manager/Analyst',
             ],
             [
                 'name' => 'Sales Representative',
                 'email' => 'sales@smartcrm.com',
                 'password' => Hash::make('password'),
-                'role' => 'sales',
+                'role' => 'Sales',
             ],
             [
                 'name' => 'Marketing Specialist',
                 'email' => 'marketing@smartcrm.com',
                 'password' => Hash::make('password'),
-                'role' => 'marketing',
+                'role' => 'Marketing',
             ],
             [
                 'name' => 'Customer Support',
                 'email' => 'support@smartcrm.com',
                 'password' => Hash::make('password'),
-                'role' => 'support',
+                'role' => 'Support',
             ],
         ];
 
         foreach ($users as $user) {
-            User::updateOrCreate(['email' => $user['email']], $user);
+            $role = $user['role'];
+            unset($user['role']);
+
+            User::updateOrCreate(['email' => $user['email']], $user)
+                ->syncRoles([$role]);
         }
     }
 }
