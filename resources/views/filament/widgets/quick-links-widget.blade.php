@@ -4,10 +4,10 @@
             @php
                 $user = auth()->user();
                 $allLinks = [
-                    'users' => ['title' => 'Users', 'icon' => 'heroicon-s-users', 'color' => 'white', 'bg' => '#9a3412', 'url' => '/admin/users'],
-                    'customers' => ['title' => 'Customers', 'icon' => 'heroicon-s-user-group', 'color' => 'white', 'bg' => '#0ea5e9', 'url' => '/admin/customers'],
+                    'users' => ['title' => 'Pengguna', 'icon' => 'heroicon-s-users', 'color' => 'white', 'bg' => '#9a3412', 'url' => '/admin/users'],
+                    'customers' => ['title' => 'Pelanggan', 'icon' => 'heroicon-s-user-group', 'color' => 'white', 'bg' => '#0ea5e9', 'url' => '/admin/customers'],
                     'webhooks' => ['title' => 'Webhook Logs', 'icon' => 'heroicon-s-rectangle-stack', 'color' => 'white', 'bg' => '#4b5563', 'url' => '/admin/webhook-logs'],
-                    'reports' => ['title' => 'Reports', 'icon' => 'heroicon-s-document-chart-bar', 'color' => 'white', 'bg' => '#eab308', 'url' => '/admin/activity-logs'],
+                    'reports' => ['title' => 'Audit Log', 'icon' => 'heroicon-s-document-chart-bar', 'color' => 'white', 'bg' => '#eab308', 'url' => '/admin/activity-logs'],
                 ];
 
                 if ($user?->hasRole('super_admin')) {

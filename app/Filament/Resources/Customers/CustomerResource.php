@@ -21,6 +21,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Support\Facades\DB;
 use App\Filament\Resources\Customers\Pages\CreateCustomer;
+use App\Filament\Resources\Customers\Pages\DuplicateCustomers;
 use App\Filament\Resources\Customers\Pages\EditCustomer;
 use App\Filament\Resources\Customers\Pages\ListCustomers;
 use App\Filament\Resources\Customers\Pages\ViewCustomer;
@@ -31,9 +32,9 @@ class CustomerResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-users';
 
-    protected static ?string $navigationLabel = 'Customer Management';
+    protected static ?string $navigationLabel = 'Manajemen Pelanggan';
 
-    protected static string|UnitEnum|null $navigationGroup = 'CRM';
+    protected static string|UnitEnum|null $navigationGroup = 'CRM Pelanggan';
 
     public static function canAccess(): bool
     {
@@ -75,7 +76,7 @@ class CustomerResource extends Resource
                         ->options([
                             'Lead'     => 'Lead (Calon)',
                             'Active'   => 'Active (Aktif)',
-                            'Customer' => 'Customer',
+                            'Customer' => 'Customer (Pelanggan)',
                             'Inactive' => 'Inactive (Tidak Aktif)',
                         ])
                         ->required()
@@ -107,11 +108,11 @@ class CustomerResource extends Resource
                                 ->maxLength(255)
                                 ->unique('tags', 'name'),
                         ])
-                        ->label('Tags / Label'),
+                        ->label('Tag / Label'),
                 ])->columnSpanFull(),
 
             // FITUR: KOLOM DATA FLEKSIBEL (DYNAMIC CUSTOM FIELDS)
-            Section::make('Atribut Data Tambahan (Custom Fields)')
+            Section::make('Atribut Data Tambahan')
                 ->description('Admin bisa menambahkan kolom inputan baru secara fleksibel tanpa ubah struktur codingan.')
                 ->collapsible()
                 ->schema([
@@ -179,7 +180,7 @@ class CustomerResource extends Resource
                 TextColumn::make('tags.name')
                     ->badge()
                     ->separator(',')
-                    ->label('Tags'),
+                        ->label('Tag'),
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -336,6 +337,7 @@ class CustomerResource extends Resource
         return [
             'index'  => ListCustomers::route('/'),
             'create' => CreateCustomer::route('/create'),
+            'duplicates' => DuplicateCustomers::route('/duplicates'),
             'view'   => ViewCustomer::route('/{record}'),
             'edit'   => EditCustomer::route('/{record}/edit'),
         ];

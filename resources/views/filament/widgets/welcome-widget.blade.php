@@ -17,7 +17,7 @@
             </div>
             <div style="flex: 1;">
                 <h2 style="font-size: 1.5rem; font-weight: 700; margin: 0 0 6px 0; line-height: 1.2;">
-                    {{ $this->getRoleName() }} Dashboard
+                    Dashboard {{ $this->getRoleName() }}
                 </h2>
                 <p style="font-size: 0.875rem; color: rgba(255,255,255,0.8); margin: 0 0 24px 0;">
                     {{ $this->getRoleDescription() }}

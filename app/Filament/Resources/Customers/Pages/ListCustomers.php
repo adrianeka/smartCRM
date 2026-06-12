@@ -34,12 +34,12 @@ class ListCustomers extends ListRecords
 
             ExportAction::make()
                 ->exporter(CustomerExporter::class)
-                ->label('Export Data (Filament)')
+                ->label('Export Data')
                 ->color('success')
                 ->visible(fn (): bool => auth()->user()?->hasAnyRole(['super_admin', 'Marketing', 'Manager/Analyst']) ?? false),
 
             Action::make('download_excel')
-                ->label('Download Excel')
+                ->label('Unduh Excel')
                 ->icon('heroicon-o-document-arrow-down')
                 ->url('/api/v1/customers/export/excel')
                 ->openUrlInNewTab()
@@ -47,7 +47,7 @@ class ListCustomers extends ListRecords
                 ->visible(fn (): bool => auth()->user()?->hasAnyRole(['super_admin', 'Marketing', 'Manager/Analyst']) ?? false),
 
             Action::make('download_csv')
-                ->label('Download CSV')
+                ->label('Unduh CSV')
                 ->icon('heroicon-o-document-arrow-down')
                 ->url('/api/v1/customers/export/csv')
                 ->openUrlInNewTab()
@@ -57,8 +57,7 @@ class ListCustomers extends ListRecords
             Action::make('check_duplicates')
                 ->label('Cek Duplikat')
                 ->icon('heroicon-o-magnifying-glass')
-                ->url('/api/v1/customers/duplicates')
-                ->openUrlInNewTab()
+                ->url(CustomerResource::getUrl('duplicates'))
                 ->color('warning')
                 ->visible(fn (): bool => auth()->user()?->hasAnyRole(['super_admin', 'Sales', 'Manager/Analyst']) ?? false),
 
