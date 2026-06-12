@@ -7,6 +7,8 @@ use App\Models\Notification;
 use App\Models\User;
 use Carbon\Carbon;
 use OpenApi\Attributes as OA;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -48,20 +50,70 @@ public function summary()
     ]);
 }
 
-    public function overview()
-    {
-        return response()->json([
-            'status' => 'success',
-            'data' => [
-                'welcome_message' => 'Welcome to SmartCRM',
-                'role' => 'Admin',
-                'quick_links' => [
-                    'dashboard',
-                    'customers',
-                    'notifications',
-                    'auth'
+public function overview()
+{
+    $user = Auth::user();
+
+    $role = 'Guest';
+
+    if ($user) {
+        $role = $user->roles->first()?->name ?? 'User';
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'data' => [
+            'welcome_message' => $user
+                ? 'Welcome back, ' . $user->name
+                : 'Welcome to SmartCRM',
+
+            'user' => $user ? [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+            ] : null,
+
+            'role' => $role,
+
+            'quick_links' => [
+                [
+                    'name' => 'Dashboard',
+                    'url' => '/dashboard'
+                ],
+                [
+                    'name' => 'Customers',
+                    'url' => '/customers'
+                ],
+                [
+                    'name' => 'Notifications',
+                    'url' => '/notifications'
+                ],
+                [
+                    'name' => 'Auth',
+                    'url' => '/auth'
                 ]
             ]
+        ]
+    ]);
+}
+
+    public function customerGrowth()
+    {
+        $growth = Customer::select(
+            DB::raw('MONTH(created_at) as month'),
+            DB::raw('MONTHNAME(created_at) as month_name'),
+            DB::raw('COUNT(*) as total')
+        )
+        ->groupBy(
+            DB::raw('MONTH(created_at)'),
+            DB::raw('MONTHNAME(created_at)')
+        )
+        ->orderBy('month')
+        ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $growth
         ]);
     }
 }
