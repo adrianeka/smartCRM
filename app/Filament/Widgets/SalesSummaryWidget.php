@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Customer;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
@@ -13,16 +14,16 @@ class SalesSummaryWidget extends BaseWidget
 
     protected function getStats(): array
     {
-        $totalCustomers = \App\Models\Customer::count();
-        $activeDeals = \App\Models\Customer::whereIn('status', ['Lead', 'Qualified', 'Proposal', 'Negotiation'])->count();
-        $wonDeals = \App\Models\Customer::where('status', 'Customer')->count();
+        $totalCustomers = Customer::count();
+        $activeDeals = Customer::whereIn('status', ['Lead', 'Qualified', 'Proposal', 'Negotiation'])->count();
+        $wonDeals = Customer::where('status', 'Customer')->count();
 
-        $winRate = $totalCustomers > 0 
-            ? (int) round(($wonDeals / $totalCustomers) * 100) 
+        $winRate = $totalCustomers > 0
+            ? (int) round(($wonDeals / $totalCustomers) * 100)
             : 68;
 
-        $pipelineValue = $activeDeals > 0 
-            ? '$' . ($activeDeals * 100) . 'K' 
+        $pipelineValue = $activeDeals > 0
+            ? '$'.($activeDeals * 100).'K'
             : '$705K';
 
         return [
@@ -41,7 +42,7 @@ class SalesSummaryWidget extends BaseWidget
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('success')
                 ->icon('heroicon-o-briefcase'),
-            Stat::make('Win rate', $winRate . '%')
+            Stat::make('Win rate', $winRate.'%')
                 ->description($winRate >= 50 ? '+15%' : '-15%')
                 ->descriptionIcon($winRate >= 50 ? 'heroicon-m-arrow-trending-up' : 'heroicon-m-arrow-trending-down')
                 ->color($winRate >= 50 ? 'success' : 'danger')

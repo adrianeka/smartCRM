@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Api\V1\BaseApiController;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 
-class NotificationController extends Controller
+class NotificationController extends BaseApiController
 {
     public function index()
     {
-        return response()->json([
-            'success' => true,
-            'data' => Notification::latest('created_at')->get()
-        ]);
+        return $this->successResponse(
+            Notification::latest('created_at')->get(),
+            'Notifications fetched successfully'
+        );
     }
 
     public function store(Request $request)
@@ -30,7 +31,7 @@ class NotificationController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Notification created',
-            'data' => $notif
+            'data' => $notif,
         ]);
     }
 
@@ -40,39 +41,39 @@ class NotificationController extends Controller
 
         $notif->update([
             'is_read' => true,
-            'read_at' => now()
+            'read_at' => now(),
         ]);
 
         return response()->json([
             'success' => true,
-            'message' => 'Notification marked as read'
+            'message' => 'Notification marked as read',
         ]);
     }
 
-public function markAllAsRead()
-{
-    Notification::query()
-        ->where('is_read', false)
-        ->update([
-            'is_read' => true,
-            'read_at' => now()
+    public function markAllAsRead()
+    {
+        Notification::query()
+            ->where('is_read', false)
+            ->update([
+                'is_read' => true,
+                'read_at' => now(),
+            ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'All notifications marked as read',
         ]);
+    }
 
-    return response()->json([
-        'success' => true,
-        'message' => 'All notifications marked as read'
-    ]);
-}
+    public function unreadCount()
+    {
+        $count = Notification::query()
+            ->where('is_read', false)
+            ->count();
 
-public function unreadCount()
-{
-    $count = Notification::query()
-        ->where('is_read', false)
-        ->count();
-
-    return response()->json([
-        'success' => true,
-        'unread_count' => $count
-    ]);
-}
+        return response()->json([
+            'success' => true,
+            'unread_count' => $count,
+        ]);
+    }
 }
