@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\ActivityLogs;
 
+use App\Models\User;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Resources\Resource;
@@ -9,6 +10,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Models\Activity;
 
 class ActivityLogResource extends Resource implements HasShieldPermissions
@@ -64,7 +66,17 @@ class ActivityLogResource extends Resource implements HasShieldPermissions
                 TextColumn::make('causer.name')
                     ->label('Dilakukan Oleh')
                     ->searchable()
-                    ->placeholder('Sistem'),
+                    ->placeholder('Sistem')
+                    ->description(function (Activity $record): ?string {
+                        $causer = $record->causer;
+                        if (! $causer instanceof User) {
+                            return null;
+                        }
+
+                        return $causer->roles->pluck('name')
+                            ->map(fn ($role) => ucwords(str_replace('_', ' ', $role)))
+                            ->implode(', ');
+                    }),
                 TextColumn::make('event')
                     ->label('Event')
                     ->badge()
@@ -100,6 +112,11 @@ class ActivityLogResource extends Resource implements HasShieldPermissions
             ])
             ->recordActions([])
             ->toolbarActions([]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->with(['causer.roles']);
     }
 
     public static function getPages(): array
