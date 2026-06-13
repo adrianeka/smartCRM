@@ -14,32 +14,32 @@ class ActivityPolicy
 
     public function viewAny(AuthUser $authUser): bool
     {
-        return $authUser->can('ViewAny:Activity');
+        return $authUser->hasAnyRole(['super_admin', 'Manager/Analyst']);
     }
 
     public function view(AuthUser $authUser, Activity $activity): bool
     {
-        return $authUser->can('View:Activity');
+        return $authUser->hasAnyRole(['super_admin', 'Manager/Analyst']);
     }
 
     public function create(AuthUser $authUser): bool
     {
-        return $authUser->can('Create:Activity');
+        return false;
     }
 
     public function update(AuthUser $authUser, Activity $activity): bool
     {
-        return $authUser->can('Update:Activity');
+        return false;
     }
 
     public function delete(AuthUser $authUser, Activity $activity): bool
     {
-        return $authUser->can('Delete:Activity');
+        return $authUser->hasRole('super_admin');
     }
 
     public function deleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('DeleteAny:Activity');
+        return $authUser->hasRole('super_admin');
     }
 
     public function restore(AuthUser $authUser, Activity $activity): bool

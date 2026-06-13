@@ -27,6 +27,8 @@ Route::prefix('v1')->group(function () {
     Route::get('/dashboard/customer-growth', [DashboardController::class, 'customerGrowth']);
     Route::get('/dashboard/notifications',[DashboardController::class, 'notifications']);
     Route::get('/dashboard/guide',[DashboardController::class, 'guide']);
+    Route::get('/dashboard/quick-links', [DashboardController::class, 'quickLinks']);
+    Route::get('/dashboard/tasks', [DashboardController::class, 'tasks']);
 
     Route::middleware(['api.logger'])->prefix('notifications')->group(function () {
         Route::get('/', [NotificationController::class, 'index']);
@@ -39,19 +41,21 @@ Route::prefix('v1')->group(function () {
         });
     });
 
-    Route::get('/customers/{id}/activities', [CustomerController::class, 'activities']);
     Route::get('/customers/export/json', [CustomerController::class, 'exportJson']);
-    Route::post('/customers/{id}/tags', [CustomerController::class, 'attachTags']);
-    Route::apiResource('customers', CustomerController::class);
     Route::get('/customers/export/csv', [CustomerController::class, 'exportCsv']);
+    Route::get('/customers/export/excel', [CustomerController::class, 'exportExcel']);
     Route::post('/customers/import', [CustomerController::class, 'importCsv']);
     Route::get('/customers/duplicates', [CustomerController::class, 'duplicates']);
+    Route::post('/customers/{id}/merge', [CustomerController::class, 'merge']);
+    Route::get('/customers/{id}/activities', [CustomerController::class, 'activities']);
+    Route::post('/customers/{id}/tags', [CustomerController::class, 'attachTags']);
     Route::get('/customers/{id}/attachments', [CustomerController::class, 'attachments']);
     Route::post('/customers/{id}/attachments', [CustomerController::class, 'uploadAttachment']);
+    Route::patch('/customers/{id}/favorite', [CustomerController::class, 'toggleFavorite']);
+    Route::apiResource('customers', CustomerController::class);
     Route::get('/attachments/{id}/preview', [CustomerController::class, 'previewAttachment']);
     Route::get('/attachments/{id}/download', [CustomerController::class, 'downloadAttachment']);
     Route::delete('/attachments/{id}', [CustomerController::class, 'deleteAttachment']);
 
     Route::post('/webhook/receive', [WebhookController::class, 'receive']);
-    Route::patch('/customers/{id}/favorite', [CustomerController::class, 'toggleFavorite']);
 });

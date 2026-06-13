@@ -6,29 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('api_logs', function (Blueprint $table) {
             $table->id();
             $table->string('method');
             $table->string('endpoint');
-
-            $table->integer('status_code');
-
-            $table->text('ip_address')->nullable();
-
-            $table->longText('request_body')->nullable();
-            $table->longText('response_body')->nullable();
+            $table->unsignedSmallInteger('status_code');
+            $table->string('ip_address')->nullable();
+            $table->json('request_body')->nullable();
+            $table->json('response_body')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('api_logs');

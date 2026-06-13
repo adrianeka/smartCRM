@@ -7,12 +7,15 @@ use App\Listeners\LogFailedLogin;
 use App\Listeners\LogSuccessfulLogin;
 use App\Listeners\LogSuccessfulLogout;
 use App\Models\Customer;
+use App\Models\User;
 use App\Models\WebhookLog;
 use App\Observers\CustomerObserver;
 use App\Observers\WebhookLogObserver;
 use App\Policies\ActivityPolicy;
 use App\Policies\CustomerPolicy;
 use App\Policies\RolePolicy;
+use App\Policies\UserPolicy;
+use App\Policies\WebhookLogPolicy;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;
@@ -51,6 +54,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Activity::class, ActivityPolicy::class);
         Gate::policy(Role::class, RolePolicy::class);
         Gate::policy(Customer::class, CustomerPolicy::class);
+        Gate::policy(User::class, UserPolicy::class);
+        Gate::policy(WebhookLog::class, WebhookLogPolicy::class);
 
         Customer::observe(CustomerObserver::class);
         WebhookLog::observe(WebhookLogObserver::class);

@@ -201,4 +201,77 @@ public function overview()
             ]
         ]);
     }
+
+
+    #[OA\Get(
+    path: '/api/v1/dashboard/quick-links',
+    summary: 'Dashboard Quick Links',
+    tags: ['Dashboard'],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: 'Quick links dashboard'
+            )
+        ]
+    )]
+    public function quickLinks()
+        {
+            return response()->json([
+                'status' => 'success',
+                'data' => [
+                    [
+                        'name' => 'Customers',
+                        'url' => '/customers',
+                    ],
+                    [
+                        'name' => 'Notifications',
+                        'url' => '/notifications',
+                    ],
+                    [
+                        'name' => 'Dashboard',
+                        'url' => '/dashboard',
+                    ],
+                    [
+                        'name' => 'API Documentation',
+                        'url' => '/api/documentation',
+                    ],
+                ]
+            ]);
+        }
+
+        #[OA\Get(
+    path: '/api/v1/dashboard/tasks',
+    summary: 'Today Tasks & Upcoming Deadlines',
+    tags: ['Dashboard'],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: 'Dashboard tasks'
+        )
+    ]
+)]
+
+public function tasks()
+{
+    return response()->json([
+        'status' => 'success',
+        'data' => [
+            [
+                'task' => 'Review customer imports',
+                'deadline' => now()->addDay()->toDateString(),
+                'status' => 'pending'
+            ],
+            [
+                'task' => 'Monitor notification logs',
+                'deadline' => now()->addDays(2)->toDateString(),
+                'status' => 'pending'
+            ],
+            [
+                'task' => 'Check webhook delivery',
+                'deadline' => now()->addDays(3)->toDateString(),
+                'status' => 'pending'
+            ]
+        ]
+    ]);
+}
 }
