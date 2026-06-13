@@ -49,7 +49,7 @@ use Spatie\Permission\Traits\HasRoles;
  *
  * @mixin \Eloquent
  */
-#[Fillable(['name', 'email', 'password', 'provider_name', 'provider_id', 'avatar_url', 'email_verified_at'])]
+#[Fillable(['name', 'email', 'password', 'provider_name', 'provider_id', 'avatar_url', 'email_verified_at', 'google2fa_secret'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser, HasAvatar
 {
@@ -64,6 +64,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         'provider_name',
         'provider_id',
         'email_verified_at',
+        'google2fa_secret',
     ];
 
     public function getActivitylogOptions(): LogOptions

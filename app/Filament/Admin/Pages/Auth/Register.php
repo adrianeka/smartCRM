@@ -2,7 +2,6 @@
 
 namespace App\Filament\Admin\Pages\Auth;
 
-use App\Http\Controllers\Auth\MfaOtpController;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Auth\Events\Registered;
 use Filament\Auth\Http\Responses\Contracts\RegistrationResponse;
@@ -61,8 +60,7 @@ class Register extends BaseRegister
 
         session()->regenerate();
 
-        // Send OTP and set MFA session
-        app(MfaOtpController::class)->generateAndSendOtp($user);
+        // Set MFA session to false (forces setup on first login)
         session()->put('mfa_verified', false);
 
         // Redirect to MFA Challenge

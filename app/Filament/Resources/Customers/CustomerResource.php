@@ -2,36 +2,36 @@
 
 namespace App\Filament\Resources\Customers;
 
-use App\Models\Customer;
-use App\Models\User;
-use BackedEnum;
-use UnitEnum;
-use Filament\Actions\Action;
-use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Section;
-use Filament\Tables\Table;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\Toggle;
-use Filament\Notifications\Notification;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Filters\TernaryFilter;
-use Illuminate\Support\Facades\DB;
 use App\Filament\Resources\Customers\Pages\CreateCustomer;
 use App\Filament\Resources\Customers\Pages\DuplicateCustomers;
 use App\Filament\Resources\Customers\Pages\EditCustomer;
 use App\Filament\Resources\Customers\Pages\ListCustomers;
 use App\Filament\Resources\Customers\Pages\ViewCustomer;
+use App\Models\Customer;
+use App\Models\User;
+use BackedEnum;
+use Filament\Actions\Action;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
+use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Table;
+use Illuminate\Support\Facades\DB;
+use UnitEnum;
 
 class CustomerResource extends Resource
 {
@@ -110,8 +110,8 @@ class CustomerResource extends Resource
                         ->label('Tanggal Lahir'),
                     Select::make('status')
                         ->options([
-                            'Lead'     => 'Lead (Calon)',
-                            'Active'   => 'Active (Aktif)',
+                            'Lead' => 'Lead (Calon)',
+                            'Active' => 'Active (Aktif)',
                             'Customer' => 'Customer (Pelanggan)',
                             'Inactive' => 'Inactive (Tidak Aktif)',
                         ])
@@ -258,7 +258,7 @@ class CustomerResource extends Resource
                         ->columns(2)
                         ->defaultItems(0)
                         ->addActionLabel('Tambah Kolom Fleksibel Baru')
-                        ->label('')
+                        ->label(''),
                 ])->columnSpanFull(),
 
             Section::make('Lampiran Pelanggan')
@@ -312,8 +312,8 @@ class CustomerResource extends Resource
                         ->addable(false)
                         ->deletable(false)
                         ->reorderable(false)
-                        ->label('')
-                ])->columnSpanFull()
+                        ->label(''),
+                ])->columnSpanFull(),
         ]);
     }
 
@@ -351,15 +351,15 @@ class CustomerResource extends Resource
                 TextColumn::make('tags.name')
                     ->badge()
                     ->separator(',')
-                        ->label('Tag'),
+                    ->label('Tag'),
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'Lead'     => 'warning',
-                        'Active'   => 'success',
+                        'Lead' => 'warning',
+                        'Active' => 'success',
                         'Customer' => 'success',
                         'Inactive' => 'danger',
-                        default    => 'gray',
+                        default => 'gray',
                     })
                     ->label('Status'),
                 TextColumn::make('created_at')
@@ -371,8 +371,8 @@ class CustomerResource extends Resource
             ->filters([
                 SelectFilter::make('status')
                     ->options([
-                        'Lead'     => 'Lead',
-                        'Active'   => 'Active',
+                        'Lead' => 'Lead',
+                        'Active' => 'Active',
                         'Customer' => 'Customer',
                         'Inactive' => 'Inactive',
                     ])
@@ -553,11 +553,11 @@ class CustomerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => ListCustomers::route('/'),
+            'index' => ListCustomers::route('/'),
             'create' => CreateCustomer::route('/create'),
             'duplicates' => DuplicateCustomers::route('/duplicates'),
-            'view'   => ViewCustomer::route('/{record}'),
-            'edit'   => EditCustomer::route('/{record}/edit'),
+            'view' => ViewCustomer::route('/{record}'),
+            'edit' => EditCustomer::route('/{record}/edit'),
         ];
     }
 }

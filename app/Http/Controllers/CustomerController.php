@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Imports\CustomerImport;
-use App\Models\Notification;
 use App\Models\Customer;
 use App\Models\CustomerAttachment;
+use App\Models\Notification;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -51,18 +51,18 @@ class CustomerController extends Controller
 
                 if (DB::connection()->getDriverName() === 'mysql') {
                     $q->orWhereFullText([
-                            'customer_code',
-                            'full_name',
-                            'email',
-                            'phone',
-                            'whatsapp',
-                            'company_name',
-                            'industry',
-                            'city',
-                            'province',
-                            'source',
-                            'notes',
-                        ], $search);
+                        'customer_code',
+                        'full_name',
+                        'email',
+                        'phone',
+                        'whatsapp',
+                        'company_name',
+                        'industry',
+                        'city',
+                        'province',
+                        'source',
+                        'notes',
+                    ], $search);
                 }
             });
         }
@@ -419,7 +419,8 @@ class CustomerController extends Controller
 
     public function exportExcel()
     {
-        $export = new class implements FromCollection, WithHeadings, WithMapping {
+        $export = new class implements FromCollection, WithHeadings, WithMapping
+        {
             public function collection()
             {
                 return Customer::with(['assignedUser', 'customFields'])->orderBy('full_name')->get();
@@ -954,5 +955,4 @@ class CustomerController extends Controller
 
         $this->syncCustomFields($primary, $fields);
     }
-
 }

@@ -24,12 +24,12 @@ class CustomerDemoSeeder extends Seeder
                 [
                     'full_name' => "Customer Demo {$i}",
                     'email' => sprintf('customer.demo.%03d@smartcrm.test', $i),
-                    'phone' => '08123' . str_pad((string) $i, 7, '0', STR_PAD_LEFT),
+                    'phone' => '08123'.str_pad((string) $i, 7, '0', STR_PAD_LEFT),
                     'company_name' => $companies[($i - 1) % count($companies)],
                     'status' => $statuses[($i - 1) % count($statuses)],
                     'assigned_user_id' => $i % 2 === 0 ? $salesUser?->id : $adminUser?->id,
                     'custom_fields' => [
-                        'Instagram' => '@customer_demo_' . $i,
+                        'Instagram' => '@customer_demo_'.$i,
                         'Kategori' => $i % 3 === 0 ? 'VIP' : 'Regular',
                         'Sumber Data' => 'CSV Indra',
                     ],
@@ -38,7 +38,7 @@ class CustomerDemoSeeder extends Seeder
 
             $customer->customFields()->delete();
             $customer->customFields()->createMany([
-                ['field_key' => 'Instagram', 'field_value' => '@customer_demo_' . $i],
+                ['field_key' => 'Instagram', 'field_value' => '@customer_demo_'.$i],
                 ['field_key' => 'Kategori', 'field_value' => $i % 3 === 0 ? 'VIP' : 'Regular'],
                 ['field_key' => 'Sumber Data', 'field_value' => 'CSV Indra'],
             ]);

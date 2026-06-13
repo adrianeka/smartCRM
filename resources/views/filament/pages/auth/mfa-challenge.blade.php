@@ -16,6 +16,41 @@
     @endif
 
     <style>
+        .qr-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .dark .qr-container {
+            background-color: #1f2937;
+            border-color: #374151;
+        }
+        .qr-code {
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            padding: 0.5rem;
+        }
+        .manual-key {
+            font-family: monospace;
+            font-size: 0.875rem;
+            color: #4b5563;
+            margin-top: 1rem;
+            padding: 0.25rem 0.75rem;
+            background-color: #e5e7eb;
+            border-radius: 0.375rem;
+            letter-spacing: 1px;
+        }
+        .dark .manual-key {
+            color: #d1d5db;
+            background-color: #374151;
+        }
         .otp-container {
             display: flex;
             justify-content: center;
@@ -86,7 +121,7 @@
         .dark .footer-container p {
             color: #9ca3af !important;
         }
-        .btn-resend {
+        .btn-logout {
             background: none !important;
             border: none !important;
             padding: 0 !important;
@@ -97,11 +132,24 @@
             transition: color 0.15s ease-in-out !important;
             text-decoration: none !important;
         }
-        .btn-resend:hover {
+        .btn-logout:hover {
             color: #b45309 !important;
             text-decoration: underline !important;
         }
     </style>
+
+    <!-- Google Authenticator Setup Mode -->
+    @if ($isSetupMode)
+        <div class="qr-container">
+            <img src="{{ $qrCodeUrl }}" alt="QR Code Setup MFA" class="qr-code" width="200" height="200" />
+            <div class="manual-key" title="Ketik kode ini secara manual jika tidak bisa men-scan QR code">
+                {{ chunk_split($google2faSecret, 4, ' ') }}
+            </div>
+            <p class="text-xs text-center text-gray-500 dark:text-gray-400 mt-2">
+                Ketik kode di atas jika kamera HP Anda bermasalah.
+            </p>
+        </div>
+    @endif
 
     <form method="POST" action="{{ route('mfa.challenge.verify') }}" class="space-y-6">
         @csrf
@@ -161,18 +209,15 @@
 
         <div class="btn-verify-container">
             <x-filament::button type="submit">
-                Verifikasi
+                {{ $isSetupMode ? 'Simpan & Aktifkan' : 'Verifikasi' }}
             </x-filament::button>
         </div>
     </form>
 
     <div class="footer-container">
-        <p>Tidak menerima kode?</p>
-        <form method="POST" action="{{ route('mfa.challenge.send') }}">
-            @csrf
-            <button type="submit" class="btn-resend">
-                Kirim Ulang Kode
-            </button>
-        </form>
+        <p>Bukan akun Anda?</p>
+        <a href="{{ route('filament.admin.auth.logout.get') }}" class="btn-logout">
+            Keluar / Logout
+        </a>
     </div>
 </x-filament-panels::page.simple>
