@@ -42,7 +42,7 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             ->plugins([
-                FilamentShieldPlugin::make(),
+                FilamentShieldPlugin::make(),  // ✅ hanya satu ->plugins(), isinya objek Plugin yang valid
             ])
             ->profile(EditProfile::class)
             ->userMenuItems([

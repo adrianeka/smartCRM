@@ -21,17 +21,63 @@ class CustomerImporter extends Importer
             ImportColumn::make('full_name')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
+            ImportColumn::make('job_title')
+                ->rules(['nullable', 'max:255']),
             ImportColumn::make('email')
                 ->requiredMapping()
                 ->rules(['required', 'email', 'max:255']),
+            ImportColumn::make('website')
+                ->rules(['nullable', 'url', 'max:255']),
             ImportColumn::make('phone')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
+            ImportColumn::make('whatsapp')
+                ->rules(['nullable', 'max:255']),
             ImportColumn::make('company_name')
-                ->rules(['max:255']),
+                ->rules(['nullable', 'max:255']),
+            ImportColumn::make('industry')
+                ->rules(['nullable', 'max:255']),
+            ImportColumn::make('identity_number')
+                ->rules(['nullable', 'max:255']),
+            ImportColumn::make('tax_number')
+                ->rules(['nullable', 'max:255']),
+            ImportColumn::make('gender')
+                ->rules(['nullable', 'max:255']),
+            ImportColumn::make('birth_date')
+                ->rules(['nullable', 'date']),
+            ImportColumn::make('address')
+                ->rules(['nullable', 'max:2000']),
+            ImportColumn::make('city')
+                ->rules(['nullable', 'max:255']),
+            ImportColumn::make('province')
+                ->rules(['nullable', 'max:255']),
+            ImportColumn::make('postal_code')
+                ->rules(['nullable', 'max:255']),
+            ImportColumn::make('country')
+                ->rules(['nullable', 'max:255']),
             ImportColumn::make('status')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
+            ImportColumn::make('customer_type')
+                ->rules(['nullable', 'max:255']),
+            ImportColumn::make('source')
+                ->rules(['nullable', 'max:255']),
+            ImportColumn::make('lead_score')
+                ->numeric()
+                ->rules(['nullable', 'integer', 'min:0', 'max:100']),
+            ImportColumn::make('preferred_contact_method')
+                ->rules(['nullable', 'max:255']),
+            ImportColumn::make('last_contacted_at')
+                ->rules(['nullable', 'date']),
+            ImportColumn::make('next_follow_up_at')
+                ->rules(['nullable', 'date']),
+            ImportColumn::make('notes')
+                ->rules(['nullable', 'max:2000']),
+            ImportColumn::make('is_favorite')
+                ->boolean()
+                ->rules(['nullable', 'boolean']),
+            ImportColumn::make('assigned_user_id')
+                ->rules(['nullable', 'exists:users,id']),
         ];
     }
 
