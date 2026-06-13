@@ -18,6 +18,6 @@ class LogSuccessfulLogin
             ->event('login')
             ->performedOn($user)
             ->causedBy($user)
-            ->log("User {$user->name} ({$user->email}) logged in successfully.");
+            ->log("User {$user->name} logged in successfully.");
     }
 }

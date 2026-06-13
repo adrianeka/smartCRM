@@ -19,7 +19,7 @@ class LogSuccessfulLogout
                 ->event('logout')
                 ->performedOn($user)
                 ->causedBy($user)
-                ->log("User {$user->name} ({$user->email}) logged out.");
+                ->log("User {$user->name} logged out.");
         }
     }
 }
