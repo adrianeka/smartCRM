@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use Filament\Widgets\Widget;
+use Spatie\Activitylog\Models\Activity;
 
 class RecentActivitiesWidget extends Widget
 {
@@ -14,14 +15,14 @@ class RecentActivitiesWidget extends Widget
 
     protected function getViewData(): array
     {
-        $realActivities = \Spatie\Activitylog\Models\Activity::latest()->limit(5)->get();
+        $realActivities = Activity::latest()->limit(5)->get();
 
         $activities = [];
 
         foreach ($realActivities as $activity) {
             $activities[] = [
                 'title' => ucfirst($activity->description),
-                'description' => $activity->subject_type ? class_basename($activity->subject_type) . ' #' . $activity->subject_id : '',
+                'description' => $activity->subject_type ? class_basename($activity->subject_type).' #'.$activity->subject_id : '',
                 'time' => $activity->created_at->format('Y-m-d H:i'),
                 'color' => match ($activity->event) {
                     'created' => '#22c55e',
