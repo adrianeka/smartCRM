@@ -12,26 +12,26 @@ class WebhookStats extends BaseWidget
     {
         return [
             Stat::make(
-                'Total Webhooks',
+                'Total Webhook',
                 (string) WebhookLog::query()->count('*')
             ),
 
             Stat::make(
-                'Success',
+                'Berhasil',
                 (string) WebhookLog::query()
                     ->where('status', 'success')
                     ->count('*')
             ),
 
             Stat::make(
-                'Failed',
+                'Gagal',
                 (string) WebhookLog::query()
                     ->where('status', 'failed')
                     ->count('*')
             ),
 
             Stat::make(
-                'Pending',
+                'Menunggu',
                 (string) WebhookLog::query()
                     ->where('status', 'pending')
                     ->count('*')

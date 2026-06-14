@@ -273,6 +273,28 @@ class CustomerController extends Controller
         ]);
     }
 
+    #[OA\Get(
+        path: '/api/v1/customers/{id}/activities',
+        summary: 'Get Customer Activity Logs',
+        tags: ['Customer'],
+        security: [['sanctum' => []]],
+        parameters: [
+            new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer'), description: 'Customer ID'),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Customer activity logs',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'status', type: 'string', example: 'success'),
+                        new OA\Property(property: 'data', type: 'object'),
+                    ]
+                )
+            ),
+            new OA\Response(response: 404, description: 'Customer not found'),
+        ]
+    )]
     public function activities($id)
     {
         $customer = Customer::findOrFail($id);
@@ -315,6 +337,24 @@ class CustomerController extends Controller
         ]);
     }
 
+    #[OA\Get(
+        path: '/api/v1/customers/export/json',
+        summary: 'Export Customers as JSON',
+        tags: ['Customer'],
+        security: [['sanctum' => []]],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'All customers in JSON format',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'status', type: 'string', example: 'success'),
+                        new OA\Property(property: 'data', type: 'array', items: new OA\Items(type: 'object')),
+                    ]
+                )
+            ),
+        ]
+    )]
     public function exportJson()
     {
         return response()->json([
@@ -323,6 +363,19 @@ class CustomerController extends Controller
         ]);
     }
 
+    #[OA\Get(
+        path: '/api/v1/customers/export/csv',
+        summary: 'Export Customers as CSV',
+        tags: ['Customer'],
+        security: [['sanctum' => []]],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'CSV file download',
+                content: new OA\MediaType(mediaType: 'text/csv')
+            ),
+        ]
+    )]
     public function exportCsv()
     {
         $customers = Customer::with('assignedUser')->get();
@@ -403,6 +456,36 @@ class CustomerController extends Controller
         return response()->stream($callback, 200, $headers);
     }
 
+    #[OA\Post(
+        path: '/api/v1/customers/import/csv',
+        summary: 'Import Customers from CSV/Excel',
+        tags: ['Customer'],
+        security: [['sanctum' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\MediaType(
+                mediaType: 'multipart/form-data',
+                schema: new OA\Schema(
+                    properties: [
+                        new OA\Property(property: 'file', type: 'string', format: 'binary', description: 'CSV or Excel file'),
+                    ]
+                )
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Import successful',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'status', type: 'string', example: 'success'),
+                        new OA\Property(property: 'message', type: 'string', example: 'Customer berhasil diimport'),
+                    ]
+                )
+            ),
+            new OA\Response(response: 422, description: 'Validation error'),
+        ]
+    )]
     public function importCsv(Request $request)
     {
         $request->validate([
@@ -512,6 +595,23 @@ class CustomerController extends Controller
         return Excel::download($export, 'customers.xlsx');
     }
 
+    #[OA\Get(
+        path: '/api/v1/customers/duplicates',
+        summary: 'Get Duplicate Customers',
+        tags: ['Customer'],
+        security: [['sanctum' => []]],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Duplicate customers list',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'status', type: 'string', example: 'success'),
+                    ]
+                )
+            ),
+        ]
+    )]
     public function duplicates(Request $request)
     {
         $threshold = (int) $request->input('threshold', 50);
@@ -600,6 +700,38 @@ class CustomerController extends Controller
         ]);
     }
 
+    #[OA\Post(
+        path: '/api/v1/customers/{id}/tags',
+        summary: 'Attach Tags to Customer',
+        tags: ['Customer'],
+        security: [['sanctum' => []]],
+        parameters: [
+            new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer'), description: 'Customer ID'),
+        ],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['tag_ids'],
+                properties: [
+                    new OA\Property(property: 'tag_ids', type: 'array', items: new OA\Items(type: 'integer'), example: [1, 2, 3]),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Tags attached successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'status', type: 'string', example: 'success'),
+                        new OA\Property(property: 'message', type: 'string', example: 'Tag berhasil ditambahkan'),
+                        new OA\Property(property: 'data', type: 'array', items: new OA\Items(type: 'object')),
+                    ]
+                )
+            ),
+            new OA\Response(response: 404, description: 'Customer not found'),
+        ]
+    )]
     public function attachTags(Request $request, $id)
     {
         $customer = Customer::findOrFail($id);
@@ -616,6 +748,28 @@ class CustomerController extends Controller
         ]);
     }
 
+    #[OA\Post(
+        path: '/api/v1/customers/{id}/favorite',
+        summary: 'Toggle Customer Favorite',
+        tags: ['Customer'],
+        security: [['sanctum' => []]],
+        parameters: [
+            new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer'), description: 'Customer ID'),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Favorite status toggled',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'status', type: 'string', example: 'success'),
+                        new OA\Property(property: 'data', type: 'object'),
+                    ]
+                )
+            ),
+            new OA\Response(response: 404, description: 'Customer not found'),
+        ]
+    )]
     public function toggleFavorite($id)
     {
         $customer = Customer::findOrFail($id);
@@ -628,6 +782,28 @@ class CustomerController extends Controller
         ]);
     }
 
+    #[OA\Get(
+        path: '/api/v1/customers/{id}/attachments',
+        summary: 'Get Customer Attachments',
+        tags: ['Customer'],
+        security: [['sanctum' => []]],
+        parameters: [
+            new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer'), description: 'Customer ID'),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'List of attachments',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'status', type: 'string', example: 'success'),
+                        new OA\Property(property: 'data', type: 'array', items: new OA\Items(type: 'object')),
+                    ]
+                )
+            ),
+            new OA\Response(response: 404, description: 'Customer not found'),
+        ]
+    )]
     public function attachments($id)
     {
         $customer = Customer::with('attachments')->findOrFail($id);
@@ -638,6 +814,40 @@ class CustomerController extends Controller
         ]);
     }
 
+    #[OA\Post(
+        path: '/api/v1/customers/{id}/attachments',
+        summary: 'Upload Attachment for Customer',
+        tags: ['Customer'],
+        security: [['sanctum' => []]],
+        parameters: [
+            new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer'), description: 'Customer ID'),
+        ],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\MediaType(
+                mediaType: 'multipart/form-data',
+                schema: new OA\Schema(
+                    properties: [
+                        new OA\Property(property: 'file', type: 'string', format: 'binary', description: 'File to upload (max 10MB)'),
+                    ]
+                )
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'File uploaded successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'status', type: 'string', example: 'success'),
+                        new OA\Property(property: 'message', type: 'string', example: 'File berhasil diupload'),
+                        new OA\Property(property: 'data', type: 'object'),
+                    ]
+                )
+            ),
+            new OA\Response(response: 422, description: 'Validation error'),
+        ]
+    )]
     public function uploadAttachment(Request $request, $id)
     {
         $customer = Customer::findOrFail($id);
@@ -663,6 +873,19 @@ class CustomerController extends Controller
         ]);
     }
 
+    #[OA\Get(
+        path: '/api/v1/attachments/{attachmentId}/download',
+        summary: 'Download Customer Attachment',
+        tags: ['Customer'],
+        security: [['sanctum' => []]],
+        parameters: [
+            new OA\Parameter(name: 'attachmentId', in: 'path', required: true, schema: new OA\Schema(type: 'integer'), description: 'Attachment ID'),
+        ],
+        responses: [
+            new OA\Response(response: 200, description: 'File download'),
+            new OA\Response(response: 404, description: 'Attachment not found'),
+        ]
+    )]
     public function downloadAttachment($attachmentId)
     {
         $attachment = CustomerAttachment::findOrFail($attachmentId);
@@ -676,6 +899,36 @@ class CustomerController extends Controller
         );
     }
 
+    #[OA\Get(
+        path: '/api/v1/attachments/{attachmentId}/preview',
+        summary: 'Preview Customer Attachment',
+        tags: ['Customer'],
+        security: [['sanctum' => []]],
+        parameters: [
+            new OA\Parameter(name: 'attachmentId', in: 'path', required: true, schema: new OA\Schema(type: 'integer'), description: 'Attachment ID'),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Attachment preview info',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'status', type: 'string', example: 'success'),
+                        new OA\Property(
+                            property: 'data',
+                            type: 'object',
+                            properties: [
+                                new OA\Property(property: 'file_name', type: 'string', example: 'document.pdf'),
+                                new OA\Property(property: 'file_type', type: 'string', example: 'application/pdf'),
+                                new OA\Property(property: 'url', type: 'string', example: 'http://example.com/storage/...'),
+                            ]
+                        ),
+                    ]
+                )
+            ),
+            new OA\Response(response: 404, description: 'Attachment not found'),
+        ]
+    )]
     public function previewAttachment($attachmentId)
     {
         $attachment = CustomerAttachment::findOrFail($attachmentId);
@@ -690,6 +943,28 @@ class CustomerController extends Controller
         ]);
     }
 
+    #[OA\Delete(
+        path: '/api/v1/attachments/{attachmentId}',
+        summary: 'Delete Customer Attachment',
+        tags: ['Customer'],
+        security: [['sanctum' => []]],
+        parameters: [
+            new OA\Parameter(name: 'attachmentId', in: 'path', required: true, schema: new OA\Schema(type: 'integer'), description: 'Attachment ID'),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Attachment deleted successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'status', type: 'string', example: 'success'),
+                        new OA\Property(property: 'message', type: 'string', example: 'Attachment berhasil dihapus'),
+                    ]
+                )
+            ),
+            new OA\Response(response: 404, description: 'Attachment not found'),
+        ]
+    )]
     public function deleteAttachment($attachmentId)
     {
         $attachment = CustomerAttachment::findOrFail($attachmentId);

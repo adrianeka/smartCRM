@@ -12,6 +12,7 @@ use App\Filament\Widgets\RevenueForecastChart;
 use App\Filament\Widgets\SalesPipelineWidget;
 use App\Filament\Widgets\SalesSummaryWidget;
 use App\Filament\Widgets\SupportStatsWidget;
+use App\Filament\Widgets\TasksOverviewWidget;
 use App\Filament\Widgets\TicketsByPriorityChart;
 use App\Filament\Widgets\TodayTasksWidget;
 use App\Filament\Widgets\TopDealsWidget;
@@ -52,6 +53,7 @@ class Dashboard extends BaseDashboard
                 TopDealsWidget::class,
                 UpcomingDeadlinesWidget::class,
                 TodayTasksWidget::class,
+                TasksOverviewWidget::class,
             ];
         }
 
@@ -72,6 +74,7 @@ class Dashboard extends BaseDashboard
                 TicketsByPriorityChart::class,
                 QuickLinksWidget::class,
                 UrgentTicketsWidget::class,
+                TasksOverviewWidget::class,
             ];
         }
 
@@ -86,6 +89,7 @@ class Dashboard extends BaseDashboard
                 QuickLinksWidget::class,
                 TopDealsWidget::class,
                 RecentActivitiesWidget::class,
+                TasksOverviewWidget::class,
             ];
         }
 
@@ -103,6 +107,7 @@ class Dashboard extends BaseDashboard
             UpcomingDeadlinesWidget::class,
             UrgentTicketsWidget::class,
             RecentActivitiesWidget::class,
+            TasksOverviewWidget::class,
         ];
     }
 }

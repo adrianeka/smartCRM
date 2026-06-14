@@ -13,7 +13,7 @@ class UrgentTicketsWidget extends BaseWidget
 
     protected int|string|array $columnSpan = 'full';
 
-    protected static ?string $heading = 'Urgent Tickets (Near SLA)';
+    protected static ?string $heading = 'Tiket Mendesak (Mendekati SLA)';
 
     public function table(Table $table): Table
     {
@@ -33,12 +33,12 @@ class UrgentTicketsWidget extends BaseWidget
                 ])
                 ->columns([
                     TextColumn::make('issue')
-                        ->label('Issue / Customer')
+                        ->label('Masalah / Pelanggan')
                         ->weight('bold')
                         ->description(fn ($record) => is_array($record) ? $record['customer'].' ('.$record['id'].')' : '')
                         ->limit(40),
                     TextColumn::make('time_left')
-                        ->label('Time Left')
+                        ->label('Sisa Waktu')
                         ->badge()
                         ->color('danger')
                         ->icon('heroicon-m-clock')
@@ -51,15 +51,15 @@ class UrgentTicketsWidget extends BaseWidget
         foreach ($urgentCustomers as $customer) {
             $diff = now()->diff($customer->next_follow_up_at);
             if ($diff->invert) {
-                $timeLeft = 'Overdue';
+                $timeLeft = 'Terlambat';
             } else {
-                $timeLeft = $diff->h > 0 ? "{$diff->h}h {$diff->i}m" : "{$diff->i} mins";
+                $timeLeft = $diff->h > 0 ? "{$diff->h}j {$diff->i}m" : "{$diff->i} mnt";
             }
 
             $records[] = [
                 'id' => 'C-'.$customer->customer_code,
                 'customer' => $customer->company_name ?? $customer->full_name,
-                'issue' => 'Follow-up call: '.($customer->notes ?? 'Schedule contact'),
+                'issue' => 'Follow-up: '.($customer->notes ?? 'Jadwalkan kontak'),
                 'time_left' => $timeLeft,
             ];
         }

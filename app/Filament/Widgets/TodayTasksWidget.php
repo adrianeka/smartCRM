@@ -14,7 +14,7 @@ class TodayTasksWidget extends BaseWidget
 
     protected static ?int $sort = 3;
 
-    protected static ?string $heading = "Today's Tasks";
+    protected static ?string $heading = 'Tugas Hari Ini';
 
     public function table(Table $table): Table
     {
@@ -56,11 +56,11 @@ class TodayTasksWidget extends BaseWidget
             )
             ->columns([
                 TextColumn::make('full_name')
-                    ->label('Task / Customer')
-                    ->description(fn ($record) => $record->notes ?? 'Follow-up required')
+                    ->label('Tugas / Pelanggan')
+                    ->description(fn ($record) => $record->notes ?? 'Perlu follow-up')
                     ->icon('heroicon-o-clock'),
                 TextColumn::make('status')
-                    ->label('Priority / Status')
+                    ->label('Prioritas / Status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'Lead' => 'info',

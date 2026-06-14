@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\WebhookController;
 use App\Http\Controllers\CustomerController;
@@ -58,4 +59,15 @@ Route::prefix('v1')->group(function () {
     Route::delete('/attachments/{id}', [CustomerController::class, 'deleteAttachment']);
 
     Route::post('/webhook/receive', [WebhookController::class, 'receive']);
+    Route::patch('/customers/{id}/favorite', [CustomerController::class, 'toggleFavorite']);
+
+    Route::get('/analytics/summary', [AnalyticsController::class, 'summary']);
+    Route::get('/analytics/customer-growth', [AnalyticsController::class, 'customerGrowth']);
+    Route::get('/analytics/customer-status', [AnalyticsController::class, 'customerStatus']);
+    Route::get('/analytics/customer-growth-trend', [AnalyticsController::class, 'customerGrowthTrend']);
+    Route::get('/analytics/kpi', [AnalyticsController::class, 'kpi']);
+    Route::get('/analytics/customer-growth-filtered', [AnalyticsController::class, 'customerGrowthFiltered']);
+    Route::get('/analytics/export/csv', [AnalyticsController::class, 'exportCsv']);
+    Route::middleware('auth:sanctum')
+        ->get('/analytics/role-dashboard', [AnalyticsController::class, 'roleDashboard']);
 });
