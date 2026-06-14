@@ -75,6 +75,18 @@ class AnalyticsController extends Controller
         }
 
 
+        #[OA\Get(
+            path: '/api/v1/analytics/customer-status',
+            summary: 'Customer Status Distribution',
+            tags: ['Analytics'],
+            responses: [
+                new OA\Response(
+                    response: 200,
+                    description: 'Customer status distribution data'
+                )
+            ]
+        )]
+
         public function customerStatus()
         {
             $data = Customer::selectRaw('status as label, COUNT(*) as total')

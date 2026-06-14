@@ -42,6 +42,20 @@
                 }
             }
         },
+        "/api/v1/analytics/customer-status": {
+            "get": {
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Customer Status Distribution",
+                "operationId": "1f2d4cbbabef511c5059fd22cf908efd",
+                "responses": {
+                    "200": {
+                        "description": "Customer status distribution data"
+                    }
+                }
+            }
+        },
         "/api/v1/analytics/customer-growth-trend": {
             "get": {
                 "tags": [
