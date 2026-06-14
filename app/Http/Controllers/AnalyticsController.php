@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 
+
 class AnalyticsController extends Controller
 {
 
@@ -69,6 +70,19 @@ class AnalyticsController extends Controller
             return response()->json([
                 'status' => 'success',
                 'data' => $growth
+            ]);
+        }
+
+
+        public function customerStatus()
+        {
+            $data = Customer::selectRaw('status as label, COUNT(*) as total')
+                ->groupBy('status')
+                ->get();
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $data
             ]);
         }
 }
