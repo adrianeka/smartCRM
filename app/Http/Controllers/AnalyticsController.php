@@ -155,4 +155,34 @@ public function kpi()
         ]
     ]);
 }
+
+
+#[OA\Get(
+    path: '/api/v1/analytics/customer-growth-filtered',
+    summary: 'Customer Growth Filtered',
+    tags: ['Analytics'],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: 'Filtered customer growth'
+        )
+    ]
+)]
+public function customerGrowthFiltered(Request $request)
+{
+    $query = Customer::query();
+
+    if ($request->start_date) {
+        $query->whereDate('created_at', '>=', $request->start_date);
+    }
+
+    if ($request->end_date) {
+        $query->whereDate('created_at', '<=', $request->end_date);
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'total' => $query->count(),
+    ]);
+}
 }

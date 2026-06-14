@@ -67,4 +67,5 @@ Route::prefix('v1')->group(function () {
     Route::get('/analytics/customer-status', [AnalyticsController::class, 'customerStatus']);
     Route::get('/analytics/customer-growth-trend', [AnalyticsController::class, 'customerGrowthTrend']);
     Route::get('/analytics/kpi', [AnalyticsController::class, 'kpi']);
+    Route::get('/analytics/customer-growth-filtered', [AnalyticsController::class, 'customerGrowthFiltered']);
 });
