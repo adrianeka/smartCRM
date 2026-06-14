@@ -1,0 +1,826 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Smart CRM API",
+        "description": "Backend Connector API Documentation",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api": {
+            "servers": [
+                {
+                    "url": "http://127.0.0.1:8000",
+                    "description": "Local Development Server"
+                }
+            ]
+        },
+        "/api/v1/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "User Login",
+                "operationId": "b9b760991d94b179960cd7ddc93eedf2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login success"
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                }
+            }
+        },
+        "/api/v1/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "User Register",
+                "operationId": "38e3071463848ba373dfeae5623cdfa4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Vonny"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "vonny@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Register success"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "User Logout",
+                "operationId": "b66dd8a7864f561822c01bc8339363fb",
+                "responses": {
+                    "200": {
+                        "description": "Logout success"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/me": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Current User Profile",
+                "operationId": "c24e88aea4324667c5f4e38549a5298f",
+                "responses": {
+                    "200": {
+                        "description": "User profile"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/forgot-password": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Forgot Password",
+                "operationId": "160339c41617f92b210502118f7806a3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "user@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Reset link sent"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/reset-password": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Reset Password",
+                "operationId": "e37d100fe1f75b045a6cc6ab349205a6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "token": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "newpassword123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "newpassword123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password reset success"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/change-password": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Change Password",
+                "operationId": "e2a859757327a54e7378ab6a86c3d0e1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "current_password": {
+                                        "type": "string",
+                                        "example": "oldpassword"
+                                    },
+                                    "new_password": {
+                                        "type": "string",
+                                        "example": "newpassword123"
+                                    },
+                                    "new_password_confirmation": {
+                                        "type": "string",
+                                        "example": "newpassword123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password updated"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/analytics/dashboard": {
+            "get": {
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Get complete analytics dashboard data",
+                "operationId": "89ee0bb19258dd953425308a94aa8153",
+                "responses": {
+                    "200": {
+                        "description": "Analytics dashboard data"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/analytics/kpis": {
+            "get": {
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Get analytics KPI summary",
+                "operationId": "b26f691c14039333efa916780108b70c",
+                "responses": {
+                    "200": {
+                        "description": "Analytics KPI summary"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/analytics/revenue-trend": {
+            "get": {
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Get revenue trend",
+                "operationId": "242af74290e5221785b13b3fcdbd240f",
+                "responses": {
+                    "200": {
+                        "description": "Revenue trend data"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/analytics/sales-funnel": {
+            "get": {
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Get sales funnel",
+                "operationId": "1e639e85815108c9833f5b10df17ce48",
+                "responses": {
+                    "200": {
+                        "description": "Sales funnel data"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/analytics/by-product": {
+            "get": {
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Get revenue by product",
+                "operationId": "df4c871b61ec1cff529a33c0b86463eb",
+                "responses": {
+                    "200": {
+                        "description": "Revenue grouped by product"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/analytics/by-region": {
+            "get": {
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Get revenue by region",
+                "operationId": "d20ea066e580b2b6f77e189da29c25ff",
+                "responses": {
+                    "200": {
+                        "description": "Revenue grouped by region"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/analytics/sales-performance": {
+            "get": {
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Get sales-person performance",
+                "operationId": "a961ac2c8975988d4d48e106f8407da1",
+                "responses": {
+                    "200": {
+                        "description": "Sales performance data"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/analytics/sales-performance/export/csv": {
+            "get": {
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Export sales performance CSV",
+                "operationId": "bb04738afdb8304a759eb0d8bc61f760",
+                "responses": {
+                    "200": {
+                        "description": "CSV report download"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/webhook/receive": {
+            "post": {
+                "tags": [
+                    "Webhook"
+                ],
+                "summary": "Receive External Webhook",
+                "operationId": "8564c9e1b8611c7a2d3e63a7476ac038",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "event": {
+                                        "type": "string",
+                                        "example": "customer.created"
+                                    },
+                                    "customer_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Webhook accepted"
+                    }
+                }
+            }
+        },
+        "/auth/{provider}/redirect": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Redirect To OAuth Provider",
+                "operationId": "01c2876307a726e55c358f009cb489a2",
+                "parameters": [
+                    {
+                        "name": "provider",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "google"
+                    }
+                ],
+                "responses": {
+                    "302": {
+                        "description": "Redirect to OAuth Provider"
+                    }
+                }
+            }
+        },
+        "/auth/{provider}/callback": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "OAuth Callback",
+                "operationId": "66da5b2224e2a9f3a17117357c5a885e",
+                "responses": {
+                    "200": {
+                        "description": "OAuth Login Success"
+                    }
+                }
+            }
+        },
+        "/api/v1/customers": {
+            "get": {
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Get All Customers",
+                "operationId": "a29d5f0bab561196b8e3bd82422e58e6",
+                "responses": {
+                    "200": {
+                        "description": "List of customers"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Create Customer",
+                "operationId": "1d27da36718a3e9726c873633af496da",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "john@example.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "08123456789"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Customer created"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/customers/{id}": {
+            "get": {
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Get Customer Detail",
+                "operationId": "155f59b614e1620e56fcc62e7ac86776",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of customers",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Customer"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Update Customer",
+                "operationId": "ba374f3626d9dc83865e940b91d5d6dd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Customer updated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Delete Customer",
+                "operationId": "b01ba7fa065f0d5c08b1bbc777ab7108",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Customer deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/dashboard/summary": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Dashboard Summary",
+                "operationId": "b19eb00a63461a3ae74d628830b83588",
+                "responses": {
+                    "200": {
+                        "description": "Dashboard statistics"
+                    }
+                }
+            }
+        },
+        "/api/v1/dashboard/overview": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Dashboard Overview",
+                "operationId": "a8d5b8ad142fd3322389fa020bfb7f95",
+                "responses": {
+                    "200": {
+                        "description": "Dashboard overview data"
+                    }
+                }
+            }
+        },
+        "/api/v1/dashboard/customer-growth": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Customer Growth Statistics",
+                "operationId": "5c9971eae15195346ebc4d42ae6a6bfc",
+                "responses": {
+                    "200": {
+                        "description": "Customer growth chart data"
+                    }
+                }
+            }
+        },
+        "/api/v1/dashboard/notifications": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Dashboard Notification Center",
+                "operationId": "cadca0e4270ad70ce49684ba49831e0a",
+                "responses": {
+                    "200": {
+                        "description": "Latest notifications"
+                    }
+                }
+            }
+        },
+        "/api/v1/dashboard/guide": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Quick Start Guide",
+                "operationId": "87d6850038df3d19a2b017943066643a",
+                "responses": {
+                    "200": {
+                        "description": "Quick start guide"
+                    }
+                }
+            }
+        },
+        "/api/v1/dashboard/quick-links": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Dashboard Quick Links",
+                "operationId": "941fd1e08ac7101bd11cbf105d62e407",
+                "responses": {
+                    "200": {
+                        "description": "Quick links dashboard"
+                    }
+                }
+            }
+        },
+        "/api/v1/dashboard/tasks": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Today Tasks & Upcoming Deadlines",
+                "operationId": "d07d66dcc3414bedbe9acde8d877b0bb",
+                "responses": {
+                    "200": {
+                        "description": "Dashboard tasks"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Customer": {
+                "title": "Customer",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "customer_code": {
+                        "type": "string",
+                        "example": "CUST-001"
+                    },
+                    "full_name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "john@example.com"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "08123456789"
+                    },
+                    "company_name": {
+                        "type": "string",
+                        "example": "PT Example",
+                        "nullable": true
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "Lead"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "sanctum": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
+            "name": "Analytics",
+            "description": "Analytics"
+        },
+        {
+            "name": "Webhook",
+            "description": "Webhook"
+        },
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
+            "name": "Customer",
+            "description": "Customer"
+        },
+        {
+            "name": "Dashboard",
+            "description": "Dashboard"
+        }
+    ]
+}
