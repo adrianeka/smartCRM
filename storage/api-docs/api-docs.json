@@ -42,6 +42,76 @@
                 }
             }
         },
+        "/api/v1/analytics/customer-growth-trend": {
+            "get": {
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Customer Growth Trend",
+                "operationId": "50a613b48ab70568a95b0b1d91b2f095",
+                "responses": {
+                    "200": {
+                        "description": "Customer growth trend data"
+                    }
+                }
+            }
+        },
+        "/api/v1/analytics/kpi": {
+            "get": {
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Analytics KPI Metrics",
+                "operationId": "17d537fa7415cecde92381817dca4961",
+                "responses": {
+                    "200": {
+                        "description": "Analytics KPI metrics"
+                    }
+                }
+            }
+        },
+        "/api/v1/analytics/customer-growth-filtered": {
+            "get": {
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Customer Growth Filtered",
+                "operationId": "e99fc6362ef7aef8d25559f0717d8540",
+                "responses": {
+                    "200": {
+                        "description": "Filtered customer growth"
+                    }
+                }
+            }
+        },
+        "/api/v1/analytics/export/csv": {
+            "get": {
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Export Analytics CSV",
+                "operationId": "784d2437319a60a73c2c52403bc54c9a",
+                "responses": {
+                    "200": {
+                        "description": "Analytics CSV export"
+                    }
+                }
+            }
+        },
+        "/api/v1/analytics/role-dashboard": {
+            "get": {
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Role Based Analytics",
+                "operationId": "4424917bf3867fd6a5b6650f3ccac753",
+                "responses": {
+                    "200": {
+                        "description": "Role dashboard analytics"
+                    }
+                }
+            }
+        },
         "/api/v1/login": {
             "post": {
                 "tags": [

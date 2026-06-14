@@ -99,27 +99,38 @@ class AnalyticsController extends Controller
                 )
             ]
         )]
-        public function customerGrowthTrend()
-    {
-        $data = Customer::selectRaw("
-                MONTH(created_at) as month,
-                COUNT(*) as total
-            ")
-            ->groupByRaw("MONTH(created_at)")
-            ->orderByRaw("MONTH(created_at)")
-            ->get()
-            ->map(function ($item) {
-                return [
-                    'month' => date('M', mktime(0, 0, 0, $item->month, 1)),
-                    'total' => $item->total,
-                ];
-            });
+public function customerGrowthTrend()
+{
+    $data = Customer::whereNotNull('created_at')
+        ->selectRaw("
+            YEAR(created_at) as year,
+            MONTH(created_at) as month,
+            COUNT(*) as total
+        ")
+        ->groupByRaw("
+            YEAR(created_at),
+            MONTH(created_at)
+        ")
+        ->orderByRaw("
+            YEAR(created_at),
+            MONTH(created_at)
+        ")
+        ->get()
+        ->map(function ($item) {
+            return [
+                'month' => date(
+                    'M Y',
+                    mktime(0, 0, 0, $item->month, 1, $item->year)
+                ),
+                'total' => $item->total,
+            ];
+        });
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $data
-        ]);
-    }
+    return response()->json([
+        'status' => 'success',
+        'data' => $data,
+    ]);
+}
 
 
     #[OA\Get(
