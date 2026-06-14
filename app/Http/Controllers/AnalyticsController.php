@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 
 
+
 class AnalyticsController extends Controller
 {
 
@@ -85,4 +86,38 @@ class AnalyticsController extends Controller
                 'data' => $data
             ]);
         }
+
+
+        #[OA\Get(
+            path: '/api/v1/analytics/customer-growth-trend',
+            summary: 'Customer Growth Trend',
+            tags: ['Analytics'],
+            responses: [
+                new OA\Response(
+                    response: 200,
+                    description: 'Customer growth trend data'
+                )
+            ]
+        )]
+        public function customerGrowthTrend()
+    {
+        $data = Customer::selectRaw("
+                MONTH(created_at) as month,
+                COUNT(*) as total
+            ")
+            ->groupByRaw("MONTH(created_at)")
+            ->orderByRaw("MONTH(created_at)")
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'month' => date('M', mktime(0, 0, 0, $item->month, 1)),
+                    'total' => $item->total,
+                ];
+            });
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $data
+        ]);
+    }
 }
