@@ -13,7 +13,7 @@ class TopDealsWidget extends BaseWidget
 
     protected static ?int $sort = 6;
 
-    protected static ?string $heading = 'Top Deals by Value';
+    protected static ?string $heading = 'Deal Teratas';
 
     public function table(Table $table): Table
     {
@@ -35,10 +35,10 @@ class TopDealsWidget extends BaseWidget
                 ])
                 ->columns([
                     TextColumn::make('title')
-                        ->label('Deal / Customer')
+                        ->label('Deal / Pelanggan')
                         ->description(fn ($record) => $record['company']),
                     TextColumn::make('value')
-                        ->label('Lead Score')
+                        ->label('Skor Lead')
                         ->alignEnd(),
                 ])
                 ->paginated(false);
@@ -54,11 +54,11 @@ class TopDealsWidget extends BaseWidget
             )
             ->columns([
                 TextColumn::make('full_name')
-                    ->label('Deal / Customer')
-                    ->description(fn ($record) => $record->company_name ?? 'Personal'),
+                    ->label('Deal / Pelanggan')
+                    ->description(fn ($record) => $record->company_name ?? 'Pribadi'),
                 TextColumn::make('lead_score')
-                    ->label('Lead Score')
-                    ->formatStateUsing(fn ($state) => $state.'% probability')
+                    ->label('Skor Lead')
+                    ->formatStateUsing(fn ($state) => $state.'% probabilitas')
                     ->alignEnd(),
             ])
             ->paginated(false);

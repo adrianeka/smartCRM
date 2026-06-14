@@ -13,7 +13,7 @@ class RecentCampaignsWidget extends BaseWidget
 
     protected int|string|array $columnSpan = 'full';
 
-    protected static ?string $heading = 'Recent Campaigns';
+    protected static ?string $heading = 'Kampanye Terbaru';
 
     public function table(Table $table): Table
     {
@@ -49,7 +49,7 @@ class RecentCampaignsWidget extends BaseWidget
                             default => 'gray',
                         }),
                     TextColumn::make('leads')
-                        ->label('Leads')
+                        ->label('Lead')
                         ->numeric()
                         ->alignEnd(),
                 ])
