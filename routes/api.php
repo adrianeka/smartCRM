@@ -69,4 +69,6 @@ Route::prefix('v1')->group(function () {
     Route::get('/analytics/kpi', [AnalyticsController::class, 'kpi']);
     Route::get('/analytics/customer-growth-filtered', [AnalyticsController::class, 'customerGrowthFiltered']);
     Route::get('/analytics/export/csv', [AnalyticsController::class, 'exportCsv']);
+    Route::middleware('auth:sanctum')
+    ->get('/analytics/role-dashboard', [AnalyticsController::class, 'roleDashboard']);
 });

@@ -219,4 +219,29 @@ public function exportCsv()
 
     return response()->stream($callback, 200, $headers);
 }
+
+#[OA\Get(
+    path: '/api/v1/analytics/role-dashboard',
+    summary: 'Role Based Analytics',
+    tags: ['Analytics'],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: 'Role dashboard analytics'
+        )
+    ]
+)]
+public function roleDashboard(Request $request)
+{
+    $user = $request->user();
+
+    return response()->json([
+        'status' => 'success',
+        'role' => $user->roles->pluck('name'),
+        'dashboard_type' =>
+            $user->hasRole('super_admin')
+                ? 'manager'
+                : 'sales'
+    ]);
+}
 }
