@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources\Users\Pages;
 
 use App\Filament\Admin\Resources\Users\UserResource;
 use App\Mail\RoleAssignedMail;
+use App\Models\User;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Mail;
@@ -28,6 +29,7 @@ class EditUser extends EditRecord
 
     protected function afterSave(): void
     {
+        /** @var User $user */
         $user = $this->record;
         $user->refresh();
         $currentRoles = $user->roles->pluck('name')->toArray();

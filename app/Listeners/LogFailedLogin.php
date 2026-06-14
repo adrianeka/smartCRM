@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Models\User;
 use Illuminate\Auth\Events\Failed;
 
 class LogFailedLogin
@@ -11,6 +12,7 @@ class LogFailedLogin
      */
     public function handle(Failed $event): void
     {
+        /** @var User|null $user */
         $user = $event->user;
         $email = $event->credentials['email'] ?? 'unknown';
 

@@ -137,14 +137,14 @@ class CustomerController extends Controller
                 'updated_at',
             ], true) ? $request->sort : 'created_at';
 
-            $direction = $request->get('direction') === 'asc' ? 'asc' : 'desc';
+            $direction = $request->input('direction') === 'asc' ? 'asc' : 'desc';
 
             $query->orderBy($sort, $direction);
         } else {
             $query->latest();
         }
 
-        $customers = $query->paginate($request->get('per_page', 10));
+        $customers = $query->paginate($request->input('per_page', 10));
 
         return response()->json([
             'status' => 'success',
@@ -514,20 +514,24 @@ class CustomerController extends Controller
 
     public function duplicates(Request $request)
     {
-        $threshold = (int) $request->get('threshold', 50);
+        $threshold = (int) $request->input('threshold', 50);
         $customers = Customer::with('customFields')->orderBy('id')->get();
         $candidates = [];
 
         for ($i = 0; $i < $customers->count(); $i++) {
             for ($j = $i + 1; $j < $customers->count(); $j++) {
-                $score = $this->duplicateScore($customers[$i], $customers[$j]);
+                /** @var Customer $customerA */
+                $customerA = $customers[$i];
+                /** @var Customer $customerB */
+                $customerB = $customers[$j];
+                $score = $this->duplicateScore($customerA, $customerB);
 
                 if ($score >= $threshold) {
                     $candidates[] = [
                         'score' => $score,
-                        'match_reasons' => $this->duplicateReasons($customers[$i], $customers[$j]),
-                        'primary_candidate' => $customers[$i],
-                        'duplicate_candidate' => $customers[$j],
+                        'match_reasons' => $this->duplicateReasons($customerA, $customerB),
+                        'primary_candidate' => $customerA,
+                        'duplicate_candidate' => $customerB,
                     ];
                 }
             }

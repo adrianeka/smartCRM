@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Models\User;
 use Illuminate\Auth\Events\Logout;
 
 class LogSuccessfulLogout
@@ -11,6 +12,7 @@ class LogSuccessfulLogout
      */
     public function handle(Logout $event): void
     {
+        /** @var User|null $user */
         $user = $event->user;
 
         if ($user) {
