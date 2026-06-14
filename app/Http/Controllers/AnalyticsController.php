@@ -185,4 +185,38 @@ public function customerGrowthFiltered(Request $request)
         'total' => $query->count(),
     ]);
 }
+
+#[OA\Get(
+    path: '/api/v1/analytics/export/csv',
+    summary: 'Export Analytics CSV',
+    tags: ['Analytics'],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: 'Analytics CSV export'
+        )
+    ]
+)]
+public function exportCsv()
+{
+    $filename = 'analytics.csv';
+
+    $headers = [
+        'Content-Type' => 'text/csv',
+        'Content-Disposition' => "attachment; filename={$filename}",
+    ];
+
+    $callback = function () {
+        $file = fopen('php://output', 'w');
+
+        fputcsv($file, [
+            'Total Customers',
+            Customer::count()
+        ]);
+
+        fclose($file);
+    };
+
+    return response()->stream($callback, 200, $headers);
+}
 }
