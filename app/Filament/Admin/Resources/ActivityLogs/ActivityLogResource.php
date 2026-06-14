@@ -40,6 +40,11 @@ class ActivityLogResource extends Resource implements HasShieldPermissions
         return false;
     }
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(['super_admin', 'Manager/Analyst']) ?? false;
+    }
+
     public static function table(Table $table): Table
     {
         return $table

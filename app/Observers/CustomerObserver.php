@@ -12,71 +12,159 @@ class CustomerObserver
 {
     public function created(Customer $customer): void
     {
-        $salesUsers = User::whereHas('roles', function ($query) {
-            $query->whereIn('name', ['sales', 'Sales']);
-        })->get();
+        // Notify Sales: new lead assigned
+        $this->notifyRole(
+            roles: ['sales', 'Sales'],
+            customer: $customer,
+            title: 'New Lead Assigned',
+            message: "A new lead \"{$customer->full_name}\" from company \"{$customer->company_name}\" has been registered and is ready for follow-up.",
+            type: 'info',
+            sourceModule: 'sales',
+            priority: 'high',
+            actionLabel: 'View Lead'
+        );
 
-        foreach ($salesUsers as $user) {
-            $title = 'New Lead Assigned';
-            $message = "A new lead \"{$customer->full_name}\" from company \"{$customer->company_name}\" has been registered and is ready for follow-up.";
+        // Notify Marketing: new lead for segmentation
+        $this->notifyRole(
+            roles: ['marketing', 'Marketing'],
+            customer: $customer,
+            title: 'New Lead Available for Segmentation',
+            message: "Customer \"{$customer->full_name}\" ({$customer->company_name}) has been registered. Source: " . ($customer->source ?? 'N/A') . '.',
+            type: 'info',
+            sourceModule: 'marketing',
+            priority: 'normal',
+            actionLabel: 'View Customer'
+        );
 
-            AppNotification::create([
-                'user_id' => $user->id,
-                'title' => $title,
-                'message' => $message,
-                'type' => 'info',
-                'source_module' => 'sales',
-                'priority' => 'high',
-                'is_read' => false,
-                'action_url' => "/admin/customers/{$customer->id}",
-            ]);
+        // Notify Support: new customer record
+        $this->notifyRole(
+            roles: ['support', 'Support'],
+            customer: $customer,
+            title: 'New Customer Record',
+            message: "Customer \"{$customer->full_name}\" ({$customer->company_name}) has been added to the system.",
+            type: 'info',
+            sourceModule: 'support',
+            priority: 'normal',
+            actionLabel: 'View Customer'
+        );
 
-            FilamentNotification::make()
-                ->title($title)
-                ->body($message)
-                ->info()
-                ->actions([
-                    Action::make('view')
-                        ->label('View Lead')
-                        ->url("/admin/customers/{$customer->id}"),
-                ])
-                ->sendToDatabase($user);
-        }
+        // Notify Super Admin: new customer registered
+        $this->notifyRole(
+            roles: ['super_admin'],
+            customer: $customer,
+            title: 'New Customer Registered',
+            message: "Customer \"{$customer->full_name}\" ({$customer->company_name}) has been registered in the system.",
+            type: 'info',
+            sourceModule: 'customer',
+            priority: 'normal',
+            actionLabel: 'View Customer'
+        );
     }
 
     public function updated(Customer $customer): void
     {
         if ($customer->isDirty('status') && $customer->status === 'Customer') {
-            $managers = User::whereHas('roles', function ($query) {
-                $query->whereIn('name', ['Manager/Analyst', 'manager']);
-            })->get();
+            // Notify Manager/Analyst: deal closed
+            $this->notifyRole(
+                roles: ['Manager/Analyst', 'manager'],
+                customer: $customer,
+                title: 'Deal Closed Successfully!',
+                message: "Opportunity \"{$customer->full_name}\" has been successfully closed won.",
+                type: 'success',
+                sourceModule: 'sales',
+                priority: 'high',
+                actionLabel: 'View Customer'
+            );
 
-            foreach ($managers as $user) {
-                $title = 'Deal Closed Successfully!';
-                $message = "Opportunity \"{$customer->full_name}\" has been successfully closed won.";
+            // Notify Sales: their lead converted
+            $this->notifyRole(
+                roles: ['sales', 'Sales'],
+                customer: $customer,
+                title: 'Lead Converted to Customer!',
+                message: "Your lead \"{$customer->full_name}\" has been successfully converted to a customer.",
+                type: 'success',
+                sourceModule: 'sales',
+                priority: 'high',
+                actionLabel: 'View Customer'
+            );
 
-                AppNotification::create([
-                    'user_id' => $user->id,
-                    'title' => $title,
-                    'message' => $message,
-                    'type' => 'success',
-                    'source_module' => 'sales',
-                    'priority' => 'high',
-                    'is_read' => false,
-                    'action_url' => "/admin/customers/{$customer->id}",
-                ]);
+            // Notify Marketing: conversion for campaign tracking
+            $this->notifyRole(
+                roles: ['marketing', 'Marketing'],
+                customer: $customer,
+                title: 'Lead Converted to Customer',
+                message: "Customer \"{$customer->full_name}\" has been converted. Source: " . ($customer->source ?? 'N/A') . '.',
+                type: 'success',
+                sourceModule: 'marketing',
+                priority: 'normal',
+                actionLabel: 'View Customer'
+            );
 
-                FilamentNotification::make()
-                    ->title($title)
-                    ->body($message)
-                    ->success()
-                    ->actions([
-                        Action::make('view')
-                            ->label('View Customer')
-                            ->url("/admin/customers/{$customer->id}"),
-                    ])
-                    ->sendToDatabase($user);
-            }
+            // Notify Super Admin: deal closed
+            $this->notifyRole(
+                roles: ['super_admin'],
+                customer: $customer,
+                title: 'Deal Closed Successfully!',
+                message: "Opportunity \"{$customer->full_name}\" has been successfully closed won.",
+                type: 'success',
+                sourceModule: 'sales',
+                priority: 'high',
+                actionLabel: 'View Customer'
+            );
+        }
+    }
+
+    /**
+     * Send notification to all users with the given roles.
+     */
+    private function notifyRole(
+        array $roles,
+        Customer $customer,
+        string $title,
+        string $message,
+        string $type,
+        string $sourceModule,
+        string $priority,
+        string $actionLabel,
+    ): void {
+        $users = User::whereHas('roles', function ($query) use ($roles) {
+            $query->whereIn('name', $roles);
+        })->get();
+
+        $actionUrl = "/admin/customers/{$customer->id}";
+
+        foreach ($users as $user) {
+            // Write to app_notifications table
+            AppNotification::create([
+                'user_id' => $user->id,
+                'title' => $title,
+                'message' => $message,
+                'type' => $type,
+                'source_module' => $sourceModule,
+                'priority' => $priority,
+                'is_read' => false,
+                'action_url' => $actionUrl,
+            ]);
+
+            // Write to Filament notifications table (bell icon)
+            $notification = FilamentNotification::make()
+                ->title($title)
+                ->body($message);
+
+            match ($type) {
+                'success' => $notification->success(),
+                'warning' => $notification->warning(),
+                'danger' => $notification->danger(),
+                default => $notification->info(),
+            };
+
+            $notification
+                ->actions([
+                    Action::make('view')
+                        ->label($actionLabel)
+                        ->url($actionUrl),
+                ])
+                ->sendToDatabase($user);
         }
     }
 }
