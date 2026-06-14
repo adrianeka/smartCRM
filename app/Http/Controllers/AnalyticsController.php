@@ -120,4 +120,39 @@ class AnalyticsController extends Controller
             'data' => $data
         ]);
     }
+
+
+    #[OA\Get(
+    path: '/api/v1/analytics/kpi',
+    summary: 'Analytics KPI Metrics',
+    tags: ['Analytics'],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: 'Analytics KPI metrics'
+        )
+    ]
+)]
+public function kpi()
+{
+    $totalCustomers = Customer::count();
+
+    $activeCustomers = Customer::where('status', 'Active')->count();
+
+    $leadCustomers = Customer::where('status', 'Lead')->count();
+
+    $conversionRate = $totalCustomers > 0
+        ? round(($activeCustomers / $totalCustomers) * 100, 2)
+        : 0;
+
+    return response()->json([
+        'status' => 'success',
+        'data' => [
+            'total_customers' => $totalCustomers,
+            'active_customers' => $activeCustomers,
+            'lead_customers' => $leadCustomers,
+            'conversion_rate' => $conversionRate,
+        ]
+    ]);
+}
 }
