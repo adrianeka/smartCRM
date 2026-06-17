@@ -111,4 +111,36 @@ class OpportunityController extends Controller
     }
 
 
+
+
+    #[OA\Patch(
+    path: "/api/v1/opportunities/{id}/stage",
+    summary: "Update Opportunity Stage",
+    tags: ["Opportunities"],
+    responses: [
+            new OA\Response(
+                response: 200,
+                description: "Stage updated"
+            )
+        ]
+    )]
+
+    public function updateStage(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'stage' => 'required|in:Lead,Prospect,Negotiation,Proposal,Won,Lost'
+        ]);
+
+        $opportunity = Opportunity::findOrFail($id);
+
+        $opportunity->update([
+            'stage' => $validated['stage']
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Stage updated successfully',
+            'data' => $opportunity
+        ]);
+    }
 }

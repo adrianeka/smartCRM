@@ -1323,6 +1323,20 @@
                     }
                 }
             }
+        },
+        "/api/v1/opportunities/{id}/stage": {
+            "patch": {
+                "tags": [
+                    "Opportunities"
+                ],
+                "summary": "Update Opportunity Stage",
+                "operationId": "948c3304176630e401e43c740d48feab",
+                "responses": {
+                    "200": {
+                        "description": "Stage updated"
+                    }
+                }
+            }
         }
     },
     "components": {
