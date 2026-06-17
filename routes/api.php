@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\OpportunityController;
 
 Route::prefix('v1')->group(function () {
 
@@ -71,4 +72,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/analytics/export/csv', [AnalyticsController::class, 'exportCsv']);
     Route::middleware('auth:sanctum')
     ->get('/analytics/role-dashboard', [AnalyticsController::class, 'roleDashboard']);
+
+
+    Route::apiResource('opportunities',OpportunityController::class);
 });
