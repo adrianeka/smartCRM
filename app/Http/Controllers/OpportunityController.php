@@ -64,18 +64,20 @@ class OpportunityController extends Controller
         ]);
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         $opportunity = Opportunity::findOrFail($id);
 
-        $opportunity->update($request->only([
-            'title',
-            'stage',
-            'deal_value',
-            'probability',
-            'expected_close_date',
-            'notes',
-        ]));
+        $validated = $request->validate([
+            'title' => 'sometimes|string|max:255',
+            'stage' => 'sometimes|string',
+            'deal_value' => 'sometimes|numeric',
+            'probability' => 'sometimes|integer|min:0|max:100',
+            'expected_close_date' => 'nullable|date',
+            'notes' => 'nullable|string'
+        ]);
+
+        $opportunity->update($validated);
 
         return response()->json([
             'status' => 'success',

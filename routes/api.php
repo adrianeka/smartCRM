@@ -76,4 +76,5 @@ Route::prefix('v1')->group(function () {
 
     Route::apiResource('opportunities',OpportunityController::class);
     Route::get('/opportunities', [OpportunityController::class, 'index']);
+    Route::put('/opportunities/{id}',[OpportunityController::class,'update']);
 });
