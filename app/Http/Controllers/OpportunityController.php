@@ -1,18 +1,35 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Opportunity;
 
+use App\Models\Opportunity;
+use OpenApi\Attributes as OA;
 use Illuminate\Http\Request;
 
 class OpportunityController extends Controller
 {
 
+
+    #[OA\Get(
+        path: "/api/v1/opportunities",
+        summary: "List Opportunities",
+        tags: ["Opportunities"],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Opportunity list"
+            )
+        ]
+    )]
     public function index()
     {
+        $opportunities = Opportunity::with('customer')
+            ->latest()
+            ->get();
+
         return response()->json([
             'status' => 'success',
-            'data' => Opportunity::with('customer')->paginate(10)
+            'data' => $opportunities
         ]);
     }
 
@@ -75,4 +92,6 @@ class OpportunityController extends Controller
             'message' => 'Opportunity deleted'
         ]);
     }
+
+
 }
