@@ -143,4 +143,29 @@ class OpportunityController extends Controller
             'data' => $opportunity
         ]);
     }
+
+
+        public function pipeline()
+        {
+            $stages = [
+                'Lead',
+                'Prospect',
+                'Negotiation',
+                'Proposal',
+                'Won',
+                'Lost'
+            ];
+
+            $result = [];
+
+            foreach ($stages as $stage) {
+                $result[$stage] = Opportunity::where('stage', $stage)
+                    ->get();
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $result
+            ]);
+        }
 }
