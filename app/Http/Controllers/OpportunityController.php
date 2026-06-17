@@ -67,7 +67,7 @@ class OpportunityController extends Controller
     public function update(Request $request, $id)
     {
         $opportunity = Opportunity::findOrFail($id);
-        
+
         $validated = $request->validate([
             'title' => 'sometimes|string|max:255',
             'stage' => 'sometimes|string',
@@ -298,6 +298,35 @@ class OpportunityController extends Controller
                         'won_deals' => $won,
                         'lost_deals' => $lost,
                         'reasons' => $reasons
+                    ]
+                ]);
+            }
+
+
+            #[OA\Post(
+            path: "/api/v1/opportunities/{id}/send-proposal",
+            summary: "Send Proposal Simulation",
+            tags: ["Opportunities"],
+            responses: [
+                new OA\Response(
+                    response: 200,
+                    description: "Proposal sent"
+                )
+            ]
+        )]
+            public function sendProposal($id)
+            {
+                $opportunity = Opportunity::findOrFail($id);
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Proposal sent successfully',
+                    'data' => [
+                        'opportunity_id' => $opportunity->id,
+                        'customer_id' => $opportunity->customer_id,
+                        'proposal_title' => $opportunity->title,
+                        'deal_value' => $opportunity->deal_value,
+                        'sent_at' => now(),
                     ]
                 ]);
             }
