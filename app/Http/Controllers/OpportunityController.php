@@ -145,6 +145,19 @@ class OpportunityController extends Controller
     }
 
 
+
+    #[OA\Get(
+    path: "/api/v1/opportunities/pipeline",
+    summary: "Opportunity Pipeline",
+    tags: ["Opportunities"],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: "Pipeline data"
+        )
+    ]
+)]
+
         public function pipeline()
         {
             $stages = [
@@ -166,6 +179,49 @@ class OpportunityController extends Controller
             return response()->json([
                 'status' => 'success',
                 'data' => $result
+            ]);
+        }
+
+
+
+        #[OA\Get(
+    path: "/api/v1/opportunities/{id}/score",
+    summary: "Lead Scoring",
+    tags: ["Opportunities"],
+    responses: [
+                new OA\Response(
+                    response: 200,
+                    description: "Lead score calculated"
+                )
+            ]
+        )]
+
+
+        public function score($id)
+        {
+            $opportunity = Opportunity::findOrFail($id);
+
+            $score = 0;
+
+            if ($opportunity->probability >= 80) {
+                $score += 50;
+            } elseif ($opportunity->probability >= 50) {
+                $score += 30;
+            }
+
+            if ($opportunity->deal_value >= 10000000) {
+                $score += 50;
+            } elseif ($opportunity->deal_value >= 5000000) {
+                $score += 30;
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'data' => [
+                    'opportunity_id' => $opportunity->id,
+                    'title' => $opportunity->title,
+                    'score' => $score
+                ]
             ]);
         }
 }

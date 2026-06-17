@@ -1337,6 +1337,34 @@
                     }
                 }
             }
+        },
+        "/api/v1/opportunities/pipeline": {
+            "get": {
+                "tags": [
+                    "Opportunities"
+                ],
+                "summary": "Opportunity Pipeline",
+                "operationId": "b046da5088e5e7e6acf1fb19596f664c",
+                "responses": {
+                    "200": {
+                        "description": "Pipeline data"
+                    }
+                }
+            }
+        },
+        "/api/v1/opportunities/{id}/score": {
+            "get": {
+                "tags": [
+                    "Opportunities"
+                ],
+                "summary": "Lead Scoring",
+                "operationId": "bc89b0fc250dd0ed5dfb3abc1c8597bd",
+                "responses": {
+                    "200": {
+                        "description": "Lead score calculated"
+                    }
+                }
+            }
         }
     },
     "components": {

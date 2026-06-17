@@ -74,6 +74,9 @@ Route::prefix('v1')->group(function () {
     ->get('/analytics/role-dashboard', [AnalyticsController::class, 'roleDashboard']);
 
 
+
+
+    Route::get('/opportunities/{id}/score',[OpportunityController::class, 'score']);
     Route::get('/opportunities/pipeline',[OpportunityController::class, 'pipeline']);
     Route::get('/opportunities', [OpportunityController::class, 'index']);
     Route::put('/opportunities/{id}',[OpportunityController::class,'update']);
