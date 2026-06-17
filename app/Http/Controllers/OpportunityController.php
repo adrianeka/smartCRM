@@ -85,13 +85,28 @@ class OpportunityController extends Controller
         ]);
     }
 
-    public function destroy(string $id)
+
+    #[OA\Delete(
+    path: "/api/v1/opportunities/{id}",
+    summary: "Delete Opportunity",
+    tags: ["Opportunities"],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: "Opportunity deleted"
+        )
+    ]
+)]
+
+    public function destroy($id)
     {
-        Opportunity::findOrFail($id)->delete();
+        $opportunity = Opportunity::findOrFail($id);
+
+        $opportunity->delete();
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Opportunity deleted'
+            'message' => 'Opportunity deleted successfully'
         ]);
     }
 

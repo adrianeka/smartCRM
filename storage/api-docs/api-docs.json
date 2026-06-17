@@ -1295,6 +1295,34 @@
                     }
                 }
             }
+        },
+        "/api/v1/opportunities": {
+            "get": {
+                "tags": [
+                    "Opportunities"
+                ],
+                "summary": "List Opportunities",
+                "operationId": "f5bbb225b985c73cef5d60725dc7673b",
+                "responses": {
+                    "200": {
+                        "description": "Opportunity list"
+                    }
+                }
+            }
+        },
+        "/api/v1/opportunities/{id}": {
+            "delete": {
+                "tags": [
+                    "Opportunities"
+                ],
+                "summary": "Delete Opportunity",
+                "operationId": "72f880668e6e236de7b885194a885db3",
+                "responses": {
+                    "200": {
+                        "description": "Opportunity deleted"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -1375,6 +1403,10 @@
         {
             "name": "Dashboard",
             "description": "Dashboard"
+        },
+        {
+            "name": "Opportunities",
+            "description": "Opportunities"
         }
     ]
 }
