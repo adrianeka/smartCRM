@@ -75,7 +75,7 @@ Route::prefix('v1')->group(function () {
 
 
 
-
+    Route::get('/opportunities/forecast',[OpportunityController::class, 'forecast']);
     Route::get('/opportunities/{id}/score',[OpportunityController::class, 'score']);
     Route::get('/opportunities/pipeline',[OpportunityController::class, 'pipeline']);
     Route::get('/opportunities', [OpportunityController::class, 'index']);

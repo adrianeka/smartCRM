@@ -224,4 +224,44 @@ class OpportunityController extends Controller
                 ]
             ]);
         }
+
+
+
+
+
+        #[OA\Get(
+    path: "/api/v1/opportunities/forecast",
+    summary: "Forecast Dashboard",
+    tags: ["Opportunities"],
+    responses: [
+            new OA\Response(
+                response: 200,
+                description: "Forecast statistics"
+            )
+        ]
+    )]
+
+        public function forecast()
+            {
+                $totalPipelineValue = Opportunity::sum('deal_value');
+
+                $expectedRevenue = Opportunity::get()
+                    ->sum(function ($opportunity) {
+                        return ($opportunity->deal_value * $opportunity->probability) / 100;
+                    });
+
+                $wonDeals = Opportunity::where('stage', 'Won')->count();
+
+                $lostDeals = Opportunity::where('stage', 'Lost')->count();
+
+                return response()->json([
+                    'status' => 'success',
+                    'data' => [
+                        'total_pipeline_value' => $totalPipelineValue,
+                        'expected_revenue' => round($expectedRevenue, 2),
+                        'won_deals' => $wonDeals,
+                        'lost_deals' => $lostDeals,
+                    ]
+                ]);
+            }
 }

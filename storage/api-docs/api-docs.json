@@ -1365,6 +1365,20 @@
                     }
                 }
             }
+        },
+        "/api/v1/opportunities/forecast": {
+            "get": {
+                "tags": [
+                    "Opportunities"
+                ],
+                "summary": "Forecast Dashboard",
+                "operationId": "a69f8bb0cd74cf890157151518f1180b",
+                "responses": {
+                    "200": {
+                        "description": "Forecast statistics"
+                    }
+                }
+            }
         }
     },
     "components": {
