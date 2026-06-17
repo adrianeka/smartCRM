@@ -330,4 +330,24 @@ class OpportunityController extends Controller
                     ]
                 ]);
             }
+
+
+
+
+            public function calendar()
+            {
+                $data = Opportunity::whereNotNull('expected_close_date')
+                    ->select(
+                        'id',
+                        'title',
+                        'expected_close_date',
+                        'stage'
+                    )
+                    ->get();
+
+                return response()->json([
+                    'status' => 'success',
+                    'data' => $data
+                ]);
+            }
 }

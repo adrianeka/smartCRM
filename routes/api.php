@@ -74,7 +74,7 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')
     ->get('/analytics/role-dashboard', [AnalyticsController::class, 'roleDashboard']);
 
-
+    Route::get('/opportunities/calendar',[OpportunityController::class, 'calendar']);
     Route::post('/opportunities/{id}/send-proposal',[OpportunityController::class, 'sendProposal']);
     Route::get('/opportunities/{id}/tasks',[OpportunityTaskController::class, 'index']);
     Route::post('/opportunities/{id}/tasks',[OpportunityTaskController::class, 'store']);
