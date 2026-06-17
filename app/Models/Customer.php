@@ -94,4 +94,9 @@ class Customer extends Model
     {
         return $this->hasMany(CustomerAttachment::class);
     }
+
+    public function opportunities()
+    {
+        return $this->hasMany(Opportunity::class);
+    }
 }
