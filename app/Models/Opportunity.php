@@ -21,4 +21,9 @@ class Opportunity extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+
+        public function tasks()
+    {
+        return $this->hasMany(OpportunityTask::class);
+    }
 }
