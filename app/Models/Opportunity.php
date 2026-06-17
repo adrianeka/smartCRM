@@ -14,6 +14,7 @@ class Opportunity extends Model
         'probability',
         'expected_close_date',
         'notes',
+        'result_reason',
     ];
 
     public function customer()

@@ -67,14 +67,15 @@ class OpportunityController extends Controller
     public function update(Request $request, $id)
     {
         $opportunity = Opportunity::findOrFail($id);
-
+        
         $validated = $request->validate([
             'title' => 'sometimes|string|max:255',
             'stage' => 'sometimes|string',
             'deal_value' => 'sometimes|numeric',
             'probability' => 'sometimes|integer|min:0|max:100',
             'expected_close_date' => 'nullable|date',
-            'notes' => 'nullable|string'
+            'notes' => 'nullable|string',
+            'result_reason' => 'nullable|string|max:255'
         ]);
 
         $opportunity->update($validated);
@@ -261,6 +262,42 @@ class OpportunityController extends Controller
                         'expected_revenue' => round($expectedRevenue, 2),
                         'won_deals' => $wonDeals,
                         'lost_deals' => $lostDeals,
+                    ]
+                ]);
+            }
+
+
+
+
+
+            #[OA\Get(
+                path: "/api/v1/opportunities/win-loss",
+                summary: "Win Loss Analysis",
+                tags: ["Opportunities"],
+                responses: [
+                    new OA\Response(
+                        response: 200,
+                        description: "Win loss statistics"
+                    )
+                ]
+            )]
+            public function winLossAnalysis()
+            {
+                $won = Opportunity::where('stage', 'Won')->count();
+
+                $lost = Opportunity::where('stage', 'Lost')->count();
+
+                $reasons = Opportunity::whereNotNull('result_reason')
+                    ->selectRaw('result_reason, COUNT(*) as total')
+                    ->groupBy('result_reason')
+                    ->get();
+
+                return response()->json([
+                    'status' => 'success',
+                    'data' => [
+                        'won_deals' => $won,
+                        'lost_deals' => $lost,
+                        'reasons' => $reasons
                     ]
                 ]);
             }
