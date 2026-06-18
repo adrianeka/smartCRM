@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\WebhookController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OpportunityController;
+use App\Http\Controllers\OpportunityTaskController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -59,7 +61,6 @@ Route::prefix('v1')->group(function () {
     Route::delete('/attachments/{id}', [CustomerController::class, 'deleteAttachment']);
 
     Route::post('/webhook/receive', [WebhookController::class, 'receive']);
-    Route::patch('/customers/{id}/favorite', [CustomerController::class, 'toggleFavorite']);
 
     Route::get('/analytics/summary', [AnalyticsController::class, 'summary']);
     Route::get('/analytics/customer-growth', [AnalyticsController::class, 'customerGrowth']);
@@ -70,4 +71,14 @@ Route::prefix('v1')->group(function () {
     Route::get('/analytics/export/csv', [AnalyticsController::class, 'exportCsv']);
     Route::middleware('auth:sanctum')
         ->get('/analytics/role-dashboard', [AnalyticsController::class, 'roleDashboard']);
+
+    Route::get('/opportunities/calendar', [OpportunityController::class, 'calendar']);
+    Route::post('/opportunities/{id}/send-proposal', [OpportunityController::class, 'sendProposal']);
+    Route::get('/opportunities/{id}/tasks', [OpportunityTaskController::class, 'index']);
+    Route::post('/opportunities/{id}/tasks', [OpportunityTaskController::class, 'store']);
+    Route::get('/opportunities/win-loss', [OpportunityController::class, 'winLossAnalysis']);
+    Route::get('/opportunities/forecast', [OpportunityController::class, 'forecast']);
+    Route::get('/opportunities/{id}/score', [OpportunityController::class, 'score']);
+    Route::get('/opportunities/pipeline', [OpportunityController::class, 'pipeline']);
+    Route::apiResource('opportunities', OpportunityController::class);
 });

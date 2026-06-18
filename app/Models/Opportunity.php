@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Opportunity extends Model
+{
+    protected $fillable = [
+        'customer_id',
+        'title',
+        'stage',
+        'deal_value',
+        'probability',
+        'expected_close_date',
+        'notes',
+        'result_reason',
+    ];
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+        public function tasks()
+    {
+        return $this->hasMany(OpportunityTask::class);
+    }
+}
