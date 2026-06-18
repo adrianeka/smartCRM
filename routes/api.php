@@ -12,6 +12,7 @@ use App\Http\Controllers\OpportunityTaskController;
 use App\Http\Controllers\CustomerNoteController;
 use App\Http\Controllers\ActivityFeedController;
 use App\Http\Controllers\AuditLogController;
+use App\Http\Controllers\CalendarEventController;
 
 Route::prefix('v1')->group(function () {
 
@@ -96,5 +97,15 @@ Route::prefix('v1')->group(function () {
     Route::get(
     '/audit-logs',
     [AuditLogController::class, 'index']
+);
+
+Route::get(
+    '/calendar/events',
+    [CalendarEventController::class, 'index']
+);
+
+Route::post(
+    '/calendar/events',
+    [CalendarEventController::class, 'store']
 );
 });
