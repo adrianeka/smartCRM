@@ -8,6 +8,7 @@ use App\Models\User;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Mail;
+use Spatie\Permission\Models\Role;
 
 class EditUser extends EditRecord
 {
@@ -31,11 +32,14 @@ class EditUser extends EditRecord
     {
         /** @var User $user */
         $user = $this->record;
-        $user->refresh();
-        $currentRoles = $user->roles->pluck('name')->toArray();
 
-        if (empty($this->previousRoles) && ! empty($currentRoles)) {
-            $roleName = $currentRoles[0];
+        // Filament calls afterSave() BEFORE it syncs BelongsToMany relationships like roles.
+        // So we must get the new roles from the form state directly.
+        $currentRoleIds = $this->data['roles'] ?? [];
+
+        if (empty($this->previousRoles) && ! empty($currentRoleIds)) {
+            $roleId = $currentRoleIds[0];
+            $roleName = Role::findById($roleId)->name;
             Mail::to($user->email)->send(new RoleAssignedMail($user, $roleName));
         }
     }
