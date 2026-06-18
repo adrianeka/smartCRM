@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\CustomerNote;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Models\AuditLog;
 
 class CustomerNoteController extends Controller
 {
@@ -40,6 +41,13 @@ $note = CustomerNote::create([
     'user_id' => 1,
     'parent_id' => $request->parent_id,
     'note' => $request->note
+]);
+
+AuditLog::create([
+    'user_id' => 1,
+    'action' => 'created note',
+    'entity_type' => 'CustomerNote',
+    'entity_id' => $note->id
 ]);
 
 preg_match_all('/@(\w+)/', $request->note, $matches);

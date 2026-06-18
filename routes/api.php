@@ -11,6 +11,7 @@ use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\OpportunityTaskController;
 use App\Http\Controllers\CustomerNoteController;
 use App\Http\Controllers\ActivityFeedController;
+use App\Http\Controllers\AuditLogController;
 
 Route::prefix('v1')->group(function () {
 
@@ -92,5 +93,8 @@ Route::prefix('v1')->group(function () {
     Route::patch('/opportunities/{id}/stage',[OpportunityController::class, 'updateStage']);
     Route::apiResource('opportunities',OpportunityController::class);
 
-
+    Route::get(
+    '/audit-logs',
+    [AuditLogController::class, 'index']
+);
 });
