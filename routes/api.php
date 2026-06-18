@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\OpportunityTaskController;
+use App\Http\Controllers\CustomerNoteController;
 
 Route::prefix('v1')->group(function () {
 
@@ -44,6 +45,9 @@ Route::prefix('v1')->group(function () {
         });
     });
 
+
+    Route::get('/customers/{id}/notes',[CustomerNoteController::class, 'index']);
+    Route::post('/customers/{id}/notes',[CustomerNoteController::class, 'store']);
     Route::get('/customers/export/json', [CustomerController::class, 'exportJson']);
     Route::get('/customers/export/csv', [CustomerController::class, 'exportCsv']);
     Route::get('/customers/export/excel', [CustomerController::class, 'exportExcel']);
@@ -86,4 +90,6 @@ Route::prefix('v1')->group(function () {
     Route::put('/opportunities/{id}',[OpportunityController::class,'update']);
     Route::patch('/opportunities/{id}/stage',[OpportunityController::class, 'updateStage']);
     Route::apiResource('opportunities',OpportunityController::class);
+
+
 });

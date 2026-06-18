@@ -119,4 +119,10 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
             'password' => 'hashed',
         ];
     }
+
+
+    public function customerNotes()
+{
+    return $this->hasMany(CustomerNote::class);
+}
 }
