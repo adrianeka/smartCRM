@@ -10,6 +10,7 @@ use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\OpportunityTaskController;
 use App\Http\Controllers\CustomerNoteController;
+use App\Http\Controllers\ActivityFeedController;
 
 Route::prefix('v1')->group(function () {
 
@@ -45,7 +46,7 @@ Route::prefix('v1')->group(function () {
         });
     });
 
-
+    Route::get('/customers/{id}/activity-feed',[ActivityFeedController::class, 'index']);
     Route::get('/customers/{id}/notes',[CustomerNoteController::class, 'index']);
     Route::post('/customers/{id}/notes',[CustomerNoteController::class, 'store']);
     Route::get('/customers/export/json', [CustomerController::class, 'exportJson']);
