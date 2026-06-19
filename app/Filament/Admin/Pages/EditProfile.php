@@ -83,4 +83,46 @@ class EditProfile extends BaseEditProfile
             ->icon('heroicon-m-arrow-left')
             ->color('gray');
     }
+
+    public function logoutOtherDevicesAction(): Action
+    {
+        return Action::make('logoutOtherDevices')
+            ->label('Keluarkan Perangkat Lain')
+            ->color('danger')
+            ->icon('heroicon-o-arrow-right-on-rectangle')
+            ->requiresConfirmation()
+            ->modalHeading('Konfirmasi Keluarkan Perangkat')
+            ->modalDescription('Semua sesi aktif di perangkat lain akan dikeluarkan. Masukkan kata sandi Anda untuk melanjutkan.')
+            ->form([
+                \Filament\Forms\Components\TextInput::make('password')
+                    ->label('Kata Sandi')
+                    ->password()
+                    ->required()
+                    ->currentPassword()
+            ])
+            ->action(function (array $data) {
+                $user = auth()->user();
+                \Illuminate\Support\Facades\Auth::logoutOtherDevices($data['password']);
+
+                $passwordHash = $user->getAuthPassword();
+                $guard = \Illuminate\Support\Facades\Auth::guard('web');
+                if (method_exists($guard, 'hashPasswordForCookie')) {
+                    $passwordHash = $guard->hashPasswordForCookie($passwordHash);
+                }
+
+                request()->session()->put([
+                    'password_hash_web' => $passwordHash,
+                ]);
+
+                \Illuminate\Support\Facades\DB::table('sessions')
+                    ->where('user_id', $user->id)
+                    ->where('id', '!=', session()->getId())
+                    ->delete();
+
+                \Filament\Notifications\Notification::make()
+                    ->title('Berhasil mengeluarkan semua perangkat lain.')
+                    ->success()
+                    ->send();
+            });
+    }
 }
