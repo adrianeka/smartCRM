@@ -4,10 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CalendarEvent;
+use OpenApi\Attributes as OA;
 
 class CalendarEventController extends Controller
 {
 
+
+
+#[OA\Get(
+    path: "/api/v1/calendar/events",
+    summary: "Shared Calendar Events",
+    tags: ["Collaboration"],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: "Calendar event list"
+        )
+    ]
+)]
 
 public function index()
 {
@@ -19,6 +33,21 @@ public function index()
     ]);
 }
 
+
+
+
+
+#[OA\Post(
+    path: "/api/v1/calendar/events",
+    summary: "Create Calendar Event",
+    tags: ["Collaboration"],
+    responses: [
+        new OA\Response(
+            response: 201,
+            description: "Event created"
+        )
+    ]
+)]
 
     public function store(Request $request)
 {

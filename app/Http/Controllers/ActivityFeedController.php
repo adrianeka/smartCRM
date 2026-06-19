@@ -5,9 +5,32 @@ use App\Models\Customer;
 use App\Models\CustomerNote;
 use App\Models\Opportunity;
 use App\Models\OpportunityTask;
+use OpenApi\Attributes as OA;
 
 class ActivityFeedController extends Controller
 {
+
+
+    #[OA\Get(
+    path: "/api/v1/customers/{id}/activity-feed",
+    summary: "Customer Activity Feed",
+    tags: ["Collaboration"],
+    parameters: [
+        new OA\Parameter(
+            name: "id",
+            in: "path",
+            required: true,
+            description: "Customer ID"
+        )
+    ],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: "Customer activity timeline"
+        )
+    ]
+)]
+
     public function index($id)
     {
         $customer = Customer::findOrFail($id);
