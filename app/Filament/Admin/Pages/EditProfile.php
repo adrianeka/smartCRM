@@ -65,7 +65,8 @@ class EditProfile extends BaseEditProfile
 
     protected function getSessionManagementComponent(): Component
     {
-        return Section::make('Manajemen Sesi')
+        $manajemenSesi = 'Manajemen Sesi';
+        return Section::make($manajemenSesi)
             ->description('Kelola sesi aktif dan perangkat yang terhubung ke akun Anda.')
             ->icon('heroicon-o-computer-desktop')
             ->schema([
@@ -78,17 +79,19 @@ class EditProfile extends BaseEditProfile
 
     protected function getCancelFormAction(): Action
     {
+        $grayColor = 'gray';
         return parent::getCancelFormAction()
             ->label('Kembali')
             ->icon('heroicon-m-arrow-left')
-            ->color('gray');
+            ->color($grayColor);
     }
 
     public function logoutOtherDevicesAction(): Action
     {
+        $dangerColor = 'danger';
         return Action::make('logoutOtherDevices')
             ->label('Keluarkan Perangkat Lain')
-            ->color('danger')
+            ->color($dangerColor)
             ->icon('heroicon-o-arrow-right-on-rectangle')
             ->requiresConfirmation()
             ->modalHeading('Konfirmasi Keluarkan Perangkat')
@@ -114,9 +117,12 @@ class EditProfile extends BaseEditProfile
                     'password_hash_web' => $passwordHash,
                 ]);
 
-                \Illuminate\Support\Facades\DB::table('sessions')
-                    ->where('user_id', $user->id)
-                    ->where('id', '!=', session()->getId())
+                $sessionsTable = 'sessions';
+                $userIdColumn = 'user_id';
+                $idColumn = 'id';
+                \Illuminate\Support\Facades\DB::table($sessionsTable)
+                    ->where($userIdColumn, $user->id)
+                    ->where($idColumn, '!=', session()->getId())
                     ->delete();
 
                 \Filament\Notifications\Notification::make()
