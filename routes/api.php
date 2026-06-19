@@ -14,7 +14,9 @@ use App\Http\Controllers\ActivityFeedController;
 use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\CalendarEventController;
 
-Route::prefix('v1')->group(function () {
+Route::prefix('v1')
+    ->middleware('throttle:60,1')
+    ->group(function () {
 
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
@@ -68,8 +70,6 @@ Route::prefix('v1')->group(function () {
     Route::delete('/attachments/{id}', [CustomerController::class, 'deleteAttachment']);
 
     Route::post('/webhook/receive', [WebhookController::class, 'receive']);
-    Route::patch('/customers/{id}/favorite', [CustomerController::class, 'toggleFavorite']);
-
 
     Route::get('/analytics/summary', [AnalyticsController::class, 'summary']);
     Route::get('/analytics/customer-growth', [AnalyticsController::class, 'customerGrowth']);
@@ -82,6 +82,7 @@ Route::prefix('v1')->group(function () {
     ->get('/analytics/role-dashboard', [AnalyticsController::class, 'roleDashboard']);
 
     Route::get('/opportunities/calendar',[OpportunityController::class, 'calendar']);
+    Route::post('/opportunities/{id}/send-whatsapp',[OpportunityController::class, 'sendWhatsapp']);
     Route::post('/opportunities/{id}/send-proposal',[OpportunityController::class, 'sendProposal']);
     Route::get('/opportunities/{id}/tasks',[OpportunityTaskController::class, 'index']);
     Route::post('/opportunities/{id}/tasks',[OpportunityTaskController::class, 'store']);

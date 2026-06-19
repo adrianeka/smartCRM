@@ -350,4 +350,37 @@ class OpportunityController extends Controller
                     'data' => $data
                 ]);
             }
+
+
+            #[OA\Post(
+    path: "/api/v1/opportunities/{id}/send-whatsapp",
+    summary: "Send WhatsApp Simulation",
+    tags: ["Opportunities"],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: "WhatsApp simulated"
+        )
+    ]
+)]
+public function sendWhatsapp($id)
+{
+    $opportunity = Opportunity::with('customer')
+        ->findOrFail($id);
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'WhatsApp message simulated successfully',
+        'data' => [
+            'opportunity_id' => $opportunity->id,
+            'customer_id' => $opportunity->customer_id,
+            'phone' => $opportunity->customer->phone,
+            'message' => 'Follow up for opportunity: '.$opportunity->title,
+            'sent_at' => now()
+        ]
+    ]);
+}
+
+
+
 }

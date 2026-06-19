@@ -1469,6 +1469,20 @@
                     }
                 }
             }
+        },
+        "/api/v1/opportunities/{id}/send-whatsapp": {
+            "post": {
+                "tags": [
+                    "Opportunities"
+                ],
+                "summary": "Send WhatsApp Simulation",
+                "operationId": "e9ddbe1ba3d6cea6baa416e66b0caede",
+                "responses": {
+                    "200": {
+                        "description": "WhatsApp simulated"
+                    }
+                }
+            }
         }
     },
     "components": {
