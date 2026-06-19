@@ -13,7 +13,7 @@ class TopDealsWidget extends BaseWidget
 
     protected static ?int $sort = 6;
 
-    protected static ?string $heading = 'Top Deals by Value';
+    protected static ?string $heading = 'Deal Teratas';
 
     public function table(Table $table): Table
     {
@@ -27,18 +27,18 @@ class TopDealsWidget extends BaseWidget
         if ($deals->isEmpty()) {
             return $table
                 ->records(fn (): array => [
-                    ['id' => 1, 'title' => 'Digital Transformation', 'company' => 'Innovate Solutions', 'value' => '45% probability'],
-                    ['id' => 2, 'title' => 'SaaS Annual Subscription', 'company' => 'CloudTech Inc.', 'value' => '80% probability'],
-                    ['id' => 3, 'title' => 'Enterprise Software License', 'company' => 'TechCorp Industries', 'value' => '75% probability'],
-                    ['id' => 4, 'title' => 'Consulting Services', 'company' => 'Enterprise Dynamics', 'value' => '20% probability'],
-                    ['id' => 5, 'title' => 'Cloud Migration Project', 'company' => 'Global Systems Ltd', 'value' => '60% probability'],
+                    ['id' => 1, 'title' => 'Transformasi Digital', 'company' => 'Innovate Solutions', 'value' => 'Probabilitas 45%'],
+                    ['id' => 2, 'title' => 'Langganan Tahunan SaaS', 'company' => 'CloudTech Inc.', 'value' => 'Probabilitas 80%'],
+                    ['id' => 3, 'title' => 'Lisensi Perangkat Lunak Perusahaan', 'company' => 'TechCorp Industries', 'value' => 'Probabilitas 75%'],
+                    ['id' => 4, 'title' => 'Layanan Konsultasi', 'company' => 'Enterprise Dynamics', 'value' => 'Probabilitas 20%'],
+                    ['id' => 5, 'title' => 'Proyek Migrasi Cloud', 'company' => 'Global Systems Ltd', 'value' => 'Probabilitas 60%'],
                 ])
                 ->columns([
                     TextColumn::make('title')
-                        ->label('Deal / Customer')
+                        ->label('Deal / Pelanggan')
                         ->description(fn ($record) => $record['company']),
                     TextColumn::make('value')
-                        ->label('Lead Score')
+                        ->label('Skor Lead')
                         ->alignEnd(),
                 ])
                 ->paginated(false);
@@ -54,11 +54,11 @@ class TopDealsWidget extends BaseWidget
             )
             ->columns([
                 TextColumn::make('full_name')
-                    ->label('Deal / Customer')
-                    ->description(fn ($record) => $record->company_name ?? 'Personal'),
+                    ->label('Deal / Pelanggan')
+                    ->description(fn ($record) => $record->company_name ?? 'Pribadi'),
                 TextColumn::make('lead_score')
-                    ->label('Lead Score')
-                    ->formatStateUsing(fn ($state) => $state.'% probability')
+                    ->label('Skor Lead')
+                    ->formatStateUsing(fn ($state) => $state.'% probabilitas')
                     ->alignEnd(),
             ])
             ->paginated(false);

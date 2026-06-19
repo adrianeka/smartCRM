@@ -41,7 +41,7 @@ class CompanyPerformanceWidget extends BaseWidget
                 $growthVal = round((($currentMonth - $lastMonth) / $lastMonth) * 100, 1);
                 $growth = ($growthVal >= 0 ? '+' : '').$growthVal.'%';
             } else {
-                $growth = '+15.4%';
+                $growth = $currentMonth > 0 ? '+'.$currentMonth.' baru' : 'N/A';
             }
 
             $inactiveCount = Customer::where('status', 'Inactive')->count();
@@ -52,42 +52,42 @@ class CompanyPerformanceWidget extends BaseWidget
             $activeSubscriptions = (string) ($activeCustomers + $wonCustomers);
 
             return [
-                Stat::make('Total Revenue', $totalRevenue)
-                    ->description('Dynamic based on active contracts')
+                Stat::make('Total Pendapatan', $totalRevenue)
+                    ->description('Dinamis berdasarkan kontrak aktif')
                     ->descriptionIcon('heroicon-m-arrow-trending-up')
                     ->color('success')
                     ->chart($monthlyCounts),
-                Stat::make('Sales Growth', $growth)
-                    ->description('Based on monthly signups')
+                Stat::make('Pertumbuhan Penjualan', $growth)
+                    ->description('Berdasarkan pendaftaran bulanan')
                     ->descriptionIcon('heroicon-m-check-badge')
                     ->color('success'),
-                Stat::make('Customer Churn', $churn)
-                    ->description('Rerouted from Inactive status')
+                Stat::make('Tingkat Kehilangan', $churn)
+                    ->description('Dari status tidak aktif')
                     ->descriptionIcon('heroicon-m-arrow-trending-down')
                     ->color('success'),
-                Stat::make('Active Subscriptions', $activeSubscriptions)
-                    ->description('Total active & won clients')
+                Stat::make('Pelanggan Aktif', $activeSubscriptions)
+                    ->description('Total pelanggan aktif & closed won')
                     ->descriptionIcon('heroicon-m-users')
                     ->color('primary'),
             ];
         }
 
         return [
-            Stat::make('Total Revenue', '$142,500')
-                ->description('32% increase from last month')
+            Stat::make('Total Pendapatan', '$142,500')
+                ->description('Naik 32% dari bulan lalu')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('success')
                 ->chart([100, 110, 105, 120, 130, 125, 142]),
-            Stat::make('Sales Growth', '+15.4%')
-                ->description('Above Q2 target')
+            Stat::make('Pertumbuhan Penjualan', '+15.4%')
+                ->description('Di atas target Q2')
                 ->descriptionIcon('heroicon-m-check-badge')
                 ->color('success'),
-            Stat::make('Customer Churn', '1.2%')
-                ->description('Improved by 0.5%')
+            Stat::make('Tingkat Kehilangan', '1.2%')
+                ->description('Membaik 0.5%')
                 ->descriptionIcon('heroicon-m-arrow-trending-down')
                 ->color('success'),
-            Stat::make('Active Subscriptions', '1,245')
-                ->description('45 new this week')
+            Stat::make('Pelanggan Aktif', '1,245')
+                ->description('45 baru minggu ini')
                 ->descriptionIcon('heroicon-m-users')
                 ->color('primary'),
         ];

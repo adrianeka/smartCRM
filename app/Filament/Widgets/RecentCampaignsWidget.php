@@ -13,7 +13,7 @@ class RecentCampaignsWidget extends BaseWidget
 
     protected int|string|array $columnSpan = 'full';
 
-    protected static ?string $heading = 'Recent Campaigns';
+    protected static ?string $heading = 'Kampanye Terbaru';
 
     public function table(Table $table): Table
     {
@@ -29,12 +29,12 @@ class RecentCampaignsWidget extends BaseWidget
 
             return $table
                 ->records(fn (): array => [
-                    ['id' => 1, 'name' => 'Summer Promo 2026', 'status' => 'Running', 'leads' => $campaignLeads],
-                    ['id' => 2, 'name' => 'Webinar Follow-up', 'status' => 'Scheduled', 'leads' => $referralLeads],
-                    ['id' => 3, 'name' => 'Q1 Newsletter', 'status' => 'Completed', 'leads' => $websiteLeads],
-                    ['id' => 4, 'name' => 'Product X Launch', 'status' => 'Draft', 'leads' => $otherLeads],
-                    ['id' => 5, 'name' => 'B2B Client Outreach', 'status' => 'Running', 'leads' => $socialLeads],
-                    ['id' => 6, 'name' => 'Holiday Special', 'status' => 'Scheduled', 'leads' => $eventLeads],
+                    ['id' => 1, 'name' => 'Promo Musim Panas 2026', 'status' => 'Berjalan', 'leads' => $campaignLeads],
+                    ['id' => 2, 'name' => 'Follow-up Webinar', 'status' => 'Dijadwalkan', 'leads' => $referralLeads],
+                    ['id' => 3, 'name' => 'Nawala Q1', 'status' => 'Selesai', 'leads' => $websiteLeads],
+                    ['id' => 4, 'name' => 'Peluncuran Produk X', 'status' => 'Draf', 'leads' => $otherLeads],
+                    ['id' => 5, 'name' => 'Penjangkauan Klien B2B', 'status' => 'Berjalan', 'leads' => $socialLeads],
+                    ['id' => 6, 'name' => 'Spesial Liburan', 'status' => 'Dijadwalkan', 'leads' => $eventLeads],
                 ])
                 ->columns([
                     TextColumn::make('name')
@@ -42,14 +42,14 @@ class RecentCampaignsWidget extends BaseWidget
                     TextColumn::make('status')
                         ->badge()
                         ->color(fn (string $state): string => match ($state) {
-                            'Running' => 'success',
-                            'Scheduled' => 'warning',
-                            'Completed' => 'info',
-                            'Draft' => 'gray',
+                            'Berjalan' => 'success',
+                            'Dijadwalkan' => 'warning',
+                            'Selesai' => 'info',
+                            'Draf' => 'gray',
                             default => 'gray',
                         }),
                     TextColumn::make('leads')
-                        ->label('Leads')
+                        ->label('Lead')
                         ->numeric()
                         ->alignEnd(),
                 ])
@@ -58,12 +58,12 @@ class RecentCampaignsWidget extends BaseWidget
 
         return $table
             ->records(fn (): array => [
-                ['id' => 1, 'name' => 'Summer Promo 2026', 'status' => 'Running', 'leads' => 340],
-                ['id' => 2, 'name' => 'Webinar Follow-up', 'status' => 'Scheduled', 'leads' => 0],
-                ['id' => 3, 'name' => 'Q1 Newsletter', 'status' => 'Completed', 'leads' => 1205],
-                ['id' => 4, 'name' => 'Product X Launch', 'status' => 'Draft', 'leads' => 0],
-                ['id' => 5, 'name' => 'B2B Client Outreach', 'status' => 'Running', 'leads' => 45],
-                ['id' => 6, 'name' => 'Holiday Special', 'status' => 'Scheduled', 'leads' => 0],
+                ['id' => 1, 'name' => 'Promo Musim Panas 2026', 'status' => 'Berjalan', 'leads' => 340],
+                ['id' => 2, 'name' => 'Follow-up Webinar', 'status' => 'Dijadwalkan', 'leads' => 0],
+                ['id' => 3, 'name' => 'Nawala Q1', 'status' => 'Selesai', 'leads' => 1205],
+                ['id' => 4, 'name' => 'Peluncuran Produk X', 'status' => 'Draf', 'leads' => 0],
+                ['id' => 5, 'name' => 'Penjangkauan Klien B2B', 'status' => 'Berjalan', 'leads' => 45],
+                ['id' => 6, 'name' => 'Spesial Liburan', 'status' => 'Dijadwalkan', 'leads' => 0],
             ])
             ->columns([
                 TextColumn::make('name')
@@ -71,10 +71,10 @@ class RecentCampaignsWidget extends BaseWidget
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'Running' => 'success',
-                        'Scheduled' => 'warning',
-                        'Completed' => 'info',
-                        'Draft' => 'gray',
+                        'Berjalan' => 'success',
+                        'Dijadwalkan' => 'warning',
+                        'Selesai' => 'info',
+                        'Draf' => 'gray',
                         default => 'gray',
                     }),
                 TextColumn::make('leads')

@@ -7,7 +7,7 @@ use Filament\Widgets\ChartWidget;
 
 class CampaignPerformanceChart extends ChartWidget
 {
-    protected ?string $heading = 'Campaign Performance (Clicks vs Conversions)';
+    protected ?string $heading = 'Performa Kampanye (Klik vs Konversi)';
 
     protected static ?int $sort = 6;
 
@@ -54,21 +54,21 @@ class CampaignPerformanceChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Clicks',
+                    'label' => 'Klik',
                     'data' => $clicksData,
                     'borderColor' => '#3b82f6',
                     'backgroundColor' => 'rgba(59, 130, 246, 0.1)',
                     'fill' => true,
                 ],
                 [
-                    'label' => 'Conversions',
+                    'label' => 'Konversi',
                     'data' => $conversionsData,
                     'borderColor' => '#10b981',
                     'backgroundColor' => 'rgba(16, 185, 129, 0.1)',
                     'fill' => true,
                 ],
             ],
-            'labels' => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            'labels' => ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
         ];
     }
 

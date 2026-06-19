@@ -7,7 +7,7 @@ use Filament\Widgets\ChartWidget;
 
 class RevenueForecastChart extends ChartWidget
 {
-    protected ?string $heading = 'Revenue & Forecast (2026)';
+    protected ?string $heading = 'Pendapatan & Proyeksi (2026)';
 
     protected static ?int $sort = 11;
 
@@ -47,17 +47,17 @@ class RevenueForecastChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Actual Revenue ($)',
+                    'label' => 'Pendapatan Aktual ($)',
                     'data' => $actualData,
                     'backgroundColor' => '#10b981',
                 ],
                 [
-                    'label' => 'Forecast Target ($)',
+                    'label' => 'Target Proyeksi ($)',
                     'data' => $forecastData,
                     'backgroundColor' => 'rgba(156, 163, 175, 0.3)',
                 ],
             ],
-            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
         ];
     }
 
