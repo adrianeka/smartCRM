@@ -37,7 +37,10 @@ class SocialiteController extends Controller
             abort(404);
         }
 
-        return Socialite::driver($provider)
+        /** @var \Laravel\Socialite\Two\GoogleProvider $driver */
+        $driver = Socialite::driver($provider);
+
+        return $driver
             ->with(['prompt' => 'select_account'])
             ->redirect();
     }
@@ -60,6 +63,7 @@ class SocialiteController extends Controller
         }
 
         try {
+            /** @var \Laravel\Socialite\Two\User $socialUser */
             $socialUser = Socialite::driver($provider)->user();
         } catch (\Exception $e) {
             return redirect('/admin/login')->withErrors(['email' => 'Failed to authenticate with Google.']);
