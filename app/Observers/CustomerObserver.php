@@ -12,52 +12,55 @@ class CustomerObserver
 {
     public function created(Customer $customer): void
     {
+        $companyText = $customer->company_name ? " ({$customer->company_name})" : '';
+        $fromCompanyText = $customer->company_name ? " dari perusahaan \"{$customer->company_name}\"" : '';
+
         // Notify Sales: new lead assigned
         $this->notifyRole(
             roles: ['sales', 'Sales'],
             customer: $customer,
-            title: 'New Lead Assigned',
-            message: "A new lead \"{$customer->full_name}\" from company \"{$customer->company_name}\" has been registered and is ready for follow-up.",
+            title: 'Prospek Baru Ditugaskan',
+            message: "Prospek baru \"{$customer->full_name}\"{$fromCompanyText} telah terdaftar dan siap untuk di-follow-up.",
             type: 'info',
             sourceModule: 'sales',
             priority: 'high',
-            actionLabel: 'View Lead'
+            actionLabel: 'Lihat Prospek'
         );
 
         // Notify Marketing: new lead for segmentation
         $this->notifyRole(
             roles: ['marketing', 'Marketing'],
             customer: $customer,
-            title: 'New Lead Available for Segmentation',
-            message: "Customer \"{$customer->full_name}\" ({$customer->company_name}) has been registered. Source: ".($customer->source ?? 'N/A').'.',
+            title: 'Prospek Baru Tersedia untuk Segmentasi',
+            message: "Pelanggan \"{$customer->full_name}\"{$companyText} telah terdaftar. Sumber: " . ($customer->source ?? 'N/A') . '.',
             type: 'info',
             sourceModule: 'marketing',
             priority: 'normal',
-            actionLabel: 'View Customer'
+            actionLabel: 'Lihat Pelanggan'
         );
 
         // Notify Support: new customer record
         $this->notifyRole(
             roles: ['support', 'Support'],
             customer: $customer,
-            title: 'New Customer Record',
-            message: "Customer \"{$customer->full_name}\" ({$customer->company_name}) has been added to the system.",
+            title: 'Data Pelanggan Baru',
+            message: "Pelanggan \"{$customer->full_name}\"{$companyText} telah ditambahkan ke sistem.",
             type: 'info',
             sourceModule: 'support',
             priority: 'normal',
-            actionLabel: 'View Customer'
+            actionLabel: 'Lihat Pelanggan'
         );
 
         // Notify Super Admin: new customer registered
         $this->notifyRole(
             roles: ['super_admin'],
             customer: $customer,
-            title: 'New Customer Registered',
-            message: "Customer \"{$customer->full_name}\" ({$customer->company_name}) has been registered in the system.",
+            title: 'Pelanggan Baru Terdaftar',
+            message: "Pelanggan \"{$customer->full_name}\"{$companyText} telah didaftarkan di sistem.",
             type: 'info',
             sourceModule: 'customer',
             priority: 'normal',
-            actionLabel: 'View Customer'
+            actionLabel: 'Lihat Pelanggan'
         );
     }
 
@@ -68,48 +71,48 @@ class CustomerObserver
             $this->notifyRole(
                 roles: ['Manager/Analyst', 'manager'],
                 customer: $customer,
-                title: 'Deal Closed Successfully!',
-                message: "Opportunity \"{$customer->full_name}\" has been successfully closed won.",
+                title: 'Penjualan Berhasil Ditutup!',
+                message: "Peluang \"{$customer->full_name}\" berhasil ditutup (Closed Won).",
                 type: 'success',
                 sourceModule: 'sales',
                 priority: 'high',
-                actionLabel: 'View Customer'
+                actionLabel: 'Lihat Pelanggan'
             );
 
             // Notify Sales: their lead converted
             $this->notifyRole(
                 roles: ['sales', 'Sales'],
                 customer: $customer,
-                title: 'Lead Converted to Customer!',
-                message: "Your lead \"{$customer->full_name}\" has been successfully converted to a customer.",
+                title: 'Prospek Dikonversi Menjadi Pelanggan!',
+                message: "Prospek Anda \"{$customer->full_name}\" telah berhasil dikonversi menjadi pelanggan.",
                 type: 'success',
                 sourceModule: 'sales',
                 priority: 'high',
-                actionLabel: 'View Customer'
+                actionLabel: 'Lihat Pelanggan'
             );
 
             // Notify Marketing: conversion for campaign tracking
             $this->notifyRole(
                 roles: ['marketing', 'Marketing'],
                 customer: $customer,
-                title: 'Lead Converted to Customer',
-                message: "Customer \"{$customer->full_name}\" has been converted. Source: ".($customer->source ?? 'N/A').'.',
+                title: 'Prospek Dikonversi Menjadi Pelanggan',
+                message: "Pelanggan \"{$customer->full_name}\" telah dikonversi. Sumber: " . ($customer->source ?? 'N/A') . '.',
                 type: 'success',
                 sourceModule: 'marketing',
                 priority: 'normal',
-                actionLabel: 'View Customer'
+                actionLabel: 'Lihat Pelanggan'
             );
 
             // Notify Super Admin: deal closed
             $this->notifyRole(
                 roles: ['super_admin'],
                 customer: $customer,
-                title: 'Deal Closed Successfully!',
-                message: "Opportunity \"{$customer->full_name}\" has been successfully closed won.",
+                title: 'Penjualan Berhasil Ditutup!',
+                message: "Peluang \"{$customer->full_name}\" berhasil ditutup (Closed Won).",
                 type: 'success',
                 sourceModule: 'sales',
                 priority: 'high',
-                actionLabel: 'View Customer'
+                actionLabel: 'Lihat Pelanggan'
             );
         }
     }

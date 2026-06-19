@@ -30,7 +30,7 @@ class NotificationObserverTest extends TestCase
 
         $this->assertDatabaseHas('app_notifications', [
             'user_id' => $salesUser->id,
-            'title' => 'New Lead Assigned',
+            'title' => 'Prospek Baru Ditugaskan',
             'source_module' => 'sales',
         ]);
 
@@ -59,7 +59,7 @@ class NotificationObserverTest extends TestCase
 
         $this->assertDatabaseHas('app_notifications', [
             'user_id' => $managerUser->id,
-            'title' => 'Deal Closed Successfully!',
+            'title' => 'Penjualan Berhasil Ditutup!',
             'source_module' => 'sales',
         ]);
 

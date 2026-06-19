@@ -9,8 +9,15 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\OpportunityTaskController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CustomerNoteController;
+use App\Http\Controllers\ActivityFeedController;
+use App\Http\Controllers\AuditLogController;
+use App\Http\Controllers\CalendarEventController;
+use App\Http\Controllers\SystemMonitoringController;
 
-Route::prefix('v1')->group(function () {
+Route::prefix('v1')
+    ->middleware('throttle:60,1')
+    ->group(function () {
 
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
@@ -44,6 +51,9 @@ Route::prefix('v1')->group(function () {
         });
     });
 
+    Route::get('/customers/{id}/activity-feed',[ActivityFeedController::class, 'index']);
+    Route::get('/customers/{id}/notes',[CustomerNoteController::class, 'index']);
+    Route::post('/customers/{id}/notes',[CustomerNoteController::class, 'store']);
     Route::get('/customers/export/json', [CustomerController::class, 'exportJson']);
     Route::get('/customers/export/csv', [CustomerController::class, 'exportCsv']);
     Route::get('/customers/export/excel', [CustomerController::class, 'exportExcel']);
@@ -73,6 +83,7 @@ Route::prefix('v1')->group(function () {
         ->get('/analytics/role-dashboard', [AnalyticsController::class, 'roleDashboard']);
 
     Route::get('/opportunities/calendar', [OpportunityController::class, 'calendar']);
+    Route::post('/opportunities/{id}/send-whatsapp', [OpportunityController::class, 'sendWhatsapp']);
     Route::post('/opportunities/{id}/send-proposal', [OpportunityController::class, 'sendProposal']);
     Route::get('/opportunities/{id}/tasks', [OpportunityTaskController::class, 'index']);
     Route::post('/opportunities/{id}/tasks', [OpportunityTaskController::class, 'store']);
@@ -80,5 +91,15 @@ Route::prefix('v1')->group(function () {
     Route::get('/opportunities/forecast', [OpportunityController::class, 'forecast']);
     Route::get('/opportunities/{id}/score', [OpportunityController::class, 'score']);
     Route::get('/opportunities/pipeline', [OpportunityController::class, 'pipeline']);
+    Route::get('/opportunities', [OpportunityController::class, 'index']);
+    Route::put('/opportunities/{id}', [OpportunityController::class, 'update']);
+    Route::patch('/opportunities/{id}/stage', [OpportunityController::class, 'updateStage']);
     Route::apiResource('opportunities', OpportunityController::class);
+
+    Route::get('/audit-logs', [AuditLogController::class, 'index']);
+    Route::get('/calendar/events', [CalendarEventController::class, 'index']);
+    Route::post('/calendar/events', [CalendarEventController::class, 'store']);
+    Route::get('/notifications', [NotificationController::class, 'index']);
+
+    Route::get('/monitoring/health', [SystemMonitoringController::class, 'health']);
 });

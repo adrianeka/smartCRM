@@ -14,6 +14,28 @@
                 }
             ]
         },
+        "/api/v1/customers/{id}/activity-feed": {
+            "get": {
+                "tags": [
+                    "Collaboration"
+                ],
+                "summary": "Customer Activity Feed",
+                "operationId": "03047e5095f4b7f1232aa15749953d4f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Customer ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Customer activity timeline"
+                    }
+                }
+            }
+        },
         "/api/v1/analytics/summary": {
             "get": {
                 "tags": [
@@ -403,6 +425,20 @@
                 }
             }
         },
+        "/api/v1/audit-logs": {
+            "get": {
+                "tags": [
+                    "Collaboration"
+                ],
+                "summary": "Audit Trail Logs",
+                "operationId": "bce801edbcf275736bf324a1db54a55f",
+                "responses": {
+                    "200": {
+                        "description": "List of audit logs"
+                    }
+                }
+            }
+        },
         "/auth/{provider}/redirect": {
             "get": {
                 "tags": [
@@ -438,6 +474,32 @@
                 "responses": {
                     "200": {
                         "description": "OAuth Login Success"
+                    }
+                }
+            }
+        },
+        "/api/v1/calendar/events": {
+            "get": {
+                "tags": [
+                    "Collaboration"
+                ],
+                "summary": "Shared Calendar Events",
+                "operationId": "20ee1bef949aae859d5485a272f07003",
+                "responses": {
+                    "200": {
+                        "description": "Calendar event list"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Collaboration"
+                ],
+                "summary": "Create Calendar Event",
+                "operationId": "ffea0a6ed7da5273434aaf31a50e82a5",
+                "responses": {
+                    "201": {
+                        "description": "Event created"
                     }
                 }
             }
@@ -1379,6 +1441,62 @@
                     }
                 }
             }
+        },
+        "/api/v1/opportunities/win-loss": {
+            "get": {
+                "tags": [
+                    "Opportunities"
+                ],
+                "summary": "Win Loss Analysis",
+                "operationId": "843e9648596a2f0f969e7af9d341d630",
+                "responses": {
+                    "200": {
+                        "description": "Win loss statistics"
+                    }
+                }
+            }
+        },
+        "/api/v1/opportunities/{id}/send-proposal": {
+            "post": {
+                "tags": [
+                    "Opportunities"
+                ],
+                "summary": "Send Proposal Simulation",
+                "operationId": "3155a33ff76deb815e083a09a8286998",
+                "responses": {
+                    "200": {
+                        "description": "Proposal sent"
+                    }
+                }
+            }
+        },
+        "/api/v1/opportunities/{id}/send-whatsapp": {
+            "post": {
+                "tags": [
+                    "Opportunities"
+                ],
+                "summary": "Send WhatsApp Simulation",
+                "operationId": "e9ddbe1ba3d6cea6baa416e66b0caede",
+                "responses": {
+                    "200": {
+                        "description": "WhatsApp simulated"
+                    }
+                }
+            }
+        },
+        "/api/v1/monitoring/health": {
+            "get": {
+                "tags": [
+                    "Monitoring"
+                ],
+                "summary": "System Health Check",
+                "operationId": "ac47b6b6d99d93a647a02cb95b363b0a",
+                "responses": {
+                    "200": {
+                        "description": "System status"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -1437,6 +1555,10 @@
     },
     "tags": [
         {
+            "name": "Collaboration",
+            "description": "Collaboration"
+        },
+        {
             "name": "Analytics",
             "description": "Analytics"
         },
@@ -1463,6 +1585,10 @@
         {
             "name": "Opportunities",
             "description": "Opportunities"
+        },
+        {
+            "name": "Monitoring",
+            "description": "Monitoring"
         }
     ]
 }

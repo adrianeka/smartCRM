@@ -26,13 +26,13 @@ class UpcomingDeadlinesWidget extends BaseWidget
         if ($deadlines->isEmpty()) {
             return $table
                 ->records(fn (): array => [
-                    ['id' => 1, 'title' => 'Contact review meeting', 'date' => '2026-04-29', 'time' => '10:00'],
-                    ['id' => 2, 'title' => 'Quarterly sales report', 'date' => '2026-04-30', 'time' => 'EOD'],
-                    ['id' => 3, 'title' => 'Client presentation prep', 'date' => '2026-05-01', 'time' => '09:00'],
+                    ['id' => 1, 'title' => 'Pertemuan ulasan kontak', 'date' => '2026-04-29', 'time' => '10:00'],
+                    ['id' => 2, 'title' => 'Laporan penjualan kuartalan', 'date' => '2026-04-30', 'time' => 'EOD'],
+                    ['id' => 3, 'title' => 'Persiapan presentasi klien', 'date' => '2026-05-01', 'time' => '09:00'],
                 ])
                 ->columns([
-                    TextColumn::make('title'),
-                    TextColumn::make('date')
+                    TextColumn::make('title')->label('Judul Tugas'),
+                    TextColumn::make('date')->label('Tanggal')
                         ->description(fn ($record) => $record['time'])
                         ->alignEnd(),
                 ])

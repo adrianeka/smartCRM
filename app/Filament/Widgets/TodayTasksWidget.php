@@ -26,21 +26,23 @@ class TodayTasksWidget extends BaseWidget
         if ($todayTasks->isEmpty()) {
             return $table
                 ->records(fn (): array => [
-                    ['id' => 1, 'title' => 'Product demo with TechCorp', 'time' => '2026-04-28 / 14:00', 'priority' => 'high'],
-                    ['id' => 2, 'title' => 'Follow-up call with Global Systems', 'time' => '2026-04-28 / 15:30', 'priority' => 'medium'],
-                    ['id' => 3, 'title' => 'Send proposal to Mann Co.', 'time' => '2026-04-28 / 17:00', 'priority' => 'high'],
-                    ['id' => 4, 'title' => 'Update pipeline status', 'time' => '2026-04-28 / 14:00', 'priority' => 'low'],
+                    ['id' => 1, 'title' => 'Demo produk dengan TechCorp', 'time' => '2026-04-28 / 14:00', 'priority' => 'tinggi'],
+                    ['id' => 2, 'title' => 'Panggilan follow-up dengan Global Systems', 'time' => '2026-04-28 / 15:30', 'priority' => 'sedang'],
+                    ['id' => 3, 'title' => 'Kirim proposal ke Mann Co.', 'time' => '2026-04-28 / 17:00', 'priority' => 'tinggi'],
+                    ['id' => 4, 'title' => 'Perbarui status pipeline', 'time' => '2026-04-28 / 14:00', 'priority' => 'rendah'],
                 ])
                 ->columns([
                     TextColumn::make('title')
+                        ->label('Judul Tugas')
                         ->description(fn ($record) => $record['time'])
                         ->icon('heroicon-o-clock'),
                     TextColumn::make('priority')
+                        ->label('Prioritas')
                         ->badge()
                         ->color(fn (string $state): string => match ($state) {
-                            'high' => 'danger',
-                            'medium' => 'warning',
-                            'low' => 'info',
+                            'tinggi' => 'danger',
+                            'sedang' => 'warning',
+                            'rendah' => 'info',
                             default => 'gray',
                         })
                         ->alignEnd(),

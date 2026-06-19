@@ -100,4 +100,9 @@ class Customer extends Model
     {
         return $this->hasMany(Opportunity::class);
     }
+
+    public function notes()
+{
+    return $this->hasMany(CustomerNote::class);
+}
 }
