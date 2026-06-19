@@ -11,7 +11,7 @@ use Filament\Schemas\Components\Component;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property \Filament\Forms\Form $form
+ * @property \Filament\Schemas\Schema $form
  * @property array $data
  * @method void rateLimit(int $maxAttempts)
  * @method \Filament\Notifications\Notification|null getRateLimitedNotification(\Exception $exception)

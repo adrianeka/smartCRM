@@ -9,7 +9,7 @@ use Filament\Facades\Filament;
 use Filament\Models\Contracts\FilamentUser;
 
 /**
- * @property \Filament\Forms\Form $form
+ * @property \Filament\Schemas\Schema $form
  * @method void rateLimit(int $maxAttempts)
  * @method \Filament\Notifications\Notification|null getRateLimitedNotification(\Exception $exception)
  * @method array getCredentialsFromFormData(array $data)
