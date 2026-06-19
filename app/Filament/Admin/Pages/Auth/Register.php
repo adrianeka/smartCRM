@@ -10,6 +10,18 @@ use Filament\Facades\Filament;
 use Filament\Schemas\Components\Component;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property \Filament\Forms\Form $form
+ * @property array $data
+ * @method void rateLimit(int $maxAttempts)
+ * @method \Filament\Notifications\Notification|null getRateLimitedNotification(\Exception $exception)
+ * @method bool isRegisterRateLimited(string $email)
+ * @method \Illuminate\Database\Eloquent\Model wrapInDatabaseTransaction(\Closure $callback)
+ * @method void callHook(string $hook)
+ * @method array mutateFormDataBeforeRegister(array $data)
+ * @method \Illuminate\Database\Eloquent\Model handleRegistration(array $data)
+ * @method void sendEmailVerificationNotification(\Illuminate\Database\Eloquent\Model $user)
+ */
 class Register extends BaseRegister
 {
     public function mount(): void

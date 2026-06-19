@@ -8,6 +8,13 @@ use Filament\Auth\Pages\Login as BaseLogin;
 use Filament\Facades\Filament;
 use Filament\Models\Contracts\FilamentUser;
 
+/**
+ * @property \Filament\Forms\Form $form
+ * @method void rateLimit(int $maxAttempts)
+ * @method \Filament\Notifications\Notification|null getRateLimitedNotification(\Exception $exception)
+ * @method array getCredentialsFromFormData(array $data)
+ * @method void throwFailureValidationException()
+ */
 class Login extends BaseLogin
 {
     public function mount(): void
