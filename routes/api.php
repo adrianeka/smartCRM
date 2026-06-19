@@ -94,18 +94,8 @@ Route::prefix('v1')->group(function () {
     Route::patch('/opportunities/{id}/stage',[OpportunityController::class, 'updateStage']);
     Route::apiResource('opportunities',OpportunityController::class);
 
-    Route::get(
-    '/audit-logs',
-    [AuditLogController::class, 'index']
-);
-
-Route::get(
-    '/calendar/events',
-    [CalendarEventController::class, 'index']
-);
-
-Route::post(
-    '/calendar/events',
-    [CalendarEventController::class, 'store']
-);
+    Route::get('/audit-logs',[AuditLogController::class, 'index']);
+    Route::get('/calendar/events',[CalendarEventController::class, 'index']);
+    Route::post('/calendar/events',[CalendarEventController::class, 'store']);
+    Route::get('/notifications',[NotificationController::class, 'index']);
 });
