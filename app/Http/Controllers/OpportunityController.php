@@ -161,7 +161,7 @@ class OpportunityController extends Controller
         $result = [];
 
         foreach ($stages as $stage) {
-            $result[$stage] = Opportunity::where('stage', $stage)
+            $result[$stage] = Opportunity::query()->where('stage', $stage)
                 ->get();
         }
 
@@ -230,9 +230,9 @@ class OpportunityController extends Controller
                 return ($opportunity->deal_value * $opportunity->probability) / 100;
             });
 
-        $wonDeals = Opportunity::where('stage', 'Won')->count();
+        $wonDeals = Opportunity::query()->where('stage', 'Won')->count();
 
-        $lostDeals = Opportunity::where('stage', 'Lost')->count();
+        $lostDeals = Opportunity::query()->where('stage', 'Lost')->count();
 
         return response()->json([
             'status' => 'success',
@@ -258,11 +258,11 @@ class OpportunityController extends Controller
     )]
     public function winLossAnalysis()
     {
-        $won = Opportunity::where('stage', 'Won')->count();
+        $won = Opportunity::query()->where('stage', 'Won')->count();
 
-        $lost = Opportunity::where('stage', 'Lost')->count();
+        $lost = Opportunity::query()->where('stage', 'Lost')->count();
 
-        $reasons = Opportunity::whereNotNull('result_reason')
+        $reasons = Opportunity::query()->whereNotNull('result_reason')
             ->selectRaw('result_reason, COUNT(*) as total')
             ->groupBy('result_reason')
             ->get();
@@ -307,7 +307,7 @@ class OpportunityController extends Controller
 
     public function calendar()
     {
-        $data = Opportunity::whereNotNull('expected_close_date')
+        $data = Opportunity::query()->whereNotNull('expected_close_date')
             ->select(
                 'id',
                 'title',
