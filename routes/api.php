@@ -13,6 +13,7 @@ use App\Http\Controllers\CustomerNoteController;
 use App\Http\Controllers\ActivityFeedController;
 use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\CalendarEventController;
+use App\Http\Controllers\SystemMonitoringController;
 
 Route::prefix('v1')
     ->middleware('throttle:60,1')
@@ -99,4 +100,6 @@ Route::prefix('v1')
     Route::get('/calendar/events',[CalendarEventController::class, 'index']);
     Route::post('/calendar/events',[CalendarEventController::class, 'store']);
     Route::get('/notifications',[NotificationController::class, 'index']);
+
+    Route::get('/monitoring/health',[SystemMonitoringController::class, 'health']);
 });

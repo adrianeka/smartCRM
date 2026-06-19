@@ -1483,6 +1483,20 @@
                     }
                 }
             }
+        },
+        "/api/v1/monitoring/health": {
+            "get": {
+                "tags": [
+                    "Monitoring"
+                ],
+                "summary": "System Health Check",
+                "operationId": "ac47b6b6d99d93a647a02cb95b363b0a",
+                "responses": {
+                    "200": {
+                        "description": "System status"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -1571,6 +1585,10 @@
         {
             "name": "Opportunities",
             "description": "Opportunities"
+        },
+        {
+            "name": "Monitoring",
+            "description": "Monitoring"
         }
     ]
 }
