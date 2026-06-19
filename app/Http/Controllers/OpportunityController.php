@@ -161,7 +161,8 @@ class OpportunityController extends Controller
         $result = [];
 
         foreach ($stages as $stage) {
-            $result[$stage] = Opportunity::query()->where('stage', $stage)
+            $stageField = 'stage';
+            $result[$stage] = Opportunity::query()->where($stageField, $stage)
                 ->get();
         }
 
@@ -230,9 +231,10 @@ class OpportunityController extends Controller
                 return ($opportunity->deal_value * $opportunity->probability) / 100;
             });
 
-        $wonDeals = Opportunity::query()->where('stage', 'Won')->count();
+        $stageField = 'stage';
+        $wonDeals = Opportunity::query()->where($stageField, 'Won')->count();
 
-        $lostDeals = Opportunity::query()->where('stage', 'Lost')->count();
+        $lostDeals = Opportunity::query()->where($stageField, 'Lost')->count();
 
         return response()->json([
             'status' => 'success',
@@ -258,9 +260,10 @@ class OpportunityController extends Controller
     )]
     public function winLossAnalysis()
     {
-        $won = Opportunity::query()->where('stage', 'Won')->count();
+        $stageField = 'stage';
+        $won = Opportunity::query()->where($stageField, 'Won')->count();
 
-        $lost = Opportunity::query()->where('stage', 'Lost')->count();
+        $lost = Opportunity::query()->where($stageField, 'Lost')->count();
 
         $reasons = Opportunity::query()->whereNotNull('result_reason')
             ->selectRaw('result_reason, COUNT(*) as total')
