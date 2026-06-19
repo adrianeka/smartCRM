@@ -69,7 +69,8 @@ class SocialiteController extends Controller
             return redirect('/admin/login')->withErrors(['email' => 'Failed to authenticate with Google.']);
         }
 
-        $user = User::query()->where('email', $socialUser->getEmail())->first();
+        $emailField = 'email';
+        $user = User::query()->where($emailField, $socialUser->getEmail())->first();
 
         if ($user) {
             // Update provider if empty
