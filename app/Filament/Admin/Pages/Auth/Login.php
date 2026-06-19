@@ -10,7 +10,20 @@ use Filament\Models\Contracts\FilamentUser;
 
 class Login extends BaseLogin
 {
-    // No custom view needed, we inject Google button via RenderHook
+    public function mount(): void
+    {
+        if (Filament::auth()->check()) {
+            if (session('mfa_verified') !== true) {
+                Filament::auth()->logout();
+                session()->invalidate();
+                session()->regenerateToken();
+            } else {
+                redirect()->intended(Filament::getUrl());
+            }
+        }
+
+        $this->form->fill();
+    }
 
     public function authenticate(): ?LoginResponse
     {

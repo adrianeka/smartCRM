@@ -12,6 +12,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Register extends BaseRegister
 {
+    public function mount(): void
+    {
+        if (Filament::auth()->check()) {
+            // If user hits Back from MFA challenge (cancelling setup), log them out
+            if (session('mfa_verified') !== true) {
+                Filament::auth()->logout();
+                session()->invalidate();
+                session()->regenerateToken();
+            } else {
+                redirect()->intended(Filament::getUrl());
+            }
+        }
+
+        $this->form->fill();
+    }
     protected function getPasswordConfirmationFormComponent(): Component
     {
         return parent::getPasswordConfirmationFormComponent()
