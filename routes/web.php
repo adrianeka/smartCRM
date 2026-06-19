@@ -11,6 +11,6 @@ Route::redirect('/dashboard', '/admin')->name('dashboard');
 
 Route::get('/waiting-assignment', [WaitingAssignmentController::class, 'show'])
     ->name('waiting-assignment')
-    ->middleware('auth');
+    ->middleware(['auth', 'mfa.verified']);
 
 require __DIR__.'/auth.php';

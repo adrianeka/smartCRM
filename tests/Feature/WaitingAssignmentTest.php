@@ -21,6 +21,7 @@ it('redirects role-assigned user from waiting assignment page to dashboard', fun
     $user->assignRole($role);
 
     $response = $this->actingAs($user)
+        ->withSession(['mfa_verified' => true])
         ->get('/waiting-assignment');
 
     $response->assertRedirect(route('filament.admin.pages.dashboard'));
@@ -30,6 +31,7 @@ it('renders waiting assignment page for authenticated users without a role', fun
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)
+        ->withSession(['mfa_verified' => true])
         ->get('/waiting-assignment');
 
     $response->assertStatus(200);
@@ -42,6 +44,7 @@ it('redirects authenticated users without a role to waiting assignment page when
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)
+        ->withSession(['mfa_verified' => true])
         ->get('/admin');
 
     $response->assertRedirect('/waiting-assignment');

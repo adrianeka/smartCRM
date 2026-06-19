@@ -87,8 +87,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-                EnsureUserHasRole::class,
                 'mfa.verified',
+                EnsureUserHasRole::class,
             ])
             ->renderHook(
                 PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
