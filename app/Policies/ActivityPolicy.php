@@ -4,42 +4,42 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Foundation\Auth\User as AuthUser;
 use Spatie\Activitylog\Models\Activity;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ActivityPolicy
 {
     use HandlesAuthorization;
-
+    
     public function viewAny(AuthUser $authUser): bool
     {
-        return $authUser->hasAnyRole(['super_admin', 'Manager/Analyst']);
+        return $authUser->can('ViewAny:Activity');
     }
 
     public function view(AuthUser $authUser, Activity $activity): bool
     {
-        return $authUser->hasAnyRole(['super_admin', 'Manager/Analyst']);
+        return $authUser->can('View:Activity');
     }
 
     public function create(AuthUser $authUser): bool
     {
-        return false;
+        return $authUser->can('Create:Activity');
     }
 
     public function update(AuthUser $authUser, Activity $activity): bool
     {
-        return false;
+        return $authUser->can('Update:Activity');
     }
 
     public function delete(AuthUser $authUser, Activity $activity): bool
     {
-        return $authUser->hasRole('super_admin');
+        return $authUser->can('Delete:Activity');
     }
 
     public function deleteAny(AuthUser $authUser): bool
     {
-        return $authUser->hasRole('super_admin');
+        return $authUser->can('DeleteAny:Activity');
     }
 
     public function restore(AuthUser $authUser, Activity $activity): bool
@@ -71,4 +71,5 @@ class ActivityPolicy
     {
         return $authUser->can('Reorder:Activity');
     }
+
 }

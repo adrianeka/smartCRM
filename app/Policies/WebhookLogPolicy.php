@@ -1,88 +1,75 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
-use App\Models\User;
+use Illuminate\Foundation\Auth\User as AuthUser;
 use App\Models\WebhookLog;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class WebhookLogPolicy
 {
     use HandlesAuthorization;
-
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    
+    public function viewAny(AuthUser $authUser): bool
     {
-        return $user->hasRole('super_admin');
+        return $authUser->can('ViewAny:WebhookLog');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, WebhookLog $webhookLog): bool
+    public function view(AuthUser $authUser, WebhookLog $webhookLog): bool
     {
-        return $user->hasRole('super_admin');
+        return $authUser->can('View:WebhookLog');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function create(AuthUser $authUser): bool
     {
-        return $user->hasRole('super_admin');
+        return $authUser->can('Create:WebhookLog');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, WebhookLog $webhookLog): bool
+    public function update(AuthUser $authUser, WebhookLog $webhookLog): bool
     {
-        return $user->hasRole('super_admin');
+        return $authUser->can('Update:WebhookLog');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, WebhookLog $webhookLog): bool
+    public function delete(AuthUser $authUser, WebhookLog $webhookLog): bool
     {
-        return $user->hasRole('super_admin');
+        return $authUser->can('Delete:WebhookLog');
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, WebhookLog $webhookLog): bool
+    public function deleteAny(AuthUser $authUser): bool
     {
-        return $user->hasRole('super_admin');
+        return $authUser->can('DeleteAny:WebhookLog');
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, WebhookLog $webhookLog): bool
+    public function restore(AuthUser $authUser, WebhookLog $webhookLog): bool
     {
-        return $user->hasRole('super_admin') || $user->can('ForceDelete:WebhookLog');
+        return $authUser->can('Restore:WebhookLog');
     }
 
-    public function forceDeleteAny(User $user): bool
+    public function forceDelete(AuthUser $authUser, WebhookLog $webhookLog): bool
     {
-        return $user->can('ForceDeleteAny:WebhookLog');
+        return $authUser->can('ForceDelete:WebhookLog');
     }
 
-    public function restoreAny(User $user): bool
+    public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $user->can('RestoreAny:WebhookLog');
+        return $authUser->can('ForceDeleteAny:WebhookLog');
     }
 
-    public function replicate(User $user, WebhookLog $webhookLog): bool
+    public function restoreAny(AuthUser $authUser): bool
     {
-        return $user->can('Replicate:WebhookLog');
+        return $authUser->can('RestoreAny:WebhookLog');
     }
 
-    public function reorder(User $user): bool
+    public function replicate(AuthUser $authUser, WebhookLog $webhookLog): bool
     {
-        return $user->can('Reorder:WebhookLog');
+        return $authUser->can('Replicate:WebhookLog');
     }
+
+    public function reorder(AuthUser $authUser): bool
+    {
+        return $authUser->can('Reorder:WebhookLog');
+    }
+
 }
