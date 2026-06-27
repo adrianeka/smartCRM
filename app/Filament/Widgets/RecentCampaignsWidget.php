@@ -13,7 +13,7 @@ class RecentCampaignsWidget extends BaseWidget
 
     protected int|string|array $columnSpan = 'full';
 
-    protected static ?string $heading = 'Kampanye Terbaru';
+    protected static ?string $heading = 'Recent Campaigns';
 
     public function table(Table $table): Table
     {

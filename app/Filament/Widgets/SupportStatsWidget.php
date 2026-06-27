@@ -67,32 +67,32 @@ class SupportStatsWidget extends BaseWidget
             }
 
             return [
-                Stat::make('Tiket Terbuka', (string) $openTickets)
+                Stat::make('Open Tickets', (string) $openTickets)
                     ->description($urgentTickets.' perlu perhatian segera')
                     ->descriptionIcon('heroicon-m-exclamation-circle')
                     ->color('danger'),
-                Stat::make('Tiket Belum Ditugaskan', (string) $unassignedTickets)
+                Stat::make('Unassigned Tickets', (string) $unassignedTickets)
                     ->description('Menunggu dalam antrian')
                     ->descriptionIcon('heroicon-m-clock')
                     ->color('warning'),
                 Stat::make('Rata-rata Waktu Respon', $responseTime)
-                    ->description('Berdasarkan pelanggan yang dihubungi')
+                    ->description('Berdasarkan Customers yang dihubungi')
                     ->descriptionIcon('heroicon-m-check-circle')
                     ->color('success')
                     ->chart($responseChartData),
                 Stat::make('Skor CSAT', $csat)
-                    ->description('Berdasarkan skor lead pelanggan')
+                    ->description('Berdasarkan skor lead Customers')
                     ->descriptionIcon('heroicon-m-star')
                     ->color('success'),
             ];
         }
 
         return [
-            Stat::make('Tiket Terbuka', '24')
+            Stat::make('Open Tickets', '24')
                 ->description('5 perlu perhatian segera')
                 ->descriptionIcon('heroicon-m-exclamation-circle')
                 ->color('danger'),
-            Stat::make('Tiket Belum Ditugaskan', '8')
+            Stat::make('Unassigned Tickets', '8')
                 ->description('Menunggu dalam antrian')
                 ->descriptionIcon('heroicon-m-clock')
                 ->color('warning'),

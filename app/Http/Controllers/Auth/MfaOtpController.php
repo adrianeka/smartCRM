@@ -35,7 +35,7 @@ class MfaOtpController extends Controller
             ->first();
 
         if (! $mfaCode) {
-            return back()->withErrors(['code' => 'Kode yang Anda masukkan tidak valid atau telah kedaluwarsa.']);
+            return back()->withErrors(['code' => 'The code you entered is invalid or has expired.']);
         }
 
         $mfaCode->update(['used' => true]);
@@ -50,7 +50,7 @@ class MfaOtpController extends Controller
     {
         $this->generateAndSendOtp($request->user());
 
-        return back()->with('status', 'Kode verifikasi yang baru telah dikirimkan ke email Anda.');
+        return back()->with('status', 'A new verification code has been sent to your email.');
     }
 
     public function generateAndSendOtp(User $user)

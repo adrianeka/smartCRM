@@ -7,7 +7,7 @@ use Filament\Widgets\ChartWidget;
 
 class TicketsByPriorityChart extends ChartWidget
 {
-    protected ?string $heading = 'Tiket berdasarkan Prioritas';
+    protected ?string $heading = 'Tickets by Priority';
 
     protected static ?int $sort = 8;
 
@@ -47,7 +47,7 @@ class TicketsByPriorityChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Tiket',
+                    'label' => 'Tickets',
                     'data' => [$high, $medium, $low],
                     'backgroundColor' => [
                         '#ef4444',

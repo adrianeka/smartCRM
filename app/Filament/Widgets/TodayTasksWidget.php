@@ -14,7 +14,7 @@ class TodayTasksWidget extends BaseWidget
 
     protected static ?int $sort = 3;
 
-    protected static ?string $heading = 'Tugas Hari Ini';
+    protected static ?string $heading = 'Today Tasks';
 
     public function table(Table $table): Table
     {
@@ -33,11 +33,11 @@ class TodayTasksWidget extends BaseWidget
                 ])
                 ->columns([
                     TextColumn::make('title')
-                        ->label('Judul Tugas')
+                        ->label('Task Title')
                         ->description(fn ($record) => $record['time'])
                         ->icon('heroicon-o-clock'),
                     TextColumn::make('priority')
-                        ->label('Prioritas')
+                        ->label('Priority')
                         ->badge()
                         ->color(fn (string $state): string => match ($state) {
                             'tinggi' => 'danger',
@@ -58,11 +58,11 @@ class TodayTasksWidget extends BaseWidget
             )
             ->columns([
                 TextColumn::make('full_name')
-                    ->label('Tugas / Pelanggan')
+                    ->label('Task / Customer')
                     ->description(fn ($record) => $record->notes ?? 'Perlu follow-up')
                     ->icon('heroicon-o-clock'),
                 TextColumn::make('status')
-                    ->label('Prioritas / Status')
+                    ->label('Priority / Status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'Lead' => 'info',

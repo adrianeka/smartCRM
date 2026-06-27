@@ -14,7 +14,7 @@ class TasksOverviewWidget extends BaseWidget
 
     protected static ?int $sort = 6;
 
-    protected static ?string $heading = 'Ringkasan Tugas';
+    protected static ?string $heading = 'Task Summary';
 
     public function table(Table $table): Table
     {
@@ -27,9 +27,9 @@ class TasksOverviewWidget extends BaseWidget
 
             return $table
                 ->records(fn (): array => [
-                    ['id' => 1, 'label' => 'Tugas Terlambat', 'count' => $overdue, 'color' => 'danger', 'icon' => 'heroicon-m-exclamation-circle'],
-                    ['id' => 2, 'label' => 'Tugas Menunggu', 'count' => $pending, 'color' => 'warning', 'icon' => 'heroicon-m-clock'],
-                    ['id' => 3, 'label' => 'Selesai Hari Ini', 'count' => $completedToday, 'color' => 'success', 'icon' => 'heroicon-m-check-circle'],
+                    ['id' => 1, 'label' => 'Overdue Tasks', 'count' => $overdue, 'color' => 'danger', 'icon' => 'heroicon-m-exclamation-circle'],
+                    ['id' => 2, 'label' => 'Pending Tasks', 'count' => $pending, 'color' => 'warning', 'icon' => 'heroicon-m-clock'],
+                    ['id' => 3, 'label' => 'Completed Today', 'count' => $completedToday, 'color' => 'success', 'icon' => 'heroicon-m-check-circle'],
                 ])
                 ->columns([
                     TextColumn::make('label')
@@ -49,9 +49,9 @@ class TasksOverviewWidget extends BaseWidget
 
         return $table
             ->records(fn (): array => [
-                ['id' => 1, 'label' => 'Tugas Terlambat', 'count' => 1, 'color' => 'danger', 'icon' => 'heroicon-m-exclamation-circle'],
-                ['id' => 2, 'label' => 'Tugas Menunggu', 'count' => 2, 'color' => 'warning', 'icon' => 'heroicon-m-clock'],
-                ['id' => 3, 'label' => 'Selesai Hari Ini', 'count' => 2, 'color' => 'success', 'icon' => 'heroicon-m-check-circle'],
+                ['id' => 1, 'label' => 'Overdue Tasks', 'count' => 1, 'color' => 'danger', 'icon' => 'heroicon-m-exclamation-circle'],
+                ['id' => 2, 'label' => 'Pending Tasks', 'count' => 2, 'color' => 'warning', 'icon' => 'heroicon-m-clock'],
+                ['id' => 3, 'label' => 'Completed Today', 'count' => 2, 'color' => 'success', 'icon' => 'heroicon-m-check-circle'],
             ])
             ->columns([
                 TextColumn::make('label')

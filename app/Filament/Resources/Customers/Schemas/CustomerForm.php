@@ -30,7 +30,7 @@ class CustomerForm
 
                 // 2. Kita selipkan komponen Textarea di paling bawah array components
                 Textarea::make('custom_fields')
-                    ->label('Informasi Tambahan (Format JSON)')
+                    ->label('Additional Information (JSON Format)')
                     ->placeholder('{"Instagram": "@budi_jaya", "Kategori": "VIP"}')
                     ->rows(3)
                     ->helperText('Masukkan data tambahan dengan format JSON kustom jika diperlukan.'),

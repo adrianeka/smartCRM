@@ -11,19 +11,19 @@ return new class extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id(); // ID Utama (Primary Key)
 
-            // Kode unik pelanggan untuk kebutuhan integrasi dengan kelompok lain (Sales/Marketing)
+
             $table->string('customer_code')->unique();
 
-            // Atribut inti data profil pelanggan
+
             $table->string('full_name');
             $table->string('email')->unique();
             $table->string('phone');
-            $table->string('company_name')->nullable(); // Boleh kosong jika pelanggan retail
+            $table->string('company_name')->nullable();
 
-            // Status data pelanggan (contoh default awal: 'Lead')
+
             $table->string('status')->default('Lead');
 
-            $table->timestamps(); // Otomatis membuat kolom created_at dan updated_at
+            $table->timestamps();
         });
     }
 

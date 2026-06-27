@@ -13,7 +13,7 @@ class UrgentTicketsWidget extends BaseWidget
 
     protected int|string|array $columnSpan = 'full';
 
-    protected static ?string $heading = 'Tiket Mendesak (Mendekati SLA)';
+    protected static ?string $heading = 'Urgent Tickets (Approaching SLA)';
 
     public function table(Table $table): Table
     {
@@ -25,15 +25,15 @@ class UrgentTicketsWidget extends BaseWidget
         if ($urgentCustomers->isEmpty()) {
             return $table
                 ->records(fn (): array => [
-                    ['id' => 'T-1042', 'customer' => 'PT Jaya Abadi', 'issue' => 'Gagal login sistem', 'time_left' => '15 mnt'],
+                    ['id' => 'T-1042', 'customer' => 'PT Jaya Abadi', 'issue' => 'Failed login sistem', 'time_left' => '15 mnt'],
                     ['id' => 'T-1045', 'customer' => 'Budi Santoso', 'issue' => 'Pembayaran tidak diproses', 'time_left' => '45 mnt'],
                     ['id' => 'T-1046', 'customer' => 'CV Makmur', 'issue' => 'Kesalahan integrasi API', 'time_left' => '1j 10m'],
                     ['id' => 'T-1050', 'customer' => 'Sinar Mas Group', 'issue' => 'Laporan tidak dibuat', 'time_left' => '1j 30m'],
-                    ['id' => 'T-1052', 'customer' => 'Tech Solutions', 'issue' => 'Peringatan server down', 'time_left' => '1j 45m'],
+                    ['id' => 'T-1052', 'customer' => 'Tech Solutions', 'issue' => 'Server down warning', 'time_left' => '1j 45m'],
                 ])
                 ->columns([
                     TextColumn::make('issue')
-                        ->label('Masalah / Pelanggan')
+                        ->label('Issue / Customer')
                         ->weight('bold')
                         ->description(fn ($record) => is_array($record) ? $record['customer'].' ('.$record['id'].')' : '')
                         ->limit(40),
@@ -68,7 +68,7 @@ class UrgentTicketsWidget extends BaseWidget
             ->records(fn (): array => $records)
             ->columns([
                 TextColumn::make('issue')
-                    ->label('Masalah / Pelanggan')
+                    ->label('Issue / Customer')
                     ->weight('bold')
                     ->description(fn ($record) => is_array($record) ? $record['customer'].' ('.$record['id'].')' : '')
                     ->limit(40),

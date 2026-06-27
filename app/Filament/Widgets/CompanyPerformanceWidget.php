@@ -52,12 +52,12 @@ class CompanyPerformanceWidget extends BaseWidget
             $activeSubscriptions = (string) ($activeCustomers + $wonCustomers);
 
             return [
-                Stat::make('Total Pendapatan', $totalRevenue)
+                Stat::make('Total Revenue', $totalRevenue)
                     ->description('Dinamis berdasarkan kontrak aktif')
                     ->descriptionIcon('heroicon-m-arrow-trending-up')
                     ->color('success')
                     ->chart($monthlyCounts),
-                Stat::make('Pertumbuhan Penjualan', $growth)
+                Stat::make('Sales Growth', $growth)
                     ->description('Berdasarkan pendaftaran bulanan')
                     ->descriptionIcon('heroicon-m-check-badge')
                     ->color('success'),
@@ -65,20 +65,20 @@ class CompanyPerformanceWidget extends BaseWidget
                     ->description('Dari status tidak aktif')
                     ->descriptionIcon('heroicon-m-arrow-trending-down')
                     ->color('success'),
-                Stat::make('Pelanggan Aktif', $activeSubscriptions)
-                    ->description('Total pelanggan aktif & closed won')
+                Stat::make('Active Customers', $activeSubscriptions)
+                    ->description('Total Active Customers & closed won')
                     ->descriptionIcon('heroicon-m-users')
                     ->color('primary'),
             ];
         }
 
         return [
-            Stat::make('Total Pendapatan', '$142,500')
+            Stat::make('Total Revenue', '$142,500')
                 ->description('Naik 32% dari bulan lalu')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('success')
                 ->chart([100, 110, 105, 120, 130, 125, 142]),
-            Stat::make('Pertumbuhan Penjualan', '+15.4%')
+            Stat::make('Sales Growth', '+15.4%')
                 ->description('Di atas target Q2')
                 ->descriptionIcon('heroicon-m-check-badge')
                 ->color('success'),
@@ -86,7 +86,7 @@ class CompanyPerformanceWidget extends BaseWidget
                 ->description('Membaik 0.5%')
                 ->descriptionIcon('heroicon-m-arrow-trending-down')
                 ->color('success'),
-            Stat::make('Pelanggan Aktif', '1,245')
+            Stat::make('Active Customers', '1,245')
                 ->description('45 baru minggu ini')
                 ->descriptionIcon('heroicon-m-users')
                 ->color('primary'),

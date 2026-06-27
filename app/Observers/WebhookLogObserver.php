@@ -5,7 +5,7 @@ namespace App\Observers;
 use App\Models\Notification as AppNotification;
 use App\Models\User;
 use App\Models\WebhookLog;
-use Filament\Notifications\Notification as FilamentNotification;
+use App\Support\FilamentDatabaseNotification;
 
 class WebhookLogObserver
 {
@@ -31,11 +31,13 @@ class WebhookLogObserver
                     'action_url' => '/admin/webhook-logs',
                 ]);
 
-                FilamentNotification::make()
-                    ->title($title)
-                    ->body($message)
-                    ->danger()
-                    ->sendToDatabase($user);
+                FilamentDatabaseNotification::send(
+                    user: $user,
+                    title: $title,
+                    body: $message,
+                    type: 'danger',
+                    actionUrl: '/admin/webhook-logs',
+                );
             }
         }
     }

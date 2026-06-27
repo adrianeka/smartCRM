@@ -65,7 +65,7 @@ class EditProfile extends BaseEditProfile
 
     protected function getSessionManagementComponent(): Component
     {
-        return Section::make('Manajemen Sesi')
+        return Section::make('Session Management')
             ->description('Kelola sesi aktif dan perangkat yang terhubung ke akun Anda.')
             ->icon('heroicon-o-computer-desktop')
             ->schema([

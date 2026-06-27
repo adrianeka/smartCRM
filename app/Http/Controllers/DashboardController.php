@@ -181,7 +181,7 @@ public function overview()
                 [
                     'step' => 1,
                     'title' => 'Create Customer',
-                    'description' => 'Tambahkan pelanggan baru ke sistem CRM'
+                    'description' => 'Add a new customer to the CRM system'
                 ],
                 [
                     'step' => 2,

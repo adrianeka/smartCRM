@@ -26,7 +26,7 @@ class MfaOtpMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Kode Verifikasi Login Anda',
+            subject: 'Your Login Verification Code',
         );
     }
 

@@ -23,11 +23,11 @@ class UserResource extends Resource implements HasShieldPermissions
 
     protected static string|\UnitEnum|null $navigationGroup = 'User Management';
 
-    protected static ?string $navigationLabel = 'Pengguna';
+    protected static ?string $navigationLabel = 'Users';
 
-    protected static ?string $modelLabel = 'Pengguna';
+    protected static ?string $modelLabel = 'Users';
 
-    protected static ?string $pluralModelLabel = 'Pengguna';
+    protected static ?string $pluralModelLabel = 'Users';
 
     protected static ?int $navigationSort = 1;
 

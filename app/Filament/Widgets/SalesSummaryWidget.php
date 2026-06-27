@@ -35,7 +35,7 @@ class SalesSummaryWidget extends BaseWidget
         $growthLabel = ($growthPct >= 0 ? '+' : '') . $growthPct . '% pertumbuhan';
 
         return [
-            Stat::make('Kontak Aktif', (string) ($totalCustomers > 0 ? $totalCustomers : 5))
+            Stat::make('Active Contacts', (string) ($totalCustomers > 0 ? $totalCustomers : 5))
                 ->description($growthLabel)
                 ->descriptionIcon($growthPct >= 0 ? 'heroicon-m-arrow-trending-up' : 'heroicon-m-arrow-trending-down')
                 ->color($growthPct >= 0 ? 'success' : 'danger')

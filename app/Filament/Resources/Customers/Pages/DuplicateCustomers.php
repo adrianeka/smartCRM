@@ -15,7 +15,7 @@ class DuplicateCustomers extends Page
 
     protected string $view = 'filament.resources.customers.pages.duplicate-customers';
 
-    protected static ?string $title = 'Cek Duplikat Customer';
+    protected static ?string $title = 'Check Duplicates Customer';
 
     public function getDuplicateCandidates(): array
     {
@@ -121,7 +121,7 @@ class DuplicateCustomers extends Page
         });
 
         Notification::make()
-            ->title('Customer duplikat berhasil digabungkan')
+            ->title('Customer duplikat Success digabungkan')
             ->success()
             ->send();
     }
@@ -164,8 +164,8 @@ class DuplicateCustomers extends Page
         return collect([
             'Email sama' => $this->sameFilled($first->email, $second->email),
             'Nomor telepon sama' => $this->sameFilled($this->normalizePhone($first->phone), $this->normalizePhone($second->phone)),
-            'Nama sama' => $this->sameFilled($this->normalizeText($first->full_name), $this->normalizeText($second->full_name)),
-            'Perusahaan sama' => $this->sameFilled($this->normalizeText($first->company_name), $this->normalizeText($second->company_name)),
+            'Name sama' => $this->sameFilled($this->normalizeText($first->full_name), $this->normalizeText($second->full_name)),
+            'Same company' => $this->sameFilled($this->normalizeText($first->company_name), $this->normalizeText($second->company_name)),
         ])->filter()->keys()->values()->all();
     }
 

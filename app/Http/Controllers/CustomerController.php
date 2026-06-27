@@ -189,7 +189,7 @@ class CustomerController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Pelanggan baru berhasil ditambahkan!',
+            'message' => 'Customer created successfully!',
             'data' => $customer,
         ]);
     }
@@ -268,7 +268,7 @@ class CustomerController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Data pelanggan berhasil diperbarui!',
+            'message' => 'Data Customers Success diperbarui!',
             'data' => $customer,
         ]);
     }
@@ -334,7 +334,7 @@ class CustomerController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Data pelanggan berhasil dihapus!',
+            'message' => 'Data Customers Success dihapus!',
         ]);
     }
 
@@ -487,7 +487,7 @@ class CustomerController extends Controller
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(property: 'status', type: 'string', example: 'success'),
-                        new OA\Property(property: 'message', type: 'string', example: 'Customer berhasil diimport'),
+                        new OA\Property(property: 'message', type: 'string', example: 'Customer Success diimport'),
                     ]
                 )
             ),
@@ -505,7 +505,7 @@ class CustomerController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Customer berhasil diimport',
+            'message' => 'Customer Success diimport',
         ]);
     }
 
@@ -704,7 +704,7 @@ class CustomerController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Data pelanggan duplikat berhasil digabungkan',
+            'message' => 'Data Customers duplikat Success digabungkan',
             'data' => $primary,
         ]);
     }
@@ -736,7 +736,7 @@ class CustomerController extends Controller
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(property: 'status', type: 'string', example: 'success'),
-                        new OA\Property(property: 'message', type: 'string', example: 'Tag berhasil ditambahkan'),
+                        new OA\Property(property: 'message', type: 'string', example: 'Tag added successfully'),
                         new OA\Property(property: 'data', type: 'array', items: new OA\Items(type: 'object')),
                     ]
                 )
@@ -756,7 +756,7 @@ class CustomerController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Tag berhasil ditambahkan',
+            'message' => 'Tag added successfully',
             'data' => $customer->tags,
         ]);
     }
@@ -859,7 +859,7 @@ class CustomerController extends Controller
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(property: 'status', type: 'string', example: 'success'),
-                        new OA\Property(property: 'message', type: 'string', example: 'File berhasil diupload'),
+                        new OA\Property(property: 'message', type: 'string', example: 'File Success diupload'),
                         new OA\Property(property: 'data', type: 'object'),
                     ]
                 )
@@ -887,7 +887,7 @@ class CustomerController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'File berhasil diupload',
+            'message' => 'File Success diupload',
             'data' => $attachment,
         ]);
     }
@@ -985,7 +985,7 @@ class CustomerController extends Controller
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(property: 'status', type: 'string', example: 'success'),
-                        new OA\Property(property: 'message', type: 'string', example: 'Attachment berhasil dihapus'),
+                        new OA\Property(property: 'message', type: 'string', example: 'Attachment Success dihapus'),
                     ]
                 )
             ),
@@ -1005,7 +1005,7 @@ class CustomerController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Attachment berhasil dihapus',
+            'message' => 'Attachment Success dihapus',
         ]);
     }
 

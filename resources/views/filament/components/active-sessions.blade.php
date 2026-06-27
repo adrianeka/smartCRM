@@ -184,7 +184,7 @@
                                 onmouseover="this.style.background='#f9fafb'"
                                 onmouseout="this.style.background='#fff'"
                             >
-                                Batal
+                                Cancel
                             </button>
                             <button
                                 type="submit"

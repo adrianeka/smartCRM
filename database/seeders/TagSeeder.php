@@ -9,7 +9,7 @@ class TagSeeder extends Seeder
 {
     public function run(): void
     {
-        foreach (['VIP', 'Prioritas Tinggi', 'B2B', 'Retail', 'Prospek Hangat'] as $name) {
+        foreach (['VIP', 'Priority Tinggi', 'B2B', 'Retail', 'Warm Prospect'] as $name) {
             Tag::firstOrCreate(['name' => $name]);
         }
     }

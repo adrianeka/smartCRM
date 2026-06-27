@@ -21,7 +21,7 @@ class MfaChallenge extends SimplePage
 
     public function getSubheading(): string|Htmlable|null
     {
-        return 'Masukkan 6 digit kode yang telah kami kirimkan ke email Anda untuk memverifikasi akun Anda.';
+        return 'Enter the 6-digit code we sent to your email to verify your account.';
     }
 
     public function mount(): void

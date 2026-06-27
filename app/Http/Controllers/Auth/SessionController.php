@@ -43,6 +43,6 @@ class SessionController extends Controller
             ->where('id', '!=', session()->getId())
             ->delete();
 
-        return back()->with('status', 'Berhasil mengeluarkan semua perangkat lain.');
+        return back()->with('status', 'Success mengeluarkan semua perangkat lain.');
     }
 }

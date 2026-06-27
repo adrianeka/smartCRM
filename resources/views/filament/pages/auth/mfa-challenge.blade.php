@@ -171,7 +171,7 @@
         <form method="POST" action="{{ route('mfa.challenge.send') }}">
             @csrf
             <button type="submit" class="btn-resend">
-                Kirim Ulang Kode
+                Resend Code
             </button>
         </form>
     </div>

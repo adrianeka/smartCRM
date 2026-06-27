@@ -55,7 +55,7 @@ class ListCustomers extends ListRecords
                 ->visible(fn (): bool => auth()->user()?->hasAnyRole(['super_admin', 'Marketing', 'Manager/Analyst']) ?? false),
 
             Action::make('check_duplicates')
-                ->label('Cek Duplikat')
+                ->label('Check Duplicates')
                 ->icon('heroicon-o-magnifying-glass')
                 ->url(CustomerResource::getUrl('duplicates'))
                 ->color('warning')

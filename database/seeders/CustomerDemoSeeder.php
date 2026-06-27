@@ -31,7 +31,7 @@ class CustomerDemoSeeder extends Seeder
                     'custom_fields' => [
                         'Instagram' => '@customer_demo_' . $i,
                         'Kategori' => $i % 3 === 0 ? 'VIP' : 'Regular',
-                        'Sumber Data' => 'CSV Indra',
+                        'Data Source' => 'Indra CSV',
                     ],
                 ]
             );
@@ -40,12 +40,12 @@ class CustomerDemoSeeder extends Seeder
             $customer->customFields()->createMany([
                 ['field_key' => 'Instagram', 'field_value' => '@customer_demo_' . $i],
                 ['field_key' => 'Kategori', 'field_value' => $i % 3 === 0 ? 'VIP' : 'Regular'],
-                ['field_key' => 'Sumber Data', 'field_value' => 'CSV Indra'],
+                ['field_key' => 'Data Source', 'field_value' => 'Indra CSV'],
             ]);
 
             $customer->tags()->syncWithoutDetaching(array_filter([
                 $i % 3 === 0 ? $tags->get('VIP') : $tags->get('Retail'),
-                $i % 5 === 0 ? $tags->get('Prioritas Tinggi') : null,
+                $i % 5 === 0 ? $tags->get('Priority Tinggi') : null,
                 $i % 4 === 0 ? $tags->get('B2B') : null,
             ]));
         }
@@ -76,7 +76,7 @@ class CustomerDemoSeeder extends Seeder
             ]
         );
 
-        $primary->tags()->syncWithoutDetaching([$tags->get('VIP'), $tags->get('Prioritas Tinggi')]);
+        $primary->tags()->syncWithoutDetaching([$tags->get('VIP'), $tags->get('Priority Tinggi')]);
         $duplicate->tags()->syncWithoutDetaching([$tags->get('VIP')]);
     }
 }

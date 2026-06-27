@@ -13,7 +13,7 @@ class UpcomingDeadlinesWidget extends BaseWidget
 
     protected static ?int $sort = 4;
 
-    protected static ?string $heading = 'Deadline Terdekat';
+    protected static ?string $heading = 'Upcoming Deadlines';
 
     public function table(Table $table): Table
     {
@@ -31,7 +31,7 @@ class UpcomingDeadlinesWidget extends BaseWidget
                     ['id' => 3, 'title' => 'Persiapan presentasi klien', 'date' => '2026-05-01', 'time' => '09:00'],
                 ])
                 ->columns([
-                    TextColumn::make('title')->label('Judul Tugas'),
+                    TextColumn::make('title')->label('Task Title'),
                     TextColumn::make('date')->label('Tanggal')
                         ->description(fn ($record) => $record['time'])
                         ->alignEnd(),
@@ -48,7 +48,7 @@ class UpcomingDeadlinesWidget extends BaseWidget
             )
             ->columns([
                 TextColumn::make('full_name')
-                    ->label('Pelanggan Follow-up')
+                    ->label('Customer Follow-up')
                     ->description(fn ($record) => $record->notes ?? 'Tidak ada catatan'),
                 TextColumn::make('next_follow_up_at')
                     ->label('Deadline')

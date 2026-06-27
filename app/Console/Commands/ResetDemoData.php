@@ -33,7 +33,7 @@ class ResetDemoData extends Command
                 ->delete();
 
             Tag::query()
-                ->whereIn('name', ['VIP', 'Prioritas Tinggi', 'B2B', 'Retail', 'Prospek Hangat'])
+                ->whereIn('name', ['VIP', 'Priority Tinggi', 'B2B', 'Retail', 'Warm Prospect'])
                 ->delete();
         });
 

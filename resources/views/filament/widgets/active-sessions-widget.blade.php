@@ -1,7 +1,7 @@
 <x-filament-widgets::widget>
     <x-filament::section
         icon="heroicon-o-computer-desktop"
-        heading="Manajemen Sesi"
+        heading="Session Management"
         description="Kelola sesi aktif dan perangkat yang terhubung ke akun Anda."
         collapsible
     >

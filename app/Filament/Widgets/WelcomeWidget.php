@@ -34,7 +34,7 @@ class WelcomeWidget extends Widget
             'Super Admin' => 'Mengelola user, customer, audit log, dan integrasi teknis.',
             'Sales' => 'Mengelola customer, follow-up, deteksi duplikat, dan smart merge.',
             'Marketing' => 'Mengelola data customer untuk segmentasi, import, dan export.',
-            'Support' => 'Melihat data customer untuk kebutuhan layanan dan histori pelanggan.',
+            'Support' => 'Melihat data customer untuk kebutuhan layanan dan histori Customers.',
             'Manager/Analyst' => 'Memantau customer, laporan, audit log, dan indikator performa.',
             default => 'Mengakses fitur SmartCRM sesuai peran yang diberikan.',
         };
@@ -44,9 +44,9 @@ class WelcomeWidget extends Widget
     {
         return match ($this->getRoleName()) {
             'Super Admin' => ['Buka Users untuk mengelola akun demo', 'Buka Customer Management untuk melihat semua data', 'Buka Audit Log untuk melihat aktivitas sistem'],
-            'Sales' => ['Tambah atau edit customer', 'Klik Cek Duplikat untuk mencari data ganda', 'Gunakan Merge Duplikat pada baris customer utama'],
+            'Sales' => ['Add or edit customers', 'Klik Check Duplicates untuk mencari data ganda', 'Use Merge Duplicate on the primary customer row'],
             'Marketing' => ['Import customer dari CSV/Excel', 'Download Excel atau CSV untuk kebutuhan campaign', 'Gunakan custom fields seperti Segment atau Kategori'],
-            'Support' => ['Buka Customer Management untuk melihat identitas pelanggan', 'Gunakan pencarian untuk menemukan customer', 'Cek detail customer sebelum menangani kasus'],
+            'Support' => ['Buka Customer Management untuk melihat identitas Customers', 'Gunakan pencarian untuk menemukan customer', 'Cek detail customer sebelum menangani kasus'],
             'Manager/Analyst' => ['Lihat dashboard performa', 'Buka Customer Management untuk review data', 'Buka Audit Log untuk memantau aktivitas'],
             default => ['Buka Customer Management', 'Gunakan pencarian data', 'Ikuti akses sesuai role'],
         };

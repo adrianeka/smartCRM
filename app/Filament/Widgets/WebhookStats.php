@@ -17,14 +17,14 @@ class WebhookStats extends BaseWidget
             ),
 
             Stat::make(
-                'Berhasil',
+                'Success',
                 (string) WebhookLog::query()
                     ->where('status', 'success')
                     ->count('*')
             ),
 
             Stat::make(
-                'Gagal',
+                'Failed',
                 (string) WebhookLog::query()
                     ->where('status', 'failed')
                     ->count('*')

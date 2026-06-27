@@ -16,14 +16,14 @@ class UserForm
     {
         return $schema
             ->components([
-                Section::make('Informasi Pengguna')
+                Section::make('Informasi Users')
                     ->schema([
                         TextInput::make('name')
-                            ->label('Nama Lengkap')
+                            ->label('Name Lengkap')
                             ->required()
                             ->maxLength(255),
                         TextInput::make('email')
-                            ->label('Alamat Email')
+                            ->label('Email Address')
                             ->email()
                             ->required()
                             ->unique(ignoreRecord: true)
@@ -55,7 +55,7 @@ class UserForm
                             ->preload()
                             ->searchable(),
                         Toggle::make('email_verified_at')
-                            ->label('Email Terverifikasi')
+                            ->label('Email Verified')
                             ->dehydrateStateUsing(fn ($state) => $state ? now() : null)
                             ->formatStateUsing(fn ($state) => ! empty($state)),
                     ])->columns(2),

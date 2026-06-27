@@ -26,7 +26,7 @@ class UsersTable
                     ->disk('public')
                     ->defaultImageUrl(fn ($record) => 'https://ui-avatars.com/api/?name='.urlencode($record->name).'&color=7F9CF5&background=EBF4FF'),
                 TextColumn::make('name')
-                    ->label('Nama')
+                    ->label('Name')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('email')
@@ -46,7 +46,7 @@ class UsersTable
                     })
                     ->searchable(),
                 TextColumn::make('email_verified_at')
-                    ->label('Terverifikasi')
+                    ->label('Verified')
                     ->dateTime('d M Y')
                     ->sortable()
                     ->placeholder('Belum Verifikasi'),
@@ -70,8 +70,8 @@ class UsersTable
                     ->icon('heroicon-o-arrow-right-start-on-rectangle')
                     ->color('danger')
                     ->requiresConfirmation()
-                    ->modalHeading('Paksa Logout Pengguna')
-                    ->modalDescription(fn ($record) => "Semua sesi aktif milik \"{$record->name}\" akan dikeluarkan. Pengguna harus login ulang untuk mengakses sistem.")
+                    ->modalHeading('Paksa Logout Users')
+                    ->modalDescription(fn ($record) => "Semua sesi aktif milik \"{$record->name}\" akan dikeluarkan. Users harus login ulang untuk mengakses sistem.")
                     ->modalSubmitActionLabel('Ya, Paksa Logout')
                     ->action(function ($record) {
                         $deleted = DB::table('sessions')
@@ -79,29 +79,29 @@ class UsersTable
                             ->delete();
 
                         Notification::make()
-                            ->title('Berhasil')
-                            ->body("Semua sesi milik \"{$record->name}\" telah dikeluarkan ({$deleted} sesi).")
+                            ->title('Success')
+                            ->body("All sessions for \"{$record->name}\" have been signed out ({$deleted} sessions).")
                             ->success()
                             ->send();
                     })
                     ->visible(fn () => auth()->user()?->hasRole('super_admin'))
                     ->hidden(fn ($record) => $record->id === auth()->id()),
                 Action::make('verifyEmail')
-                    ->label('Verifikasi Email')
+                    ->label('Verify Email')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
                     ->requiresConfirmation()
-                    ->modalHeading('Verifikasi Email Pengguna')
-                    ->modalDescription(fn ($record) => "Apakah Anda yakin ingin memverifikasi email \"{$record->name}\"?")
-                    ->modalSubmitActionLabel('Ya, Verifikasi')
+                    ->modalHeading('Verify User Email')
+                    ->modalDescription(fn ($record) => "Are you sure you want to verify the email for \"{$record->name}\"?")
+                    ->modalSubmitActionLabel('Yes, Verify')
                     ->action(function ($record) {
                         $record->update([
                             'email_verified_at' => now(),
                         ]);
 
                         Notification::make()
-                            ->title('Berhasil')
-                            ->body("Email \"{$record->name}\" telah diverifikasi.")
+                            ->title('Success')
+                            ->body("Email for \"{$record->name}\" has been verified.")
                             ->success()
                             ->send();
                     })

@@ -21,7 +21,7 @@ it('renders the MFA challenge page for authenticated users with unverified MFA s
 
     $response->assertStatus(200);
     $response->assertSee('Verifikasi Dua Faktor');
-    $response->assertSee('Kirim Ulang Kode');
+    $response->assertSee('Resend Code');
 });
 
 it('successfully verifies OTP and redirects to the Filament dashboard', function () {
